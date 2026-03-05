@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.apptism.controller.DashboardController"
+           prefWidth="1280" prefHeight="800">
+
+    <!-- ======================== PANEL TUTOR ======================== -->
+    <BorderPane fx:id="panelTutor" styleClass="root-pane" visible="true">
+
+        <top>
+            <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+                <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
+                <Label text="🧩 Apptism" styleClass="titulo-header"/>
+                <Label fx:id="lblBienvenida" styleClass="titulo-header"/>
+                <HBox HBox.hgrow="ALWAYS"/>
+                <Button text="Cerrar sesión" onAction="#onCerrarSesion" styleClass="btn-volver"/>
+            </HBox>
+        </top>
+
+        <center>
+            <VBox alignment="CENTER" spacing="30">
+                <padding><Insets top="50" right="100" bottom="40" left="100"/></padding>
+
+                <Label text="¿Qué quieres hacer hoy?" styleClass="subtitulo"/>
+
+                <!-- Botones comunes (tutores) -->
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="📅 Rutinas" onAction="#onIrRutinas"
+                            styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
+                    <Button text="📚 Tareas" onAction="#onIrTareas"
+                            styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
+                    <Button text="💬 Chat" onAction="#onIrChat"
+                            styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
+                </HBox>
+
+                <!-- Exclusivo tutores -->
+                <HBox fx:id="hboxTutor" spacing="20" alignment="CENTER">
+                    <Button text="🎁 Recompensas" onAction="#onIrRecompensas"
+                            styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
+                    <Button text="❤️ Reg. Emocional" onAction="#onIrRegistroEmocional"
+                            styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
+                    <StackPane>
+                        <Button text="🎁 Canjes" onAction="#onIrSolicitudes"
+                                styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
+                        <Label fx:id="lblBadgeSolicitudes" text="0"
+                               styleClass="badge-notificacion"
+                               StackPane.alignment="TOP_RIGHT"/>
+                    </StackPane>
+                </HBox>
+            </VBox>
+        </center>
+    </BorderPane>
+
+    <!-- ======================== PANEL NIÑO ======================== -->
+    <BorderPane fx:id="panelNino" styleClass="root-pane-nino" visible="false">
+
+        <top>
+            <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
+                <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
+                <Label text="🧩 Apptism" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#7a4a00;"/>
+                <Label fx:id="lblBienvenidaNino" style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#7a4a00;"/>
+                <HBox HBox.hgrow="ALWAYS"/>
+<Button text="🚪 Salir" onAction="#onCerrarSesion" styleClass="btn-volver-nino"/>
+            </HBox>
+        </top>
+
+        <center>
+            <VBox alignment="CENTER" spacing="32">
+                <padding><Insets top="30" right="80" bottom="30" left="80"/></padding>
+
+                <Label fx:id="lblPuntosNino" styleClass="puntos-nino" text="🏆 0 puntos"
+                       style="-fx-alignment: center;" maxWidth="Infinity"/>
+
+                <HBox spacing="28" alignment="CENTER">
+                    <Button text="📅 Mis Rutinas" onAction="#onIrRutinas"
+                            styleClass="btn-nino,btn-nino-azul" prefWidth="260" prefHeight="130"/>
+                    <Button text="📚 Mis Tareas" onAction="#onIrTareas"
+                            styleClass="btn-nino,btn-nino-verde" prefWidth="260" prefHeight="130"/>
+                    <Button text="🎁 Recompensas" onAction="#onIrRecompensas"
+                            styleClass="btn-nino,btn-nino-amarillo" prefWidth="260" prefHeight="130"/>
+                </HBox>
+
+                <HBox spacing="28" alignment="CENTER">
+                    <Button text="💬 Chat" onAction="#onIrChat"
+                            styleClass="btn-nino,btn-nino-morado" prefWidth="260" prefHeight="130"/>
+                    <Button text="😊 Mis Emociones" onAction="#onIrEmociones"
+                            styleClass="btn-nino,btn-nino-naranja" prefWidth="260" prefHeight="130"/>
+                </HBox>
+            </VBox>
+        </center>
+    </BorderPane>
+
+</StackPane>
