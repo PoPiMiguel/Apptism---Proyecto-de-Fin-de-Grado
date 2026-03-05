@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.apptism.controller.LoginController"
+           prefWidth="1280" prefHeight="800"
+           styleClass="root-pane">
+
+    <!-- Fondo decorativo con gradiente de paleta -->
+    <VBox alignment="CENTER" spacing="0">
+        <Region VBox.vgrow="ALWAYS"
+                style="-fx-background-color: linear-gradient(to bottom, #E8D5F2, #FFF5E0);"/>
+    </VBox>
+
+    <!-- Tarjeta central -->
+    <VBox alignment="CENTER" maxWidth="500"
+          style="-fx-background-color: white; -fx-background-radius: 32px;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 28, 0, 0, 10);
+                 -fx-padding: 50px 60px;">
+
+        <!-- LOGO: Debes copiar logo.png a /src/main/resources/images/logo.png -->
+        <ImageView fx:id="imgLogo" fitWidth="180" fitHeight="180" preserveRatio="true"
+                   style="-fx-padding: 0 0 20px 0;"/>
+
+        <Label text="Apptism" styleClass="titulo-login" VBox.vgrow="NEVER"/>
+        <Label text="La app para acompañar a tu peque" styleClass="subtitulo-login"/>
+
+        <VBox spacing="8" style="-fx-padding: 32px 0 0 0;">
+            <Label text="Correo electrónico" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+            <TextField fx:id="txtEmail" promptText="usuario@email.com" styleClass="input-field"/>
+        </VBox>
+
+        <VBox spacing="8" style="-fx-padding: 16px 0 0 0;">
+            <Label text="Contraseña" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+            <PasswordField fx:id="txtPassword" promptText="••••••••" styleClass="input-field"/>
+        </VBox>
+
+        <Label fx:id="lblError" styleClass="error-label" text="" style="-fx-padding: 8px 0 0 0;"/>
+
+        <!-- Botón con color MORADO del logo -->
+        <Button text="Entrar →" onAction="#onLogin" styleClass="btn-login-principal"
+                maxWidth="Infinity" style="-fx-font-size: 18px; -fx-padding: 14px; -fx-background-radius: 18px;
+                                          -fx-margin: 28px 0 0 0;"/>
+
+    </VBox>
+</StackPane>
