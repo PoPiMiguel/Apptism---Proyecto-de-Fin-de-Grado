@@ -1,0 +1,111 @@
+@startuml diagrama_entidad_relacion
+skinparam linetype ortho
+skinparam entityBackgroundColor #EBF5FB
+skinparam entityBorderColor #2E86C1
+skinparam arrowColor #1A5276
+skinparam databaseBackgroundColor #D5F5E3
+skinparam noteFontSize 11
+
+title Apptism — Diagrama Entidad–Relación (Conceptual)
+
+' ─── ENTIDADES ───────────────────────────────────────────────
+
+entity USUARIO {
+    * id : Long
+    --
+    email : String
+    password : String
+    rol : RolUsuario
+    nombre : String
+    fechaNacimiento : LocalDate
+    puntosAcumulados : Integer
+}
+
+entity TAREA {
+    * id : Long
+    --
+    titulo : String
+    descripcion : String
+    categoria : CategoriaTarea
+    puntosPorCompletar : Integer
+    completada : Boolean
+    fechaProgramada : LocalDateTime
+}
+
+entity RUTINA {
+    * id : Long
+    --
+    nombre : String
+    zonaHoraria : ZonaHoraria
+    pictogramaUrl : String
+    completada : Boolean
+    orden : Integer
+}
+
+entity PASO_RUTINA {
+    * id : Long
+    --
+    descripcion : String
+    pictogramaUrl : String
+    orden : Integer
+    completado : Boolean
+}
+
+entity RECOMPENSA {
+    * id : Long
+    --
+    descripcion : String
+    puntosNecesarios : Integer
+    pictogramaUrl : String
+    activa : Boolean
+}
+
+entity SOLICITUD_CANJE {
+    * id : Long
+    --
+    estado : EstadoSolicitud
+    leida : Boolean
+    fecha : LocalDateTime
+}
+
+entity REGISTRO_EMOCIONAL {
+    * id : Long
+    --
+    emocion : Emocion
+    intensidad : Integer
+    fecha : LocalDateTime
+}
+
+entity MENSAJE {
+    * id : Long
+    --
+    pictogramaUrl : String
+    textoPictograma : String
+    tipo : TipoMensaje
+    leido : Boolean
+    fecha : LocalDateTime
+}
+
+' ─── RELACIONES ──────────────────────────────────────────────
+
+USUARIO ||--o{ USUARIO : "supervisa\n(tutor → niño)"
+
+USUARIO ||--o{ TAREA : "se asigna\n(niño)"
+USUARIO ||--o{ TAREA : "crea\n(tutor/creador)"
+
+USUARIO ||--o{ RUTINA : "pertenece\n(niño)"
+USUARIO ||--o{ RUTINA : "crea\n(tutor/creador)"
+
+RUTINA ||--|{ PASO_RUTINA : "está compuesta de"
+
+USUARIO ||--o{ RECOMPENSA : "gestiona\n(familia/tutor)"
+
+USUARIO ||--o{ SOLICITUD_CANJE : "genera\n(niño)"
+RECOMPENSA ||--o{ SOLICITUD_CANJE : "se canjea en"
+
+USUARIO ||--o{ REGISTRO_EMOCIONAL : "registra\n(niño)"
+
+USUARIO ||--o{ MENSAJE : "envía\n(emisor)"
+USUARIO ||--o{ MENSAJE : "recibe\n(receptor)"
+
+@enduml
