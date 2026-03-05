@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.apptism.controller.SolicitudesCanjeController"
+            styleClass="root-pane" prefWidth="1280" prefHeight="800">
+
+    <top>
+        <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+            <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
+            <Label text="🎁 Recompensas Canjeadas" styleClass="titulo-header"/>
+            <HBox HBox.hgrow="ALWAYS"/>
+            <Button text="← Volver" onAction="#onVolver" styleClass="btn-volver"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="rootStack">
+            <VBox spacing="20">
+                <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+
+                <Label fx:id="lblContador" styleClass="subtitulo"
+                       style="-fx-text-fill: #8B72D4; -fx-font-size:18px;"/>
+
+                <!-- Filtro por estado -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Label text="Filtrar:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                    <ToggleButton fx:id="btnTodos" text="Todos" onAction="#onFiltrarTodos"
+                                  style="-fx-background-color:#C8BBEE; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
+                    <ToggleButton fx:id="btnPendientes" text="⏳ Pendientes" onAction="#onFiltrarPendientes"
+                                  style="-fx-background-color:#FFE0A0; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
+                    <ToggleButton fx:id="btnAprobadas" text="✅ Aprobadas" onAction="#onFiltrarAprobadas"
+                                  style="-fx-background-color:#C8F0C8; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
+                    <ToggleButton fx:id="btnRechazadas" text="❌ Rechazadas" onAction="#onFiltrarRechazadas"
+                                  style="-fx-background-color:#FFD0D0; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
+                </HBox>
+
+                <!-- Lista de canjes -->
+                <VBox spacing="0" styleClass="panel" VBox.vgrow="ALWAYS">
+                    <Label text="Historial de canjes" styleClass="subtitulo" style="-fx-padding: 0 0 12 0;"/>
+                    <ListView fx:id="listaSolicitudes" VBox.vgrow="ALWAYS"
+                              style="-fx-font-size:14px; -fx-border-color: transparent;"/>
+                </VBox>
+
+                <!-- Acciones -->
+                <HBox spacing="16" alignment="CENTER">
+                    <Button fx:id="btnAprobar" text="✅ Aprobar canje" onAction="#onAprobar"
+                            styleClass="btn-completar" prefWidth="220" prefHeight="48"/>
+                    <Button fx:id="btnRechazar" text="❌ Rechazar canje" onAction="#onRechazar"
+                            styleClass="btn-eliminar" prefWidth="220" prefHeight="48"/>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
