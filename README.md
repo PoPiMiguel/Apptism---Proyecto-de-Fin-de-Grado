@@ -211,7 +211,3 @@ La interfaz está construida con **JavaFX + FXML** y un CSS personalizado (`appt
 ## 📄 Licencia
 
 Proyecto académico desarrollado como Trabajo de Fin de Grado. Todos los pictogramas son propiedad de [ARASAAC](https://arasaac.org) y están sujetos a su licencia Creative Commons BY-NC-SA.
-
----
-
-*Desarrollado con ❤️ como TFG — Apptism © 2024*
