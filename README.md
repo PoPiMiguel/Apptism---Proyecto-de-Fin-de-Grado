@@ -1,10 +1,10 @@
-# 🧩 Apptism
+# Apptism
 
 > Aplicación de escritorio para apoyar el desarrollo y la autonomía de niños con Trastorno del Espectro Autista (TEA), facilitando la comunicación entre tutores (padres/profesores) y sus alumnos o hijos.
 
 ---
 
-## 📋 Descripción General
+## Descripción General
 
 **Apptism** es una aplicación de escritorio desarrollada como Trabajo de Fin de Grado (TFG). Su objetivo principal es proporcionar una herramienta accesible e intuitiva que ayude a niños con TEA a:
 
@@ -18,7 +18,7 @@ Los tutores (padres y profesores) pueden crear, supervisar y gestionar todo el c
 
 ---
 
-## 🏗️ Arquitectura y Tecnologías
+## Arquitectura y Tecnologías
 
 | Capa | Tecnología |
 |---|---|
@@ -45,7 +45,7 @@ com.apptism
 
 ---
 
-## 👥 Roles de Usuario
+## Roles de Usuario
 
 | Rol | Descripción |
 |---|---|
@@ -56,7 +56,7 @@ com.apptism
 
 ---
 
-## ✨ Funcionalidades Principales
+## Funcionalidades Principales
 
 ### Para Niños (`NINO`)
 - **Dashboard** personalizado con puntos acumulados y acceso rápido a todas las secciones.
@@ -80,7 +80,7 @@ com.apptism
 
 ---
 
-## 🔌 Integración con ARASAAC
+## Integración con ARASAAC
 
 La aplicación se integra con la **API pública de ARASAAC** (`https://api.arasaac.org/v1/pictograms`) para obtener pictogramas en español. El servicio `ArasaacService` implementa:
 
@@ -91,7 +91,7 @@ La aplicación se integra con la **API pública de ARASAAC** (`https://api.arasa
 
 ---
 
-## 🗄️ Modelo de Datos
+## Modelo de Datos
 
 Las entidades principales son:
 
@@ -109,46 +109,7 @@ Las entidades principales son:
 
 ---
 
-## ⚙️ Instalación y Configuración
-
-### Requisitos previos
-- Java 17+
-- Maven 3.8+
-- MySQL 8+
-
-### Pasos
-
-**1. Clonar el repositorio**
-```bash
-git clone https://github.com/tu-usuario/apptism.git
-cd apptism/Apptism
-```
-
-**2. Crear la base de datos**
-```sql
-CREATE DATABASE apptism CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-**3. Configurar la conexión** en `src/main/resources/application.properties`:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/apptism
-spring.datasource.username=TU_USUARIO
-spring.datasource.password=TU_CONTRASEÑA
-spring.jpa.hibernate.ddl-auto=update
-```
-
-**4. Compilar y ejecutar**
-```bash
-mvn clean javafx:run
-```
-
-El sistema creará automáticamente el usuario administrador por defecto:
-- **Email**: `admin@apptism.com`
-- **Contraseña**: `admin123`
-
----
-
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 Apptism/
@@ -189,7 +150,7 @@ Apptism/
 
 ---
 
-## 🎨 Interfaz de Usuario
+## Interfaz de Usuario
 
 La interfaz está construida con **JavaFX + FXML** y un CSS personalizado (`apptism.css`). Las vistas disponibles son:
 
@@ -208,6 +169,6 @@ La interfaz está construida con **JavaFX + FXML** y un CSS personalizado (`appt
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Proyecto académico desarrollado como Trabajo de Fin de Grado. Todos los pictogramas son propiedad de [ARASAAC](https://arasaac.org) y están sujetos a su licencia Creative Commons BY-NC-SA.
