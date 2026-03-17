@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<!-- NOTA: El nodo raíz NO tiene fx:id para evitar el error de inyección -->
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.apptism.controller.RutinasController"
+           prefWidth="1280" prefHeight="800">
+
+    <!-- ===== VISTA TUTOR ===== -->
+    <BorderPane fx:id="panelTutor" styleClass="root-pane">
+        <top>
+            <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+                <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
+                <Label text="📅 Rutinas" styleClass="titulo-header"/>
+                <Label text="(Crea rutinas y asígnalas a un niño)" styleClass="titulo-header"
+                       style="-fx-font-size:14px; -fx-text-fill: rgba(255,255,255,0.75);"/>
+                <HBox HBox.hgrow="ALWAYS"/>
+                <Button text="← Volver" onAction="#onVolver" styleClass="btn-volver"/>
+            </HBox>
+        </top>
+        <center>
+            <SplitPane dividerPositions="0.65">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                <TabPane fx:id="tabZonas" tabClosingPolicy="UNAVAILABLE">
+                    <Tab text="🌅 Mañana"><ListView fx:id="listaManana"/></Tab>
+                    <Tab text="☀️ Mediodía"><ListView fx:id="listaMediodia"/></Tab>
+                    <Tab text="🌙 Noche"><ListView fx:id="listaNoche"/></Tab>
+                </TabPane>
+                <VBox spacing="15" styleClass="panel">
+                    <Label text="➕ Nueva rutina" styleClass="subtitulo"/>
+                    <Label text="Nombre:"/>
+                    <TextField fx:id="txtNombreRutina" promptText="Ej: Lavarse los dientes" styleClass="input-field"/>
+                    <Label text="Zona horaria:"/>
+                    <ComboBox fx:id="cmbZona" maxWidth="Infinity"/>
+                    <Label text="Asignar a niño:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                    <ComboBox fx:id="cmbNinoTutor" promptText="Selecciona un niño" maxWidth="Infinity"/>
+                    <Button text="Crear rutina" onAction="#onCrearRutina" styleClass="btn-crear" maxWidth="Infinity"/>
+                </VBox>
+            </SplitPane>
+        </center>
+    </BorderPane>
+
+    <!-- ===== VISTA NIÑO ===== -->
+    <!-- StackPane interno para poder inyectar fx:id y usar animaciones -->
+    <StackPane fx:id="rootStackNino" visible="false">
+        <BorderPane styleClass="root-pane-nino">
+            <top>
+                <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
+                    <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
+                    <Label text="📅 Mis Rutinas" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#7a4a00;"/>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <ImageView fitHeight="26" preserveRatio="true" styleClass="app-logo">
+                        <image>
+                            <Image url="@../images/logo.png"/>
+                        </image>
+                    </ImageView>
+                    <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
+                </HBox>
+            </top>
+            <center>
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                    <FlowPane fx:id="flowRutinasNino" hgap="22" vgap="22" alignment="CENTER">
+                        <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
+                    </FlowPane>
+                </ScrollPane>
+            </center>
+        </BorderPane>
+    </StackPane>
+
+</StackPane>
