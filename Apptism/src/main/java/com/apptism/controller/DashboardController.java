@@ -45,7 +45,7 @@ public class DashboardController implements Initializable {
             panelTutor.setVisible(true);
             panelNino.setVisible(false);
 
-            lblBienvenida.setText("¡Hola, " + usuario.getNombre() + "! 👋");
+            lblBienvenida.setText("¡Hola, " + usuario.getNombre() + "!");
 
             // Badge solicitudes pendientes
             long pendientes = solicitudRepo.countByRecompensaFamiliaIdAndLeidaFalse(usuario.getId());
@@ -59,8 +59,8 @@ public class DashboardController implements Initializable {
             panelTutor.setVisible(false);
             panelNino.setVisible(true);
 
-            lblBienvenidaNino.setText("¡Hola, " + usuario.getNombre() + "! 👋");
-            lblPuntosNino.setText("🏆 " + usuario.getPuntosAcumulados() + " puntos");
+            lblBienvenidaNino.setText("¡Hola, " + usuario.getNombre() + "!");
+            lblPuntosNino.setText(usuario.getPuntosAcumulados() + " puntos");
         }
     }
 

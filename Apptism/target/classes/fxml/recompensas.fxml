@@ -14,12 +14,12 @@
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <Label text="🎁 Recompensas" styleClass="titulo-header"/>
+                <Label text="Recompensas" styleClass="titulo-header"/>
                 <Label text="(Los niños las canjean)" styleClass="titulo-header"
                        style="-fx-font-size:14px; -fx-text-fill: rgba(255,255,255,0.75);"/>
                 <HBox HBox.hgrow="ALWAYS"/>
                 <Label fx:id="lblPuntosDisponibles" styleClass="puntos-label"/>
-                <Button text="← Volver" onAction="#onVolver" styleClass="btn-volver"/>
+                <Button text="Volver" onAction="#onVolver" styleClass="btn-volver"/>
             </HBox>
         </top>
         <center>
@@ -48,12 +48,12 @@
             <top>
                 <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                     <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                    <Label text="🎁 Mis Recompensas" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#7a4a00;"/>
+                    <Label text="Mis Recompensas" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
                     <HBox HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="lblPuntosNino" styleClass="puntos-nino" text="🏆 0 puntos"/>
+                    <Label fx:id="lblPuntosNino" styleClass="puntos-nino" text="0 puntos"/>
                     <ImageView fitHeight="26" preserveRatio="true" styleClass="app-logo">
                         <image>
-                            <Image url="@../images/logo.png"/>
+                            <Image url="@../images/apptism_icon.svg"/>
                         </image>
                     </ImageView>
                     <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>

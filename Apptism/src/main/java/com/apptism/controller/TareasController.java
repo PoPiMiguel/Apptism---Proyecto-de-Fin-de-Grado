@@ -89,7 +89,7 @@ public class TareasController implements Initializable {
                 LoginController.usuarioActivo.getId());
         listaTareas.setItems(FXCollections.observableArrayList(
                 tareasActualesTutor.stream().map(t ->
-                        (t.isCompletada() ? "✅ " : "⬜ ") +
+                        (t.isCompletada() ? "[OK] " : "[ ] ") +
                         "[" + t.getNino().getNombre() + "] " +
                         t.getTitulo() +
                         (t.getPuntosPorCompletar() > 0 ? " [+" + t.getPuntosPorCompletar() + " pts]" : "") +
@@ -145,8 +145,8 @@ public class TareasController implements Initializable {
         flowTareasNino.getChildren().clear();
 
         if (tareasActualesNino == null || tareasActualesNino.isEmpty()) {
-            Label vacio = new Label("Aún no tienes tareas 🙂\nTu tutor las añadirá pronto.");
-            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#999; -fx-text-alignment:center;");
+            Label vacio = new Label("Aún no tienes tareas.\nTu tutor las añadirá pronto.");
+            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#B0ACCC; -fx-text-alignment:center;");
             flowTareasNino.getChildren().add(vacio);
             return;
         }
@@ -162,7 +162,7 @@ public class TareasController implements Initializable {
         tarjeta.setPadding(new Insets(18));
         tarjeta.setPrefWidth(210);
         tarjeta.setPrefHeight(240);
-        String colorFondo = tarea.isCompletada() ? "#D4F5D4" : "white";
+        String colorFondo = tarea.isCompletada() ? "#E8FAF4" : "white";
         String catStr = tarea.getCategoria() != null ? tarea.getCategoria().name() : "";
         tarjeta.setStyle(
             "-fx-background-color:" + colorFondo + ";" +
@@ -175,26 +175,26 @@ public class TareasController implements Initializable {
         tarjeta.getChildren().add(lblEmoji);
 
         Label lblNombre = new Label(tarea.getTitulo());
-        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#444;");
+        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
         lblNombre.setMaxWidth(190); lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
-        Label lblPts = new Label("🏆 +" + tarea.getPuntosPorCompletar() + " pts");
-        lblPts.setStyle("-fx-font-size:13px; -fx-text-fill:#D46A00; -fx-font-weight:bold;");
+        Label lblPts = new Label("+" + tarea.getPuntosPorCompletar() + " pts");
+        lblPts.setStyle("-fx-font-size:13px; -fx-text-fill:#5652A0; -fx-font-weight:bold;");
         tarjeta.getChildren().add(lblPts);
 
         if (!tarea.isCompletada()) {
-            Button btn = new Button("✅ ¡Hecho!");
+            Button btn = new Button("¡Hecho!");
             btn.setStyle(
-                "-fx-background-color:#89D9A0; -fx-text-fill:#1a5e35;" +
+                "-fx-background-color:#B8EDD9; -fx-text-fill:#5652A0;" +
                 "-fx-font-size:15px; -fx-font-weight:bold;" +
                 "-fx-background-radius:16px; -fx-padding:9px 18px; -fx-cursor:hand;"
             );
             btn.setOnAction(e -> completarTareaNino(tarea, tarjeta));
             tarjeta.getChildren().add(btn);
         } else {
-            Label lbl = new Label("✅ ¡Completada!");
-            lbl.setStyle("-fx-text-fill:#27AE60; -fx-font-weight:bold; -fx-font-size:13px;");
+            Label lbl = new Label("Completada");
+            lbl.setStyle("-fx-text-fill:#5DBFA0; -fx-font-weight:bold; -fx-font-size:13px;");
             tarjeta.getChildren().add(lbl);
         }
         return tarjeta;
@@ -215,7 +215,7 @@ public class TareasController implements Initializable {
 
     private void actualizarPuntosNino() {
         if (lblPuntosNino != null)
-            lblPuntosNino.setText("🏆 " + LoginController.usuarioActivo.getPuntosAcumulados() + " puntos");
+            lblPuntosNino.setText(LoginController.usuarioActivo.getPuntosAcumulados() + " puntos");
     }
 
     private String emojiCategoria(String cat) {

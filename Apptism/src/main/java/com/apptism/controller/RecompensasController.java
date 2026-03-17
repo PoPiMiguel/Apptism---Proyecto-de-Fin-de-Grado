@@ -55,7 +55,7 @@ public class RecompensasController implements Initializable {
         if (esTutor) {
             spinnerPuntos.setValueFactory(
                     new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 10));
-            lblPuntosDisponibles.setText("🎁 Recompensas que has creado");
+            lblPuntosDisponibles.setText("Recompensas que has creado");
             cargarRecompensasTutor();
         } else {
             actualizarPuntosNino();
@@ -70,7 +70,7 @@ public class RecompensasController implements Initializable {
                 LoginController.usuarioActivo.getId());
         listaRecompensas.setItems(FXCollections.observableArrayList(
                 recompensasActualesTutor.stream()
-                        .map(r -> "🎁 " + r.getDescripcion() + " — " + r.getPuntosNecesarios() + " pts")
+                        .map(r -> r.getDescripcion() + " — " + r.getPuntosNecesarios() + " pts")
                         .toList()
         ));
     }
@@ -110,8 +110,8 @@ public class RecompensasController implements Initializable {
         flowRecompensasNino.getChildren().clear();
 
         if (recompensas.isEmpty()) {
-            Label vacio = new Label("Aún no hay recompensas 🙂\nTu tutor las añadirá pronto.");
-            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#999; -fx-text-alignment:center;");
+            Label vacio = new Label("Aún no hay recompensas.\nTu tutor las añadirá pronto.");
+            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#B0ACCC; -fx-text-alignment:center;");
             flowRecompensasNino.getChildren().add(vacio);
             return;
         }
@@ -129,34 +129,34 @@ public class RecompensasController implements Initializable {
         tarjeta.setPrefWidth(200);
         tarjeta.setPrefHeight(230);
         tarjeta.setStyle(
-                "-fx-background-color:" + (puedeGanar ? "#FFFDE0" : "#F5F5F5") + ";" +
+                "-fx-background-color:" + (puedeGanar ? "#F2F1FD" : "#F5F5F5") + ";" +
                         "-fx-background-radius:24px;" +
                         "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.09),10,0,0,3);" +
                         (puedeGanar ? "" : "-fx-opacity:0.7;")
         );
 
-        Label lblGift = new Label("🎁");
+        Label lblGift = new Label("");
         lblGift.setStyle("-fx-font-size:50px;");
         tarjeta.getChildren().add(lblGift);
 
         Label lblNombre = new Label(recompensa.getDescripcion());
-        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#444;");
+        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
         lblNombre.setMaxWidth(180); lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
-        Label lblPts = new Label("🏆 " + recompensa.getPuntosNecesarios() + " pts");
-        lblPts.setStyle("-fx-font-size:14px; -fx-text-fill:" + (puedeGanar ? "#D46A00" : "#999") + "; -fx-font-weight:bold;");
+        Label lblPts = new Label(recompensa.getPuntosNecesarios() + " pts");
+        lblPts.setStyle("-fx-font-size:14px; -fx-text-fill:" + (puedeGanar ? "#5652A0" : "#B0ACCC") + "; -fx-font-weight:bold;");
         tarjeta.getChildren().add(lblPts);
 
         if (puedeGanar) {
-            Button btn = new Button("🎉 ¡Canjear!");
+            Button btn = new Button("¡Canjear!");
             btn.getStyleClass().add("btn-nino-verde");
             btn.setOnAction(e -> canjearRecompensaNino(recompensa, tarjeta));
             tarjeta.getChildren().add(btn);
         } else {
             int faltanPts = recompensa.getPuntosNecesarios() - puntosDisponibles;
             Label lblFalta = new Label("Te faltan " + faltanPts + " pts");
-            lblFalta.setStyle("-fx-text-fill:#999; -fx-font-size:12px;");
+            lblFalta.setStyle("-fx-text-fill:#B0ACCC; -fx-font-size:12px;");
             tarjeta.getChildren().add(lblFalta);
         }
         return tarjeta;
@@ -179,7 +179,7 @@ public class RecompensasController implements Initializable {
 
     private void actualizarPuntosNino() {
         if (lblPuntosNino != null)
-            lblPuntosNino.setText("🏆 " + LoginController.usuarioActivo.getPuntosAcumulados() + " puntos");
+            lblPuntosNino.setText(LoginController.usuarioActivo.getPuntosAcumulados() + " puntos");
     }
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }

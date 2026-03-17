@@ -10,9 +10,9 @@
     <top>
         <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <Label text="🎁 Recompensas Canjeadas" styleClass="titulo-header"/>
+            <Label text="Recompensas Canjeadas" styleClass="titulo-header"/>
             <HBox HBox.hgrow="ALWAYS"/>
-            <Button text="← Volver" onAction="#onVolver" styleClass="btn-volver"/>
+            <Button text="Volver" onAction="#onVolver" styleClass="btn-volver"/>
         </HBox>
     </top>
 
@@ -31,9 +31,9 @@
                                   style="-fx-background-color:#C8BBEE; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
                     <ToggleButton fx:id="btnPendientes" text="⏳ Pendientes" onAction="#onFiltrarPendientes"
                                   style="-fx-background-color:#FFE0A0; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
-                    <ToggleButton fx:id="btnAprobadas" text="✅ Aprobadas" onAction="#onFiltrarAprobadas"
+                    <ToggleButton fx:id="btnAprobadas" text="Aprobadas" onAction="#onFiltrarAprobadas"
                                   style="-fx-background-color:#C8F0C8; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
-                    <ToggleButton fx:id="btnRechazadas" text="❌ Rechazadas" onAction="#onFiltrarRechazadas"
+                    <ToggleButton fx:id="btnRechazadas" text="Rechazadas" onAction="#onFiltrarRechazadas"
                                   style="-fx-background-color:#FFD0D0; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
                 </HBox>
 
@@ -46,9 +46,9 @@
 
                 <!-- Acciones -->
                 <HBox spacing="16" alignment="CENTER">
-                    <Button fx:id="btnAprobar" text="✅ Aprobar canje" onAction="#onAprobar"
+                    <Button fx:id="btnAprobar" text="Aprobar canje" onAction="#onAprobar"
                             styleClass="btn-completar" prefWidth="220" prefHeight="48"/>
-                    <Button fx:id="btnRechazar" text="❌ Rechazar canje" onAction="#onRechazar"
+                    <Button fx:id="btnRechazar" text="Rechazar canje" onAction="#onRechazar"
                             styleClass="btn-eliminar" prefWidth="220" prefHeight="48"/>
                 </HBox>
             </VBox>

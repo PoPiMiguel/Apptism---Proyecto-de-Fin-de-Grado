@@ -10,11 +10,11 @@
     <top>
         <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <Label text="💬 Conversación" styleClass="titulo-header"/>
+            <Label text="Conversación" styleClass="titulo-header"/>
             <HBox HBox.hgrow="ALWAYS"/>
             <ComboBox fx:id="cmbInterlocutor" promptText="Selecciona contacto" prefWidth="220"
                       style="-fx-background-radius:12px; -fx-font-size:14px;"/>
-            <Button text="← Volver" onAction="#onVolver" styleClass="btn-volver"/>
+            <Button text="Volver" onAction="#onVolver" styleClass="btn-volver"/>
         </HBox>
     </top>
 

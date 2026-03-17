@@ -68,7 +68,7 @@ public class AdminController implements Initializable {
     private void renderizarLista(List<Usuario> usuarios) {
         listaUsuarios.setItems(FXCollections.observableArrayList(
                 usuarios.stream().map(u ->
-                        emojiRol(u.getRol()) + "  " + u.getNombre()
+                        labelRol(u.getRol()) + "  " + u.getNombre()
                         + "   |  " + u.getEmail()
                         + "   |  " + labelRol(u.getRol())
                 ).toList()
@@ -82,13 +82,13 @@ public class AdminController implements Initializable {
         String pass   = txtPassword.getText();
 
         if (nombre.isBlank() || email.isBlank() || pass.isBlank()) {
-            mostrarMensaje("⚠️ Completa todos los campos.", false);
+            mostrarMensaje("Completa todos los campos.", false);
             return;
         }
 
         Toggle seleccionado = grupoRol.getSelectedToggle();
         if (seleccionado == null) {
-            mostrarMensaje("⚠️ Selecciona un rol.", false);
+            mostrarMensaje("Selecciona un rol.", false);
             return;
         }
 
@@ -99,12 +99,12 @@ public class AdminController implements Initializable {
 
         try {
             Usuario nuevo = usuarioService.crearUsuario(nombre, email, pass, rol);
-            mostrarMensaje("✅ Usuario '" + nombre + "' creado correctamente.", true);
+            mostrarMensaje("Usuario '" + nombre + "' creado correctamente.", true);
             txtNombre.clear(); txtEmail.clear(); txtPassword.clear();
             cargarTodosLosUsuarios();
             cargarCombosVinculo();
         } catch (RuntimeException e) {
-            mostrarMensaje("❌ " + e.getMessage(), false);
+            mostrarMensaje(e.getMessage(), false);
         }
     }
 
@@ -112,7 +112,7 @@ public class AdminController implements Initializable {
     private void onEliminarUsuario() {
         int idx = listaUsuarios.getSelectionModel().getSelectedIndex();
         if (idx < 0) {
-            mostrarMensaje("⚠️ Selecciona un usuario para eliminar.", false);
+            mostrarMensaje("Selecciona un usuario para eliminar.", false);
             return;
         }
         Usuario u = usuariosMostrados.get(idx);
@@ -121,14 +121,14 @@ public class AdminController implements Initializable {
         confirm.showAndWait().ifPresent(resp -> {
             if (resp == ButtonType.OK) {
                 usuarioService.eliminarUsuario(u.getId());
-                mostrarMensaje("🗑️ Usuario eliminado.", true);
+                mostrarMensaje("Usuario eliminado.", true);
                 cargarTodosLosUsuarios();
                 cargarCombosVinculo();
             }
         });
     }
 
-    @FXML private void onRefrescar() { cargarTodosLosUsuarios(); mostrarMensaje("🔄 Lista actualizada.", true); }
+    @FXML private void onRefrescar() { cargarTodosLosUsuarios(); mostrarMensaje("Lista actualizada.", true); }
 
     // Filtros de lista
     @FXML private void onVerTodos()      { usuariosMostrados = todosUsuarios; renderizarLista(usuariosMostrados); }
@@ -143,7 +143,7 @@ public class AdminController implements Initializable {
     private void mostrarMensaje(String texto, boolean exito) {
         lblMensaje.setText(texto);
         lblMensaje.setStyle("-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:"
-                + (exito ? "#27AE60" : "#E05C6B") + ";");
+                + (exito ? "#5DBFA0" : "#C96070") + ";");
     }
 
     // ===================== TAB VINCULAR =====================
@@ -154,12 +154,12 @@ public class AdminController implements Initializable {
 
         cmbTutor.setItems(FXCollections.observableArrayList(
                 todosTutores.stream()
-                        .map(t -> emojiRol(t.getRol()) + " " + t.getNombre() + " (" + t.getEmail() + ")")
+                        .map(t -> labelRol(t.getRol()) + " " + t.getNombre() + " (" + t.getEmail() + ")")
                         .toList()
         ));
         cmbNino.setItems(FXCollections.observableArrayList(
                 todosNinos.stream()
-                        .map(n -> "🧒 " + n.getNombre() + " (" + n.getEmail() + ")")
+                        .map(n -> n.getNombre() + " (" + n.getEmail() + ")")
                         .toList()
         ));
 
@@ -173,8 +173,8 @@ public class AdminController implements Initializable {
         int idxNino  = cmbNino.getSelectionModel().getSelectedIndex();
 
         if (idxTutor < 0 || idxNino < 0) {
-            lblMensajeVinculo.setText("⚠️ Selecciona tutor y alumno.");
-            lblMensajeVinculo.setStyle("-fx-text-fill:#E05C6B; -fx-font-weight:bold;");
+            lblMensajeVinculo.setText("Selecciona tutor y alumno.");
+            lblMensajeVinculo.setStyle("-fx-text-fill:#C96070; -fx-font-weight:bold;");
             return;
         }
 
@@ -183,12 +183,12 @@ public class AdminController implements Initializable {
 
         try {
             usuarioService.vincularNinoATutor(tutor.getId(), nino.getId());
-            lblMensajeVinculo.setText("✅ " + nino.getNombre() + " vinculado a " + tutor.getNombre());
-            lblMensajeVinculo.setStyle("-fx-text-fill:#27AE60; -fx-font-weight:bold;");
+            lblMensajeVinculo.setText(nino.getNombre() + " vinculado a " + tutor.getNombre());
+            lblMensajeVinculo.setStyle("-fx-text-fill:#5DBFA0; -fx-font-weight:bold;");
             actualizarTablaVinculos();
         } catch (RuntimeException e) {
-            lblMensajeVinculo.setText("❌ " + e.getMessage());
-            lblMensajeVinculo.setStyle("-fx-text-fill:#E05C6B; -fx-font-weight:bold;");
+            lblMensajeVinculo.setText(e.getMessage());
+            lblMensajeVinculo.setStyle("-fx-text-fill:#C96070; -fx-font-weight:bold;");
         }
     }
 
@@ -199,23 +199,13 @@ public class AdminController implements Initializable {
             List<Usuario> ninos = usuarioService.getNinosDetutor(tutor.getId());
             if (!ninos.isEmpty()) {
                 for (Usuario nino : ninos) {
-                    filas.add(emojiRol(tutor.getRol()) + " " + tutor.getNombre()
-                            + "   →   🧒 " + nino.getNombre());
+                    filas.add(labelRol(tutor.getRol()) + " " + tutor.getNombre()
+                            + "   ->   " + nino.getNombre());
                 }
             }
         }
         if (filas.isEmpty()) filas.add("Aún no hay vínculos establecidos.");
         listaVinculos.setItems(FXCollections.observableArrayList(filas));
-    }
-
-    // Helpers
-    private String emojiRol(RolUsuario rol) {
-        return switch (rol) {
-            case NINO     -> "🧒";
-            case PADRE    -> "👨‍👩‍👧";
-            case PROFESOR -> "👩‍🏫";
-            case ADMIN    -> "⚙️";
-        };
     }
 
     private String labelRol(RolUsuario rol) {

@@ -103,7 +103,7 @@ public class RutinasController implements Initializable {
         List<Rutina> rutinas = rutinaService.getRutinasByZona(ninoId, zona);
         lista.setItems(FXCollections.observableArrayList(
                 rutinas.stream()
-                       .map(r -> (r.isCompletada() ? "✅ " : "🔵 ") + r.getNombre())
+                       .map(r -> (r.isCompletada() ? "[OK] " : "[ ] ") + r.getNombre())
                        .toList()
         ));
     }
@@ -143,8 +143,8 @@ public class RutinasController implements Initializable {
         flowRutinasNino.getChildren().clear();
 
         if (rutinasActualesNino == null || rutinasActualesNino.isEmpty()) {
-            Label vacio = new Label("Aún no tienes rutinas 🙂\nTu tutor las añadirá pronto.");
-            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#999; -fx-text-alignment:center;");
+            Label vacio = new Label("Aún no tienes rutinas.\nTu tutor las añadirá pronto.");
+            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#B0ACCC; -fx-text-alignment:center;");
             flowRutinasNino.getChildren().add(vacio);
             return;
         }
@@ -160,7 +160,7 @@ public class RutinasController implements Initializable {
         tarjeta.setPadding(new Insets(18));
         tarjeta.setPrefWidth(200);
         tarjeta.setPrefHeight(220);
-        String colorFondo = rutina.isCompletada() ? "#D4F5D4" : "white";
+        String colorFondo = rutina.isCompletada() ? "#E8FAF4" : "white";
         tarjeta.setStyle(
             "-fx-background-color:" + colorFondo + ";" +
             "-fx-background-radius:24px;" +
@@ -185,7 +185,7 @@ public class RutinasController implements Initializable {
         }
 
         Label lblNombre = new Label(rutina.getNombre());
-        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#444;");
+        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
         lblNombre.setMaxWidth(180); lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
@@ -194,17 +194,17 @@ public class RutinasController implements Initializable {
         tarjeta.getChildren().add(lblZona);
 
         if (!rutina.isCompletada()) {
-            Button btn = new Button("✅ ¡Hecho!");
+            Button btn = new Button("¡Hecho!");
             btn.setStyle(
-                "-fx-background-color:#89D9A0; -fx-text-fill:#1a5e35;" +
+                "-fx-background-color:#B8EDD9; -fx-text-fill:#5652A0;" +
                 "-fx-font-size:14px; -fx-font-weight:bold;" +
                 "-fx-background-radius:16px; -fx-padding:8px 16px; -fx-cursor:hand;"
             );
             btn.setOnAction(e -> completarRutinaNino(rutina, tarjeta));
             tarjeta.getChildren().add(btn);
         } else {
-            Label lbl = new Label("✅ Completada");
-            lbl.setStyle("-fx-text-fill:#27AE60; -fx-font-weight:bold; -fx-font-size:13px;");
+            Label lbl = new Label("Completada");
+            lbl.setStyle("-fx-text-fill:#5DBFA0; -fx-font-weight:bold; -fx-font-size:13px;");
             tarjeta.getChildren().add(lbl);
         }
         return tarjeta;
@@ -220,16 +220,16 @@ public class RutinasController implements Initializable {
 
     private String emojiZonaTexto(ZonaHoraria zona) {
         return switch (zona) {
-            case MANANA   -> "🌅 Mañana";
-            case MEDIODIA -> "☀️ Mediodía";
-            case NOCHE    -> "🌙 Noche";
+            case MANANA   -> "Mañana";
+            case MEDIODIA -> "Mediodía";
+            case NOCHE    -> "Noche";
         };
     }
     private String emojiZonaEmoji(ZonaHoraria zona) {
         return switch (zona) {
-            case MANANA   -> "🌅";
-            case MEDIODIA -> "☀️";
-            case NOCHE    -> "🌙";
+            case MANANA   -> "M";
+            case MEDIODIA -> "D";
+            case NOCHE    -> "N";
         };
     }
 

@@ -41,20 +41,24 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Carga el logo desde resources/images/logo.png
-     * IMPORTANTE: Debes copiar logo.png a /src/main/resources/images/logo.png
+     * Carga el logo SVG desde resources/images/apptism_logo_v3.svg
      */
     private void cargarLogo() {
         try {
-            // Ruta relativa al resources
-            String rutaLogo = getClass().getResource("/images/logo.png").toExternalForm();
-            Image logo = new Image(rutaLogo, 180, 180, true, true);
+            String rutaLogo = getClass().getResource("/images/apptism_logo_v3.svg").toExternalForm();
+            Image logo = new Image(rutaLogo, 260, 80, true, true);
             imgLogo.setImage(logo);
         } catch (Exception e) {
-            System.err.println("⚠️ Error cargando logo: " + e.getMessage());
-            System.err.println("Asegúrate que logo.png esté en: /src/main/resources/images/logo.png");
-            // Si no encuentra el logo, mostrar emoji
-            imgLogo.setVisible(false);
+            System.err.println("Error cargando logo SVG: " + e.getMessage());
+            // Fallback al PNG si el SVG no carga
+            try {
+                String rutaPng = getClass().getResource("/images/logo.png").toExternalForm();
+                Image logoPng = new Image(rutaPng, 180, 60, true, true);
+                imgLogo.setImage(logoPng);
+            } catch (Exception ex) {
+                System.err.println("Error cargando logo fallback: " + ex.getMessage());
+                imgLogo.setVisible(false);
+            }
         }
     }
 

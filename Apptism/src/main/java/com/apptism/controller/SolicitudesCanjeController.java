@@ -63,15 +63,15 @@ public class SolicitudesCanjeController implements Initializable {
         listaSolicitudes.setItems(FXCollections.observableArrayList(
                 solicitudesActuales.stream().map(s -> {
                     String estadoEmoji = switch (s.getEstado()) {
-                        case PENDIENTE  -> "⏳";
-                        case APROBADA   -> "✅";
-                        case RECHAZADA  -> "❌";
+                        case PENDIENTE  -> "[?]";
+                        case APROBADA   -> "[OK]";
+                        case RECHAZADA  -> "[X]";
                     };
                     String ninoNombre = s.getNino() != null ? s.getNino().getNombre() : "?";
                     String recompensaDesc = s.getRecompensa() != null ? s.getRecompensa().getDescripcion() : "?";
                     int pts = s.getRecompensa() != null ? s.getRecompensa().getPuntosNecesarios() : 0;
                     String fecha = s.getFecha() != null ? s.getFecha().toLocalDate().toString() : "";
-                    return estadoEmoji + "  " + ninoNombre + "  →  🎁 " + recompensaDesc
+                    return estadoEmoji + "  " + ninoNombre + "  ->  " + recompensaDesc
                             + "  (" + pts + " pts)  |  " + fecha;
                 }).toList()
         ));
@@ -81,9 +81,9 @@ public class SolicitudesCanjeController implements Initializable {
         long aprobadas  = todasLasSolicitudes.stream()
                 .filter(s -> s.getEstado() == EstadoSolicitud.APROBADA).count();
 
-        lblContador.setText("📋 Total: " + todasLasSolicitudes.size()
-                + "  |  ⏳ Pendientes: " + pendientes
-                + "  |  ✅ Aprobadas: " + aprobadas);
+        lblContador.setText("Total: " + todasLasSolicitudes.size()
+                + "  |  Pendientes: " + pendientes
+                + "  |  Aprobadas: " + aprobadas);
     }
 
     // Filtros
@@ -105,7 +105,7 @@ public class SolicitudesCanjeController implements Initializable {
         AnimacionUtil.animarExito(btnAprobar);
         if (rootStack != null) AnimacionUtil.mostrarPuntos(rootStack, 0);
         new Alert(Alert.AlertType.INFORMATION,
-                "✅ Canje aprobado para " + s.getNino().getNombre()
+                "Canje aprobado para " + s.getNino().getNombre()
                 + "\n🎁 " + s.getRecompensa().getDescripcion()).showAndWait();
         cargarSolicitudes();
     }

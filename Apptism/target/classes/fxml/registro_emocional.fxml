@@ -15,7 +15,7 @@
             <Label text="(Solo lectura)" styleClass="titulo-header"
                    style="-fx-font-size:14px; -fx-text-fill:rgba(255,255,255,0.75);"/>
             <HBox HBox.hgrow="ALWAYS"/>
-            <Button text="← Volver" onAction="#onVolver" styleClass="btn-volver"/>
+            <Button text="Volver" onAction="#onVolver" styleClass="btn-volver"/>
         </HBox>
     </top>
 
@@ -34,7 +34,7 @@
                 <VBox spacing="10" styleClass="panel">
                     <Label text="Emociones recibidas" styleClass="subtitulo"/>
                     <Label fx:id="lblSinMensajes" text="Aún no hay emociones registradas."
-                           style="-fx-text-fill:#999; -fx-font-size:14px;" visible="false"/>
+                           style="-fx-text-fill:#B0ACCC; -fx-font-size:14px;" visible="false"/>
                     <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
                                 style="-fx-background-color:transparent; -fx-border-color:transparent;">
                         <FlowPane fx:id="panelMensajes" hgap="16" vgap="16"/>

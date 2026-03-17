@@ -25,7 +25,7 @@
             <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
 
             <!-- ==================== TAB: CREAR USUARIO ==================== -->
-            <Tab text="👤 Crear Usuario">
+            <Tab text="Crear Usuario">
                 <SplitPane dividerPositions="0.42">
                     <padding><Insets top="15" right="0" bottom="0" left="0"/></padding>
 
@@ -62,7 +62,7 @@
 
                         <Label fx:id="lblMensaje" text="" style="-fx-font-size:13px;"/>
 
-                        <Button text="✅ Crear usuario" onAction="#onCrearUsuario"
+                        <Button text="Crear usuario" onAction="#onCrearUsuario"
                                 styleClass="btn-crear" maxWidth="Infinity"
                                 style="-fx-font-size:16px; -fx-padding:12px; -fx-background-color:#8B72D4; -fx-text-fill:white;"/>
                     </VBox>

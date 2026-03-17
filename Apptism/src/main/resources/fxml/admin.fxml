@@ -14,7 +14,7 @@
     <top>
         <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <Label text="⚙️ Panel de Administración" styleClass="titulo-header"/>
+            <Label text="Panel de Administración" styleClass="titulo-header"/>
             <HBox HBox.hgrow="ALWAYS"/>
             <Button text="Cerrar sesión" onAction="#onCerrarSesion" styleClass="btn-volver"/>
         </HBox>
@@ -25,13 +25,13 @@
             <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
 
             <!-- ==================== TAB: CREAR USUARIO ==================== -->
-            <Tab text="👤 Crear Usuario">
+            <Tab text="Crear Usuario">
                 <SplitPane dividerPositions="0.42">
                     <padding><Insets top="15" right="0" bottom="0" left="0"/></padding>
 
                     <!-- Formulario de creación -->
                     <VBox spacing="16" styleClass="panel" style="-fx-max-width:480px;">
-                        <Label text="➕ Nuevo usuario" styleClass="subtitulo"/>
+                        <Label text="Nuevo usuario" styleClass="subtitulo"/>
 
                         <VBox spacing="6">
                             <Label text="Nombre completo:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
@@ -51,18 +51,18 @@
                         <VBox spacing="6">
                             <Label text="Rol:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
                             <HBox spacing="12">
-                                <RadioButton fx:id="rbNino" text="🧒 Alumno" toggleGroup="$grupoRol"
+                                <RadioButton fx:id="rbNino" text="Alumno" toggleGroup="$grupoRol"
                                              style="-fx-font-size:14px;"/>
-                                <RadioButton fx:id="rbPadre" text="👨‍👩‍👧 Padre" toggleGroup="$grupoRol"
+                                <RadioButton fx:id="rbPadre" text="Padre" toggleGroup="$grupoRol"
                                              style="-fx-font-size:14px;"/>
-                                <RadioButton fx:id="rbProfesor" text="👩‍🏫 Profesor" toggleGroup="$grupoRol"
+                                <RadioButton fx:id="rbProfesor" text="Profesor" toggleGroup="$grupoRol"
                                              style="-fx-font-size:14px;"/>
                             </HBox>
                         </VBox>
 
                         <Label fx:id="lblMensaje" text="" style="-fx-font-size:13px;"/>
 
-                        <Button text="✅ Crear usuario" onAction="#onCrearUsuario"
+                        <Button text="Crear usuario" onAction="#onCrearUsuario"
                                 styleClass="btn-crear" maxWidth="Infinity"
                                 style="-fx-font-size:16px; -fx-padding:12px; -fx-background-color:#8B72D4; -fx-text-fill:white;"/>
                     </VBox>
@@ -70,38 +70,38 @@
                     <!-- Lista de usuarios existentes -->
                     <VBox spacing="12" styleClass="panel">
                         <HBox alignment="CENTER_LEFT" spacing="15">
-                            <Label text="👥 Usuarios registrados" styleClass="subtitulo"/>
+                            <Label text="Usuarios registrados" styleClass="subtitulo"/>
                             <HBox HBox.hgrow="ALWAYS"/>
-                            <Button text="🔄 Refrescar" onAction="#onRefrescar" styleClass="btn-volver"/>
+                            <Button text="Refrescar" onAction="#onRefrescar" styleClass="btn-volver"/>
                         </HBox>
 
                         <!-- Filtro rápido por rol -->
                         <HBox spacing="10" alignment="CENTER_LEFT">
                             <Label text="Ver:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
                             <Button text="Todos" onAction="#onVerTodos" styleClass="btn-volver"/>
-                            <Button text="🧒 Alumnos" onAction="#onVerNinos"
+                            <Button text="Alumnos" onAction="#onVerNinos"
                                     style="-fx-background-color:#BDE3FF; -fx-background-radius:10px; -fx-cursor:hand; -fx-padding:6px 12px;"/>
-                            <Button text="👨‍👩‍👧 Padres" onAction="#onVerPadres"
+                            <Button text="Padres" onAction="#onVerPadres"
                                     style="-fx-background-color:#C8F0C8; -fx-background-radius:10px; -fx-cursor:hand; -fx-padding:6px 12px;"/>
-                            <Button text="👩‍🏫 Profes" onAction="#onVerProfesores"
+                            <Button text="Profes" onAction="#onVerProfesores"
                                     style="-fx-background-color:#FFE0A0; -fx-background-radius:10px; -fx-cursor:hand; -fx-padding:6px 12px;"/>
                         </HBox>
 
                         <ListView fx:id="listaUsuarios" VBox.vgrow="ALWAYS"
                                   style="-fx-font-size:14px;"/>
 
-                        <Button text="🗑️ Eliminar usuario seleccionado" onAction="#onEliminarUsuario"
+                        <Button text="Eliminar usuario seleccionado" onAction="#onEliminarUsuario"
                                 styleClass="btn-eliminar" maxWidth="Infinity"/>
                     </VBox>
                 </SplitPane>
             </Tab>
 
             <!-- ==================== TAB: VINCULAR ==================== -->
-            <Tab text="🔗 Vincular Alumno ↔ Tutor">
+            <Tab text="Vincular Alumno ↔ Tutor">
                 <VBox spacing="20" styleClass="panel">
                     <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
-                    <Label text="🔗 Asignar alumno a padre o profesor" styleClass="subtitulo"/>
+                    <Label text="Asignar alumno a padre o profesor" styleClass="subtitulo"/>
                     <Label text="Selecciona el tutor y el alumno y pulsa Vincular."
                            style="-fx-text-fill:#777; -fx-font-size:14px;"/>
 
@@ -118,7 +118,7 @@
                         </VBox>
                     </HBox>
 
-                    <Button text="🔗 Vincular alumno a este tutor" onAction="#onVincular"
+                    <Button text="Vincular alumno a este tutor" onAction="#onVincular"
                             styleClass="btn-crear" prefWidth="320" prefHeight="48"
                             style="-fx-font-size:16px; -fx-background-color:#8B72D4; -fx-text-fill:white;"/>
 

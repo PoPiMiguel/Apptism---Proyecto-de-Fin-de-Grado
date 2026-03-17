@@ -12,11 +12,11 @@
     <top>
         <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <Label text="😊 ¿Cómo me siento?" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#7a4a00;"/>
+            <Label text="¿Cómo me siento?" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
             <HBox HBox.hgrow="ALWAYS"/>
             <ImageView fitHeight="26" preserveRatio="true" styleClass="app-logo">
                 <image>
-                    <Image url="@../images/logo.png"/>
+                    <Image url="@../images/apptism_icon.svg"/>
                 </image>
             </ImageView>
             <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
@@ -44,7 +44,7 @@
                 </ScrollPane>
 
                 <Label fx:id="lblConfirmacion" styleClass="confirmacion-label"
-                       text="✅ ¡Enviado!" visible="false"
+                       text="¡Enviado!" visible="false"
                        style="-fx-alignment:center;" maxWidth="Infinity"/>
             </VBox>
         </StackPane>

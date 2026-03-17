@@ -106,7 +106,7 @@ public class EmocionesController implements Initializable {
         if (picto.url() == null || picto.url().isBlank()) {
             lblNombre.setStyle("-fx-font-size:40px;");  // Emoji grande como pictograma
         } else {
-            lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#444;");
+            lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
         }
 
         tarjeta.getChildren().addAll(img, lblNombre);
@@ -138,7 +138,7 @@ public class EmocionesController implements Initializable {
         AnimacionUtil.animarExito(tarjeta);
         if (rootStack != null) AnimacionUtil.mostrarPuntos(rootStack, 0);
 
-        lblConfirmacion.setText("✅ ¡Enviado a " + receptor.getNombre() + "!");
+        lblConfirmacion.setText("Enviado a " + receptor.getNombre() + "!");
         lblConfirmacion.setVisible(true);
         new Thread(() -> {
             try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
