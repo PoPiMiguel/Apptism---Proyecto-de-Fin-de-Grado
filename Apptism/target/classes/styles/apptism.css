@@ -1,116 +1,98 @@
 /* =============================================
    APPTISM — ESTILOS (JavaFX)
-   Compatible con JavaFX CSS.
-   Paleta pastel derivada del logo apptism_logo_v3.svg (versión pastel)
+   Paleta pastel equilibrada, un poco más oscura
    ============================================= */
 
-/* ========== PALETA ========== */
 .root {
-    /* PRIMARIOS — pastel del logo */
-    -apptism-violeta:       #A9A3E8;    /* Burbuja violeta pastel */
-    -apptism-verde:         #B8EDD9;    /* Burbuja verde menta pastel */
-    -apptism-lila:          #E4E2F8;    /* Fondo icono, lavanda muy claro */
-    -apptism-indigo:        #5652A0;    /* Texto del logo, índigo suave */
-    -apptism-verde-claro:   #EAF8F3;    /* Burbuja verde muy clara */
-    -apptism-lila-medio:    #C9C4F0;    /* Sombra/acento lila */
+    -apptism-principal:       #7FC8A9;
+    -apptism-principal-soft:  #B7DFA5;
+    -apptism-accent:          #F4BFA6;
+    -apptism-bg-soft:         #EEF7F1;
+    -apptism-hover-soft:      #6FB89A;
+    -apptism-text-main:       #3F5F55;
+    -apptism-text-muted:      #6E887F;
+    -apptism-white:           #FFFFFF;
+    -apptism-border:          #D6E6DB;
+    -apptism-shadow:          rgba(80, 110, 95, 0.16);
 
-    /* OSCUROS (Hover) */
-    -apptism-violeta-dark:  #8880D4;
-    -apptism-verde-dark:    #8DD4BC;
-    -apptism-lila-dark:     #CBC8F2;
-    -apptism-indigo-dark:   #3E3B7C;
+    /* Compatibilidad con nombres antiguos */
+    -apptism-violeta:         #7FC8A9;
+    -apptism-verde:           #7FC8A9;
+    -apptism-lila:            #B7DFA5;
+    -apptism-indigo:          #3F5F55;
+    -apptism-verde-claro:     #EEF7F1;
+    -apptism-lila-medio:      #CFE4C3;
 
-    /* CLAROS (Backgrounds de sección) */
-    -apptism-violeta-light: #F2F1FD;
-    -apptism-verde-light:   #E8FAF4;
-    -apptism-lila-light:    #F8F7FE;
-    -apptism-indigo-light:  #ECEAF7;
+    -apptism-violeta-dark:    #7FC8A9;
+    -apptism-verde-dark:      #7FC8A9;
+    -apptism-lila-dark:       #B7DFA5;
+    -apptism-indigo-dark:     #3F5F55;
 
-    /* NEUTROS */
-    -apptism-gris-light:    #EEF0F1;
-    -apptism-gris-medium:   #C4C2BA;
-    -apptism-gris-dark:     #5652A0;
+    -apptism-violeta-light:   #F1F8F4;
+    -apptism-verde-light:     #EEF7F1;
+    -apptism-lila-light:      #F4F8EE;
+    -apptism-indigo-light:    #E8F1EC;
 
-    /* FONDOS */
-    -apptism-bg-padre:      #F5F4FE;
-    -apptism-bg-nino:       #EBF9F4;
-    -apptism-bg-white:      #FFFFFF;
+    -apptism-gris-light:      #F2F6F3;
+    -apptism-gris-medium:     #8FA79D;
+    -apptism-gris-dark:       #3F5F55;
 
-    /* TEXTO */
-    -apptism-text-dark:     #5652A0;
-    -apptism-text-light:    #FFFFFF;
+    -apptism-bg-padre:        #EEF7F1;
+    -apptism-bg-nino:         #EEF7F1;
+    -apptism-bg-white:        #FFFFFF;
 
-    /* ALIASES de compatibilidad para nombres de clase FXML existentes */
-    -apptism-azul:          #A9A3E8;
-    -apptism-amarillo:      #B8EDD9;
-    -apptism-morado:        #5652A0;
-    -apptism-naranja:       #A9A3E8;
-    -apptism-azul-dark:     #8880D4;
-    -apptism-amarillo-dark: #8DD4BC;
-    -apptism-morado-dark:   #3E3B7C;
-    -apptism-naranja-dark:  #8880D4;
-    -apptism-amarillo-light:#E8FAF4;
-    -apptism-morado-light:  #F2F1FD;
-    -apptism-naranja-light: #F2F1FD;
+    -apptism-text-dark:       #3F5F55;
+    -apptism-text-light:      #FFFFFF;
+
+    -apptism-azul:            #7FC8A9;
+    -apptism-amarillo:        #7FC8A9;
+    -apptism-morado:          #3F5F55;
+    -apptism-naranja:         #7FC8A9;
+    -apptism-azul-dark:       #7FC8A9;
+    -apptism-amarillo-dark:   #7FC8A9;
+    -apptism-morado-dark:     #3F5F55;
+    -apptism-naranja-dark:    #7FC8A9;
+    -apptism-amarillo-light:  #F4F8EE;
+    -apptism-morado-light:    #F1F8F4;
+    -apptism-naranja-light:   #FDF3EE;
 }
 
-/* ========== GLOBAL ========== */
 * {
     -fx-font-family: "Segoe UI", Arial, sans-serif;
 }
 
-.root-pane {
-    -fx-background-color: -apptism-bg-padre;
-}
-
-.root-pane-nino {
-    -fx-background-color: -apptism-bg-nino;
-}
-
-/* ========== LOGIN ========== */
-
+.root-pane,
+.root-pane-nino,
 .login-root {
-    -fx-background-color: -apptism-bg-padre;
+    -fx-background-color: -apptism-bg-soft;
 }
 
 .login-background {
-    -fx-background-color: linear-gradient(145deg, #F5F4FE 0%, #EAE8FA 45%, #EBF9F4 100%);
+    -fx-background-color: linear-gradient(145deg, #EEF7F1 0%, #E8F1EC 55%, #FDF3EE 100%);
     -fx-min-width: Infinity;
     -fx-min-height: Infinity;
 }
 
-/* Círculos decorativos */
-.deco-circle-purple {
-    -fx-fill: rgba(169, 163, 232, 0.10);
-}
-.deco-circle-orange {
-    -fx-fill: rgba(184, 237, 217, 0.12);
-}
-.deco-circle-blue {
-    -fx-fill: rgba(86, 82, 160, 0.06);
-}
+.deco-circle-purple { -fx-fill: rgba(127, 200, 169, 0.18); }
+.deco-circle-orange { -fx-fill: rgba(244, 191, 166, 0.18); }
+.deco-circle-blue   { -fx-fill: rgba(183, 223, 165, 0.24); }
 
-/* Tarjeta login */
 .login-card {
     -fx-background-color: white;
     -fx-background-radius: 28px;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.18), 36, 0, 0, 10);
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.16), 26, 0, 0, 8);
     -fx-padding: 44px 48px;
-    -fx-border-color: rgba(228,226,248,0.80);
+    -fx-border-color: -apptism-border;
     -fx-border-radius: 28px;
-    -fx-border-width: 1.5px;
+    -fx-border-width: 1.2px;
     -fx-max-width: 400px;
     -fx-max-height: -Infinity;
 }
 
-/* Contenedor del logo */
-.login-header-section {
-    -fx-padding: 0 0 24px 0;
-}
+.login-header-section { -fx-padding: 0 0 24px 0; }
 
 .login-logo-circle {
     -fx-background-color: transparent;
-    -fx-background-radius: 0px;
     -fx-min-width: 220px;
     -fx-min-height: 60px;
     -fx-max-width: 300px;
@@ -118,380 +100,270 @@
     -fx-padding: 6px 10px;
 }
 
-/* Títulos */
 .titulo-login {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
-    -fx-text-fill: -apptism-indigo;
+    -fx-text-fill: -apptism-text-main;
     -fx-padding: 10px 0 0 0;
 }
 
 .subtitulo-login {
     -fx-font-size: 13px;
-    -fx-text-fill: -apptism-gris-medium;
+    -fx-text-fill: -apptism-text-muted;
     -fx-padding: 2px 0 0 0;
 }
 
-/* Separador */
 .login-divider {
-    -fx-background-color: rgba(228,226,248,0.50);
+    -fx-background-color: rgba(214, 230, 219, 0.9);
     -fx-min-height: 1px;
     -fx-max-height: 1px;
     -fx-padding: 0;
 }
 
-/* Grupos de campo */
-.login-field-group {
-    -fx-padding: 14px 0 0 0;
-}
+.login-field-group { -fx-padding: 14px 0 0 0; }
 
 .login-field-label {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-text-fill: -apptism-gris-medium;
-    -fx-text-transform: uppercase;
+    -fx-text-fill: -apptism-text-muted;
 }
 
-/* Botón principal */
 .btn-login-principal {
-    -fx-background-color: -apptism-indigo;
-    -fx-text-fill: -apptism-text-light;
+    -fx-background-color: -apptism-principal;
+    -fx-text-fill: -apptism-text-main;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-background-radius: 14px;
-    -fx-effect: dropshadow(gaussian, rgba(86,82,160,0.24), 10, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.16), 8, 0, 0, 3);
 }
+
 .btn-login-principal:hover {
-    -fx-background-color: -apptism-indigo-dark;
-    -fx-effect: dropshadow(gaussian, rgba(86,82,160,0.34), 14, 0, 0, 6);
+    -fx-background-color: -apptism-principal;
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.22), 10, 0, 0, 4);
 }
 
-/* Puntos decorativos */
-.login-dots-row {
-    -fx-padding: 20px 0 0 0;
-}
-.dot-morado {
-    -fx-background-color: -apptism-indigo;
+.login-dots-row { -fx-padding: 20px 0 0 0; }
+
+.dot-morado, .dot-azul, .dot-verde, .dot-amarillo, .dot-naranja {
     -fx-background-radius: 50%;
-    -fx-min-width: 8px; -fx-min-height: 8px;
-    -fx-max-width: 8px; -fx-max-height: 8px;
-}
-.dot-azul {
-    -fx-background-color: -apptism-violeta;
-    -fx-background-radius: 50%;
-    -fx-min-width: 8px; -fx-min-height: 8px;
-    -fx-max-width: 8px; -fx-max-height: 8px;
-}
-.dot-verde {
-    -fx-background-color: -apptism-verde;
-    -fx-background-radius: 50%;
-    -fx-min-width: 8px; -fx-min-height: 8px;
-    -fx-max-width: 8px; -fx-max-height: 8px;
-}
-.dot-amarillo {
-    -fx-background-color: -apptism-lila;
-    -fx-background-radius: 50%;
-    -fx-min-width: 8px; -fx-min-height: 8px;
-    -fx-max-width: 8px; -fx-max-height: 8px;
-}
-.dot-naranja {
-    -fx-background-color: -apptism-lila-medio;
-    -fx-background-radius: 50%;
-    -fx-min-width: 8px; -fx-min-height: 8px;
-    -fx-max-width: 8px; -fx-max-height: 8px;
+    -fx-min-width: 8px;
+    -fx-min-height: 8px;
+    -fx-max-width: 8px;
+    -fx-max-height: 8px;
 }
 
-/* ========== INPUT FIELDS ========== */
+.dot-morado   { -fx-background-color: -apptism-text-main; }
+.dot-azul     { -fx-background-color: -apptism-principal; }
+.dot-verde    { -fx-background-color: -apptism-principal-soft; }
+.dot-amarillo { -fx-background-color: -apptism-accent; }
+.dot-naranja  { -fx-background-color: #D8E6D8; }
+
 .input-field {
     -fx-font-size: 14px;
     -fx-padding: 12px 14px;
     -fx-background-radius: 12px;
-    -fx-border-color: #DAD8F4;
+    -fx-border-color: -apptism-border;
     -fx-border-radius: 12px;
-    -fx-border-width: 1.5px;
-    -fx-background-color: #FAFAFA;
+    -fx-border-width: 1.4px;
+    -fx-background-color: #FBFDFC;
+    -fx-text-fill: -apptism-text-main;
 }
+
 .input-field:focused {
-    -fx-border-color: -apptism-violeta;
+    -fx-border-color: -apptism-principal;
     -fx-background-color: -apptism-bg-white;
 }
 
 .error-label {
-    -fx-text-fill: #D96B7A;
+    -fx-text-fill: #B36B6B;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
 
-/* ========== HEADERS ========== */
-.header {
-    -fx-background-color: -apptism-indigo;
-    -fx-padding: 15px 25px;
-    -fx-background-radius: 0 0 16px 16px;
-}
-
+.header,
 .header-nino {
-    -fx-background-color: -apptism-verde;
+    -fx-background-color: -apptism-principal-soft;
     -fx-padding: 15px 25px;
-    -fx-background-radius: 0 0 20px 20px;
+    -fx-background-radius: 0 0 18px 18px;
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.10), 8, 0, 0, 2);
 }
 
 .titulo-header {
-    -fx-text-fill: -apptism-text-light;
+    -fx-text-fill: -apptism-text-main;
     -fx-font-size: 22px;
     -fx-font-weight: bold;
 }
 
-/* ========== PANELES ========== */
-.panel {
+.panel,
+.tarjeta-nino {
     -fx-background-color: -apptism-bg-white;
     -fx-background-radius: 20px;
     -fx-padding: 22px;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.12), 12, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.12), 10, 0, 0, 3);
+    -fx-border-color: rgba(214,230,219,0.80);
+    -fx-border-radius: 20px;
 }
 
 .subtitulo {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: -apptism-text-dark;
+    -fx-text-fill: -apptism-text-main;
 }
 
-/* ========== BOTONES PADRES ========== */
+.btn-crear,
+.btn-dashboard,
+.btn-nino,
+.btn-completar,
+.btn-completar-nino {
+    -fx-background-color: -apptism-principal;
+    -fx-text-fill: -apptism-text-main;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
 
-.btn-crear {
-    -fx-background-color: -apptism-violeta;
-    -fx-text-fill: -apptism-text-light;
+.btn-crear,
+.btn-completar,
+.btn-completar-nino {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 14px;
-    -fx-padding: 10px 16px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.24), 6, 0, 0, 2);
-}
-.btn-crear:hover {
-    -fx-background-color: -apptism-violeta-dark;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.34), 8, 0, 0, 3);
-}
-
-.btn-completar {
-    -fx-background-color: -apptism-verde;
-    -fx-text-fill: -apptism-indigo;
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
     -fx-background-radius: 16px;
-    -fx-padding: 12px 18px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(184,237,217,0.32), 6, 0, 0, 2);
-}
-.btn-completar:hover {
-    -fx-background-color: -apptism-verde-dark;
+    -fx-padding: 10px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.16), 6, 0, 0, 2);
 }
 
-.btn-volver {
+.btn-crear:hover,
+.btn-completar:hover,
+.btn-completar-nino:hover {
+    -fx-background-color: -apptism-principal;
+}
+
+.btn-volver,
+.btn-volver-nino {
     -fx-background-color: -apptism-gris-light;
-    -fx-text-fill: -apptism-text-dark;
+    -fx-text-fill: -apptism-text-main;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-background-radius: 14px;
     -fx-padding: 8px 16px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.08), 4, 0, 0, 1);
 }
-.btn-volver:hover {
-    -fx-background-color: -apptism-lila;
+
+.btn-volver:hover,
+.btn-volver-nino:hover {
+    -fx-background-color: -apptism-gris-light;
 }
 
 .btn-eliminar {
-    -fx-background-color: #F2BFBF;
-    -fx-text-fill: #7A2C2C;
+    -fx-background-color: #F1D1D1;
+    -fx-text-fill: #8B5E5E;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-background-radius: 14px;
     -fx-padding: 8px 14px;
     -fx-cursor: hand;
 }
+
 .btn-eliminar:hover {
-    -fx-background-color: #E8A8A8;
+    -fx-background-color: #F1D1D1;
 }
 
 .btn-dashboard {
-    -fx-background-color: -apptism-indigo;
-    -fx-text-fill: -apptism-text-light;
     -fx-font-size: 17px;
-    -fx-font-weight: bold;
     -fx-background-radius: 22px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(86,82,160,0.18), 10, 0, 0, 3);
-}
-.btn-dashboard:hover {
-    -fx-background-color: -apptism-indigo-dark;
-    -fx-effect: dropshadow(gaussian, rgba(86,82,160,0.26), 12, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.14), 10, 0, 0, 3);
 }
 
-/* ========== BOTONES NIÑO ========== */
+.btn-dashboard:hover {
+    -fx-background-color: -apptism-principal;
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.20), 12, 0, 0, 4);
+}
 
 .btn-nino {
     -fx-font-size: 18px;
-    -fx-font-weight: bold;
     -fx-background-radius: 20px;
     -fx-padding: 16px 24px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.16), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.14), 8, 0, 0, 2);
     -fx-text-alignment: center;
     -fx-content-display: top;
     -fx-graphic-text-gap: 10px;
 }
+
 .btn-nino:hover {
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.26), 10, 0, 0, 3);
+    -fx-background-color: -apptism-principal;
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.20), 10, 0, 0, 3);
 }
 
-/* VIOLETA - Rutinas */
-.btn-nino-azul {
-    -fx-background-color: -apptism-violeta;
-    -fx-text-fill: -apptism-text-light;
-}
-.btn-nino-azul:hover {
-    -fx-background-color: -apptism-violeta-dark;
-}
-
-/* VERDE MENTA - Tareas */
-.btn-nino-verde {
-    -fx-background-color: -apptism-verde;
-    -fx-text-fill: -apptism-indigo;
-}
-.btn-nino-verde:hover {
-    -fx-background-color: -apptism-verde-dark;
-}
-
-/* LAVANDA - Recompensas */
-.btn-nino-amarillo {
-    -fx-background-color: -apptism-lila;
-    -fx-text-fill: -apptism-indigo;
-}
-.btn-nino-amarillo:hover {
-    -fx-background-color: -apptism-lila-dark;
-}
-
-/* INDIGO - Chat */
-.btn-nino-morado {
-    -fx-background-color: -apptism-indigo;
-    -fx-text-fill: -apptism-text-light;
-}
-.btn-nino-morado:hover {
-    -fx-background-color: -apptism-indigo-dark;
-}
-
-/* LILA MEDIO - Emociones */
-.btn-nino-naranja {
-    -fx-background-color: -apptism-lila-medio;
-    -fx-text-fill: -apptism-text-light;
-}
-.btn-nino-naranja:hover {
-    -fx-background-color: -apptism-violeta-dark;
-}
-
-/* Alias */
+.btn-nino-azul,
+.btn-nino-verde,
+.btn-nino-amarillo,
+.btn-nino-morado,
+.btn-nino-naranja,
 .btn-nino-rosa {
-    -fx-background-color: -apptism-lila-medio;
-    -fx-text-fill: -apptism-text-light;
+    -fx-background-color: -apptism-principal;
+    -fx-text-fill: -apptism-text-main;
 }
+
+.btn-nino-azul:hover,
+.btn-nino-verde:hover,
+.btn-nino-amarillo:hover,
+.btn-nino-morado:hover,
+.btn-nino-naranja:hover,
 .btn-nino-rosa:hover {
-    -fx-background-color: -apptism-violeta-dark;
-}
-
-/* ========== ESPECIALES NIÑO ========== */
-
-.btn-completar-nino {
-    -fx-background-color: -apptism-verde;
-    -fx-text-fill: -apptism-indigo;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 18px;
-    -fx-padding: 12px 20px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(184,237,217,0.30), 6, 0, 0, 2);
-}
-.btn-completar-nino:hover {
-    -fx-background-color: -apptism-verde-dark;
-}
-
-.btn-volver-nino {
-    -fx-background-color: -apptism-lila-light;
-    -fx-text-fill: -apptism-text-dark;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 16px;
-    -fx-padding: 10px 18px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(228,226,248,0.34), 4, 0, 0, 1);
-}
-.btn-volver-nino:hover {
-    -fx-background-color: -apptism-lila;
+    -fx-background-color: -apptism-principal;
 }
 
 .puntos-nino {
-    -fx-text-fill: -apptism-indigo;
+    -fx-text-fill: -apptism-text-main;
     -fx-font-size: 26px;
     -fx-font-weight: bold;
-    -fx-background-color: -apptism-verde-light;
+    -fx-background-color: -apptism-principal-soft;
     -fx-background-radius: 24px;
     -fx-padding: 10px 30px;
-    -fx-effect: dropshadow(gaussian, rgba(184,237,217,0.28), 6, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.14), 6, 0, 0, 2);
 }
 
 .puntos-label {
-    -fx-text-fill: -apptism-indigo;
+    -fx-text-fill: -apptism-text-main;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-background-color: rgba(255,255,255,0.65);
+    -fx-background-color: rgba(255,255,255,0.70);
     -fx-background-radius: 20px;
     -fx-padding: 4px 14px;
 }
 
-/* ========== BADGE ========== */
 .badge-notificacion {
-    -fx-background-color: -apptism-violeta;
-    -fx-text-fill: -apptism-text-light;
+    -fx-background-color: -apptism-accent;
+    -fx-text-fill: -apptism-text-main;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-background-radius: 12px;
     -fx-padding: 2px 7px;
     -fx-translate-x: -5px;
     -fx-translate-y: 5px;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.32), 4, 0, 0, 1);
-}
-
-/* ========== TARJETAS ========== */
-.tarjeta-nino {
-    -fx-background-color: -apptism-bg-white;
-    -fx-background-radius: 20px;
-    -fx-padding: 16px;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.12), 10, 0, 0, 3);
 }
 
 .confirmacion-label {
-    -fx-background-color: -apptism-verde;
-    -fx-text-fill: -apptism-indigo;
+    -fx-background-color: -apptism-principal-soft;
+    -fx-text-fill: -apptism-text-main;
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-background-radius: 24px;
     -fx-padding: 14px 32px;
-    -fx-effect: dropshadow(gaussian, rgba(184,237,217,0.34), 10, 0, 0, 4);
 }
 
-/* ========== CHAT ========== */
 .burbuja-propia {
-    -fx-background-color: -apptism-violeta-light;
+    -fx-background-color: #EFF7F2;
     -fx-background-radius: 16px 16px 4px 16px;
 }
 
 .burbuja-recibida {
     -fx-background-color: -apptism-bg-white;
     -fx-background-radius: 16px 16px 16px 4px;
-    -fx-effect: dropshadow(gaussian, rgba(169,163,232,0.12), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.10), 5, 0, 0, 2);
 }
 
-/* ========== GRAFICOS ========== */
 .chart-plot-background {
-    -fx-background-color: #FAFAFA;
+    -fx-background-color: #FBFDFC;
 }
 
 .chart-background {
@@ -499,7 +371,6 @@
     -fx-background-radius: 16px;
 }
 
-/* ========== ADMIN (Tabs) ========== */
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-background-color: -apptism-violeta-light;
     -fx-background-radius: 10px 10px 0 0;
@@ -509,13 +380,13 @@
 .tab-pane > .tab-header-area > .headers-region > .tab .tab-label {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: -apptism-text-dark;
+    -fx-text-fill: -apptism-text-main;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
-    -fx-background-color: -apptism-indigo;
+    -fx-background-color: -apptism-principal;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
-    -fx-text-fill: -apptism-text-light;
+    -fx-text-fill: -apptism-text-main;
 }

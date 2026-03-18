@@ -25,7 +25,7 @@
         <VBox alignment="CENTER" spacing="6.0" styleClass="login-header-section">
             <!-- Logo SVG completo (apptism_logo_v3.svg incluye texto y gráfico) -->
             <StackPane styleClass="login-logo-circle">
-                <ImageView fx:id="imgLogo" fitWidth="260.0" fitHeight="80.0"
+                <ImageView fx:id="imgLogo" fitWidth="300.0" fitHeight="120.0"
                            preserveRatio="true"/>
             </StackPane>
             <Label text="La app para acompañar a tu peque" styleClass="subtitulo-login"/>

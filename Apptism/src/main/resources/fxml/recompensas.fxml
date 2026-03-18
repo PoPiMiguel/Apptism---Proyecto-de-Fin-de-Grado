@@ -53,7 +53,7 @@
                     <Label fx:id="lblPuntosNino" styleClass="puntos-nino" text="0 puntos"/>
                     <ImageView fitHeight="26" preserveRatio="true" styleClass="app-logo">
                         <image>
-                            <Image url="@../images/apptism_icon.svg"/>
+                            <Image url="@../images/apptism_icon.png"/>
                         </image>
                     </ImageView>
                     <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>

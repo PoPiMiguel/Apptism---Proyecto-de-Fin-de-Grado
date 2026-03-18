@@ -111,7 +111,7 @@ public class RecompensasController implements Initializable {
 
         if (recompensas.isEmpty()) {
             Label vacio = new Label("Aún no hay recompensas.\nTu tutor las añadirá pronto.");
-            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#B0ACCC; -fx-text-alignment:center;");
+            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#9BB0A0; -fx-text-alignment:center;");
             flowRecompensasNino.getChildren().add(vacio);
             return;
         }
@@ -140,12 +140,12 @@ public class RecompensasController implements Initializable {
         tarjeta.getChildren().add(lblGift);
 
         Label lblNombre = new Label(recompensa.getDescripcion());
-        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
+        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
         lblNombre.setMaxWidth(180); lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
         Label lblPts = new Label(recompensa.getPuntosNecesarios() + " pts");
-        lblPts.setStyle("-fx-font-size:14px; -fx-text-fill:" + (puedeGanar ? "#5652A0" : "#B0ACCC") + "; -fx-font-weight:bold;");
+        lblPts.setStyle("-fx-font-size:14px; -fx-text-fill:" + (puedeGanar ? "#4A6F5A" : "#9BB0A0") + "; -fx-font-weight:bold;");
         tarjeta.getChildren().add(lblPts);
 
         if (puedeGanar) {
@@ -156,7 +156,7 @@ public class RecompensasController implements Initializable {
         } else {
             int faltanPts = recompensa.getPuntosNecesarios() - puntosDisponibles;
             Label lblFalta = new Label("Te faltan " + faltanPts + " pts");
-            lblFalta.setStyle("-fx-text-fill:#B0ACCC; -fx-font-size:12px;");
+            lblFalta.setStyle("-fx-text-fill:#9BB0A0; -fx-font-size:12px;");
             tarjeta.getChildren().add(lblFalta);
         }
         return tarjeta;

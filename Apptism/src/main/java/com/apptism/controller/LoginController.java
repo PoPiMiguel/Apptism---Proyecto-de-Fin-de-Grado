@@ -6,7 +6,10 @@ import com.apptism.service.UsuarioService;
 import com.apptism.ui.StageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,6 @@ public class LoginController implements Initializable {
     @Lazy
     @Autowired private StageManager stageManager;
 
-    // Sesión global (se puede convertir en un @SessionScope bean)
     public static Usuario usuarioActivo;
 
     @Override
@@ -40,25 +42,14 @@ public class LoginController implements Initializable {
         cargarLogo();
     }
 
-    /**
-     * Carga el logo SVG desde resources/images/apptism_logo_v3.svg
-     */
     private void cargarLogo() {
         try {
-            String rutaLogo = getClass().getResource("/images/apptism_logo_v3.svg").toExternalForm();
+            String rutaLogo = getClass().getResource("/images/apptism_logo_v3.png").toExternalForm();
             Image logo = new Image(rutaLogo, 260, 80, true, true);
             imgLogo.setImage(logo);
         } catch (Exception e) {
-            System.err.println("Error cargando logo SVG: " + e.getMessage());
-            // Fallback al PNG si el SVG no carga
-            try {
-                String rutaPng = getClass().getResource("/images/logo.png").toExternalForm();
-                Image logoPng = new Image(rutaPng, 180, 60, true, true);
-                imgLogo.setImage(logoPng);
-            } catch (Exception ex) {
-                System.err.println("Error cargando logo fallback: " + ex.getMessage());
-                imgLogo.setVisible(false);
-            }
+            System.err.println("Error cargando logo PNG: " + e.getMessage());
+            imgLogo.setVisible(false);
         }
     }
 
@@ -75,7 +66,7 @@ public class LoginController implements Initializable {
         Optional<Usuario> usuario = usuarioService.login(email, pass);
         if (usuario.isPresent()) {
             usuarioActivo = usuario.get();
-            // Redirigir según rol
+
             if (usuarioActivo.getRol() == com.apptism.entity.RolUsuario.ADMIN) {
                 stageManager.switchScene(FxmlView.ADMIN);
             } else {

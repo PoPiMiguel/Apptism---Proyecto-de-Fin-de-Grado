@@ -144,7 +144,7 @@ public class RutinasController implements Initializable {
 
         if (rutinasActualesNino == null || rutinasActualesNino.isEmpty()) {
             Label vacio = new Label("Aún no tienes rutinas.\nTu tutor las añadirá pronto.");
-            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#B0ACCC; -fx-text-alignment:center;");
+            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#9BB0A0; -fx-text-alignment:center;");
             flowRutinasNino.getChildren().add(vacio);
             return;
         }
@@ -185,7 +185,7 @@ public class RutinasController implements Initializable {
         }
 
         Label lblNombre = new Label(rutina.getNombre());
-        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
+        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
         lblNombre.setMaxWidth(180); lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
@@ -196,7 +196,7 @@ public class RutinasController implements Initializable {
         if (!rutina.isCompletada()) {
             Button btn = new Button("¡Hecho!");
             btn.setStyle(
-                "-fx-background-color:#B8EDD9; -fx-text-fill:#5652A0;" +
+                "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
                 "-fx-font-size:14px; -fx-font-weight:bold;" +
                 "-fx-background-radius:16px; -fx-padding:8px 16px; -fx-cursor:hand;"
             );
@@ -204,7 +204,7 @@ public class RutinasController implements Initializable {
             tarjeta.getChildren().add(btn);
         } else {
             Label lbl = new Label("Completada");
-            lbl.setStyle("-fx-text-fill:#5DBFA0; -fx-font-weight:bold; -fx-font-size:13px;");
+            lbl.setStyle("-fx-text-fill:#81D8A3; -fx-font-weight:bold; -fx-font-size:13px;");
             tarjeta.getChildren().add(lbl);
         }
         return tarjeta;

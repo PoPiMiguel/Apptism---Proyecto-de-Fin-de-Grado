@@ -60,8 +60,8 @@
         <top>
             <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <Label text="🧩 Apptism" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
-                <Label fx:id="lblBienvenidaNino" style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
+                <Label text="🧩 Apptism" styleClass="titulo-header"/>
+                <Label fx:id="lblBienvenidaNino" styleClass="titulo-header"/>
                 <HBox HBox.hgrow="ALWAYS"/>
 <Button text="🚪 Salir" onAction="#onCerrarSesion" styleClass="btn-volver-nino"/>
             </HBox>
@@ -77,7 +77,7 @@
                 <HBox spacing="28" alignment="CENTER">
                     <Button text="Mis Rutinas" onAction="#onIrRutinas"
                             styleClass="btn-nino,btn-nino-azul" prefWidth="260" prefHeight="130"/>
-                    <Button text="📚 Mis Tareas" onAction="#onIrTareas"
+                    <Button text="Mis Tareas" onAction="#onIrTareas"
                             styleClass="btn-nino,btn-nino-verde" prefWidth="260" prefHeight="130"/>
                     <Button text="Recompensas" onAction="#onIrRecompensas"
                             styleClass="btn-nino,btn-nino-amarillo" prefWidth="260" prefHeight="130"/>

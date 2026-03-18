@@ -106,7 +106,7 @@ public class EmocionesController implements Initializable {
         if (picto.url() == null || picto.url().isBlank()) {
             lblNombre.setStyle("-fx-font-size:40px;");  // Emoji grande como pictograma
         } else {
-            lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
+            lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
         }
 
         tarjeta.getChildren().addAll(img, lblNombre);

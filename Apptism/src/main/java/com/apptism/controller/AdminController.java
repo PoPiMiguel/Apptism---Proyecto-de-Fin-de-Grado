@@ -143,7 +143,7 @@ public class AdminController implements Initializable {
     private void mostrarMensaje(String texto, boolean exito) {
         lblMensaje.setText(texto);
         lblMensaje.setStyle("-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:"
-                + (exito ? "#5DBFA0" : "#C96070") + ";");
+                + (exito ? "#81D8A3" : "#C96070") + ";");
     }
 
     // ===================== TAB VINCULAR =====================
@@ -184,7 +184,7 @@ public class AdminController implements Initializable {
         try {
             usuarioService.vincularNinoATutor(tutor.getId(), nino.getId());
             lblMensajeVinculo.setText(nino.getNombre() + " vinculado a " + tutor.getNombre());
-            lblMensajeVinculo.setStyle("-fx-text-fill:#5DBFA0; -fx-font-weight:bold;");
+            lblMensajeVinculo.setStyle("-fx-text-fill:#81D8A3; -fx-font-weight:bold;");
             actualizarTablaVinculos();
         } catch (RuntimeException e) {
             lblMensajeVinculo.setText(e.getMessage());

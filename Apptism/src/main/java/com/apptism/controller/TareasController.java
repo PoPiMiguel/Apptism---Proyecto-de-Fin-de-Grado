@@ -146,7 +146,7 @@ public class TareasController implements Initializable {
 
         if (tareasActualesNino == null || tareasActualesNino.isEmpty()) {
             Label vacio = new Label("Aún no tienes tareas.\nTu tutor las añadirá pronto.");
-            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#B0ACCC; -fx-text-alignment:center;");
+            vacio.setStyle("-fx-font-size:18px; -fx-text-fill:#9BB0A0; -fx-text-alignment:center;");
             flowTareasNino.getChildren().add(vacio);
             return;
         }
@@ -175,18 +175,18 @@ public class TareasController implements Initializable {
         tarjeta.getChildren().add(lblEmoji);
 
         Label lblNombre = new Label(tarea.getTitulo());
-        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#5652A0;");
+        lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
         lblNombre.setMaxWidth(190); lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
         Label lblPts = new Label("+" + tarea.getPuntosPorCompletar() + " pts");
-        lblPts.setStyle("-fx-font-size:13px; -fx-text-fill:#5652A0; -fx-font-weight:bold;");
+        lblPts.setStyle("-fx-font-size:13px; -fx-text-fill:#4A6F5A; -fx-font-weight:bold;");
         tarjeta.getChildren().add(lblPts);
 
         if (!tarea.isCompletada()) {
             Button btn = new Button("¡Hecho!");
             btn.setStyle(
-                "-fx-background-color:#B8EDD9; -fx-text-fill:#5652A0;" +
+                "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
                 "-fx-font-size:15px; -fx-font-weight:bold;" +
                 "-fx-background-radius:16px; -fx-padding:9px 18px; -fx-cursor:hand;"
             );
@@ -194,7 +194,7 @@ public class TareasController implements Initializable {
             tarjeta.getChildren().add(btn);
         } else {
             Label lbl = new Label("Completada");
-            lbl.setStyle("-fx-text-fill:#5DBFA0; -fx-font-weight:bold; -fx-font-size:13px;");
+            lbl.setStyle("-fx-text-fill:#81D8A3; -fx-font-weight:bold; -fx-font-size:13px;");
             tarjeta.getChildren().add(lbl);
         }
         return tarjeta;

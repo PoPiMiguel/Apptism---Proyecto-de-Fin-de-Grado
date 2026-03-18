@@ -168,7 +168,7 @@ public class ChatController implements Initializable {
         tarjeta.setPrefWidth(100);
         tarjeta.setUserData(picto.id()); // Para evitar duplicados
         tarjeta.setStyle(
-            "-fx-background-color:#F8F9FA; -fx-background-radius:12px; -fx-cursor:hand;");
+            "-fx-background-color:#F7FFF7; -fx-background-radius:12px; -fx-cursor:hand;");
 
         ImageView img = new ImageView();
         img.setFitWidth(70); img.setFitHeight(70);
@@ -187,9 +187,9 @@ public class ChatController implements Initializable {
         tarjeta.getChildren().addAll(img, lbl);
         tarjeta.setOnMouseClicked(e -> enviarPicto(picto));
         tarjeta.setOnMouseEntered(e ->
-            tarjeta.setStyle("-fx-background-color:#E3F2FD; -fx-background-radius:12px; -fx-cursor:hand;"));
+            tarjeta.setStyle("-fx-background-color:#EFFAF3; -fx-background-radius:12px; -fx-cursor:hand;"));
         tarjeta.setOnMouseExited(e ->
-            tarjeta.setStyle("-fx-background-color:#F8F9FA; -fx-background-radius:12px; -fx-cursor:hand;"));
+            tarjeta.setStyle("-fx-background-color:#F7FFF7; -fx-background-radius:12px; -fx-cursor:hand;"));
 
         panelPictos.getChildren().add(tarjeta);
     }
