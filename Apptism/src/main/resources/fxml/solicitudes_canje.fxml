@@ -2,6 +2,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.apptism.controller.SolicitudesCanjeController"
@@ -10,7 +12,11 @@
     <top>
         <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <Label text="Recompensas Canjeadas" styleClass="titulo-header"/>
+            <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
+            <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
+                           onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                    <image><Image url="@../images/apptism_icon.png"/></image>
+                </ImageView>
             <HBox HBox.hgrow="ALWAYS"/>
             <Button text="Volver" onAction="#onVolver" styleClass="btn-volver"/>
         </HBox>

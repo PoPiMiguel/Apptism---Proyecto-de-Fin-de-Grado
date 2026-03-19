@@ -41,6 +41,7 @@ public class SolicitudesCanjeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         cargarSolicitudes();
         solicitudService.marcarTodasLeidas(LoginController.usuarioActivo.getId());
     }

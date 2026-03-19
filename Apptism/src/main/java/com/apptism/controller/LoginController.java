@@ -48,7 +48,7 @@ public class LoginController implements Initializable {
             Image logo = new Image(rutaLogo, 260, 80, true, true);
             imgLogo.setImage(logo);
         } catch (Exception e) {
-            System.err.println("Error cargando logo PNG: " + e.getMessage());
+            System.err.println("Error cargando logo: " + e.getMessage());
             imgLogo.setVisible(false);
         }
     }

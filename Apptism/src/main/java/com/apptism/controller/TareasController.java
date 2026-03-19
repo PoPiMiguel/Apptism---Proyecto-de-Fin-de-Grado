@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 public class TareasController implements Initializable {
 
     // --- Vista TUTOR ---
+
     @FXML private BorderPane panelTutor;
     @FXML private ListView<String> listaTareas;
     @FXML private TextField txtTitulo;
@@ -50,6 +51,7 @@ public class TareasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         Usuario usuario = LoginController.usuarioActivo;
         boolean esTutor = usuario.getRol() == RolUsuario.PADRE || usuario.getRol() == RolUsuario.PROFESOR;
 

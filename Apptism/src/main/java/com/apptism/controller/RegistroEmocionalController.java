@@ -44,6 +44,7 @@ public class RegistroEmocionalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         configurarGrafico();
         cargarNinos();
     }

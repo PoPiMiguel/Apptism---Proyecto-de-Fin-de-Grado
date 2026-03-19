@@ -58,7 +58,7 @@ public class StageManager {
             scene.getStylesheets().clear();
             scene.getStylesheets().add(rutaCss);
         } catch (Exception e) {
-            System.err.println("⚠️ Error cargando CSS: " + e.getMessage());
+            System.err.println("Error cargando CSS: " + e.getMessage());
             e.printStackTrace();
         }
     }

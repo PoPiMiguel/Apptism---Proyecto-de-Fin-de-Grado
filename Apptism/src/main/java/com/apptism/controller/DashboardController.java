@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 public class DashboardController implements Initializable {
 
     // ---- Panel TUTOR ----
+
     @FXML private BorderPane panelTutor;
     @FXML private Label lblBienvenida;
     @FXML private HBox   hboxTutor;
@@ -36,6 +37,7 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         Usuario usuario = LoginController.usuarioActivo;
         if (usuario == null) return;
 

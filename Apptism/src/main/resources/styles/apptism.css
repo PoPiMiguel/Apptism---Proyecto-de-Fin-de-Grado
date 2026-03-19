@@ -1,86 +1,113 @@
 /* =============================================
    APPTISM — ESTILOS (JavaFX)
-   Paleta pastel equilibrada, un poco más oscura
+   Paleta definitiva v2.0
+   ─────────────────────────────────────────────
+   Principal:      #7EC8A0  Verde menta
+   Principal soft: #A8DFC4  Menta suave (header niño)
+   Hover/activo:   #5BAF8A  Verde esmeralda
+   Acento dorado:  #E8C96A  Ámbar (puntos y recompensas)
+   Acento cálido:  #F5A97A  Melocotón (notificaciones)
+   Fondo tutor:    #F5F0E8  Hueso cálido
+   Fondo niño:     #FAF7F2  Hueso luminoso
+   Texto:          #2F5244  Verde muy oscuro
    ============================================= */
 
 .root {
-    -apptism-principal:       #7FC8A9;
-    -apptism-principal-soft:  #B7DFA5;
-    -apptism-accent:          #F4BFA6;
-    -apptism-bg-soft:         #EEF7F1;
-    -apptism-hover-soft:      #6FB89A;
-    -apptism-text-main:       #3F5F55;
-    -apptism-text-muted:      #6E887F;
-    -apptism-white:           #FFFFFF;
-    -apptism-border:          #D6E6DB;
-    -apptism-shadow:          rgba(80, 110, 95, 0.16);
+    /* ── Tokens principales ── */
+    -apptism-principal:       #7EC8A0;
+    -apptism-principal-soft:  #A8DFC4;
+    -apptism-hover:           #5BAF8A;
+    -apptism-accent:          #F5A97A;
+    -apptism-accent-gold:     #E8C96A;
 
-    /* Compatibilidad con nombres antiguos */
-    -apptism-violeta:         #7FC8A9;
-    -apptism-verde:           #7FC8A9;
-    -apptism-lila:            #B7DFA5;
-    -apptism-indigo:          #3F5F55;
-    -apptism-verde-claro:     #EEF7F1;
-    -apptism-lila-medio:      #CFE4C3;
-
-    -apptism-violeta-dark:    #7FC8A9;
-    -apptism-verde-dark:      #7FC8A9;
-    -apptism-lila-dark:       #B7DFA5;
-    -apptism-indigo-dark:     #3F5F55;
-
-    -apptism-violeta-light:   #F1F8F4;
-    -apptism-verde-light:     #EEF7F1;
-    -apptism-lila-light:      #F4F8EE;
-    -apptism-indigo-light:    #E8F1EC;
-
-    -apptism-gris-light:      #F2F6F3;
-    -apptism-gris-medium:     #8FA79D;
-    -apptism-gris-dark:       #3F5F55;
-
-    -apptism-bg-padre:        #EEF7F1;
-    -apptism-bg-nino:         #EEF7F1;
+    /* ── Fondos ── */
+    -apptism-bg-soft:         #F5F0E8;   /* Fondo tutor — hueso cálido      */
+    -apptism-bg-nino:         #FAF7F2;   /* Fondo niño  — hueso luminoso     */
     -apptism-bg-white:        #FFFFFF;
 
-    -apptism-text-dark:       #3F5F55;
+    /* ── Texto ── */
+    -apptism-text-main:       #2F5244;   /* Verde muy oscuro — más cálido que negro */
+    -apptism-text-muted:      #5C7A6E;   /* Verde medio para texto secundario       */
     -apptism-text-light:      #FFFFFF;
 
-    -apptism-azul:            #7FC8A9;
-    -apptism-amarillo:        #7FC8A9;
-    -apptism-morado:          #3F5F55;
-    -apptism-naranja:         #7FC8A9;
-    -apptism-azul-dark:       #7FC8A9;
-    -apptism-amarillo-dark:   #7FC8A9;
-    -apptism-morado-dark:     #3F5F55;
-    -apptism-naranja-dark:    #7FC8A9;
-    -apptism-amarillo-light:  #F4F8EE;
-    -apptism-morado-light:    #F1F8F4;
-    -apptism-naranja-light:   #FDF3EE;
+    /* ── Bordes y sombras ── */
+    -apptism-border:          #D8CCBA;   /* Borde hueso — armoniza con el fondo     */
+    -apptism-shadow:          rgba(47, 82, 68, 0.14);
+
+    /* ── Grises funcionales ── */
+    -apptism-gris-light:      #EDE8DF;   /* Botón volver — hueso medio              */
+    -apptism-gris-medium:     #8A9E96;
+    -apptism-gris-dark:       #2F5244;
+
+    /* ── Estados funcionales ── */
+    -apptism-error-bg:        #F1D8D8;
+    -apptism-error-text:      #7A3030;
+    -apptism-success-bg:      #DFF0E8;
+    -apptism-warn-bg:         #FFF3D6;
+
+    /* ── Compatibilidad con nombres legacy del código ── */
+    -apptism-violeta:         #7EC8A0;
+    -apptism-verde:           #7EC8A0;
+    -apptism-lila:            #A8DFC4;
+    -apptism-indigo:          #2F5244;
+    -apptism-verde-claro:     #F5F0E8;
+    -apptism-lila-medio:      #C4E5D4;
+    -apptism-violeta-dark:    #5BAF8A;
+    -apptism-verde-dark:      #5BAF8A;
+    -apptism-lila-dark:       #A8DFC4;
+    -apptism-indigo-dark:     #2F5244;
+    -apptism-violeta-light:   #F0FAF5;
+    -apptism-verde-light:     #F5F0E8;
+    -apptism-lila-light:      #F0FAF5;
+    -apptism-indigo-light:    #EAF3EE;
+    -apptism-azul:            #7EC8A0;
+    -apptism-amarillo:        #E8C96A;
+    -apptism-morado:          #2F5244;
+    -apptism-naranja:         #F5A97A;
+    -apptism-azul-dark:       #5BAF8A;
+    -apptism-amarillo-dark:   #C9A83A;
+    -apptism-morado-dark:     #2F5244;
+    -apptism-naranja-dark:    #D4845A;
+    -apptism-amarillo-light:  #FFF8E6;
+    -apptism-morado-light:    #F0FAF5;
+    -apptism-naranja-light:   #FEF0E6;
+    -apptism-bg-padre:        #F5F0E8;
+    -apptism-hover-soft:      #5BAF8A;
+    -apptism-white:           #FFFFFF;
 }
 
+/* ─── Fuente global ─── */
 * {
     -fx-font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* ─── Fondos de pantalla ─── */
+/* Tutor usa fondo hueso cálido, niño usa hueso luminoso */
 .root-pane,
-.root-pane-nino,
 .login-root {
     -fx-background-color: -apptism-bg-soft;
 }
 
+.root-pane-nino {
+    -fx-background-color: -apptism-bg-nino;
+}
+
+/* ─── Login ─── */
 .login-background {
-    -fx-background-color: linear-gradient(145deg, #EEF7F1 0%, #E8F1EC 55%, #FDF3EE 100%);
+    -fx-background-color: linear-gradient(145deg, #F5F0E8 0%, #EDE8DF 55%, #FEF0E6 100%);
     -fx-min-width: Infinity;
     -fx-min-height: Infinity;
 }
 
-.deco-circle-purple { -fx-fill: rgba(127, 200, 169, 0.18); }
-.deco-circle-orange { -fx-fill: rgba(244, 191, 166, 0.18); }
-.deco-circle-blue   { -fx-fill: rgba(183, 223, 165, 0.24); }
+/* Círculos decorativos del login — coherentes con la nueva paleta */
+.deco-circle-purple { -fx-fill: rgba(126, 200, 160, 0.18); }
+.deco-circle-orange { -fx-fill: rgba(245, 169, 122, 0.18); }
+.deco-circle-blue   { -fx-fill: rgba(232, 201, 106, 0.20); }
 
 .login-card {
     -fx-background-color: white;
     -fx-background-radius: 28px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.16), 26, 0, 0, 8);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.14), 26, 0, 0, 8);
     -fx-padding: 44px 48px;
     -fx-border-color: -apptism-border;
     -fx-border-radius: 28px;
@@ -113,12 +140,6 @@
     -fx-padding: 2px 0 0 0;
 }
 
-.login-divider {
-    -fx-background-color: rgba(214, 230, 219, 0.9);
-    -fx-min-height: 1px;
-    -fx-max-height: 1px;
-    -fx-padding: 0;
-}
 
 .login-field-group { -fx-padding: 14px 0 0 0; }
 
@@ -134,14 +155,15 @@
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-background-radius: 14px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.16), 8, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.18), 8, 0, 0, 3);
 }
 
 .btn-login-principal:hover {
-    -fx-background-color: -apptism-principal;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.22), 10, 0, 0, 4);
+    -fx-background-color: -apptism-hover;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.26), 10, 0, 0, 4);
 }
 
+/* Puntos decorativos del login — usan todos los colores de la paleta */
 .login-dots-row { -fx-padding: 20px 0 0 0; }
 
 .dot-morado, .dot-azul, .dot-verde, .dot-amarillo, .dot-naranja {
@@ -152,12 +174,13 @@
     -fx-max-height: 8px;
 }
 
-.dot-morado   { -fx-background-color: -apptism-text-main; }
-.dot-azul     { -fx-background-color: -apptism-principal; }
-.dot-verde    { -fx-background-color: -apptism-principal-soft; }
-.dot-amarillo { -fx-background-color: -apptism-accent; }
-.dot-naranja  { -fx-background-color: #D8E6D8; }
+.dot-morado   { -fx-background-color: #2F5244; }
+.dot-azul     { -fx-background-color: #7EC8A0; }
+.dot-verde    { -fx-background-color: #A8DFC4; }
+.dot-amarillo { -fx-background-color: #E8C96A; }
+.dot-naranja  { -fx-background-color: #F5A97A; }
 
+/* ─── Campos de texto ─── */
 .input-field {
     -fx-font-size: 14px;
     -fx-padding: 12px 14px;
@@ -165,7 +188,7 @@
     -fx-border-color: -apptism-border;
     -fx-border-radius: 12px;
     -fx-border-width: 1.4px;
-    -fx-background-color: #FBFDFC;
+    -fx-background-color: #FDFAF6;   /* Blanco ligeramente hueso */
     -fx-text-fill: -apptism-text-main;
 }
 
@@ -175,17 +198,25 @@
 }
 
 .error-label {
-    -fx-text-fill: #B36B6B;
+    -fx-text-fill: #7A3030;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
 
-.header,
+/* ─── Headers ─── */
+/* Tutor: verde menta principal / Niño: menta suave más clara */
+.header {
+    -fx-background-color: -apptism-principal;
+    -fx-padding: 15px 25px;
+    -fx-background-radius: 0 0 18px 18px;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.12), 8, 0, 0, 2);
+}
+
 .header-nino {
     -fx-background-color: -apptism-principal-soft;
     -fx-padding: 15px 25px;
     -fx-background-radius: 0 0 18px 18px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.10), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 8, 0, 0, 2);
 }
 
 .titulo-header {
@@ -194,13 +225,15 @@
     -fx-font-weight: bold;
 }
 
+/* ─── Paneles y tarjetas ─── */
+/* Blanco puro para máximo contraste sobre los fondos hueso */
 .panel,
 .tarjeta-nino {
     -fx-background-color: -apptism-bg-white;
     -fx-background-radius: 20px;
     -fx-padding: 22px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.12), 10, 0, 0, 3);
-    -fx-border-color: rgba(214,230,219,0.80);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 10, 0, 0, 3);
+    -fx-border-color: rgba(216, 204, 186, 0.70);
     -fx-border-radius: 20px;
 }
 
@@ -210,6 +243,7 @@
     -fx-text-fill: -apptism-text-main;
 }
 
+/* ─── Botones principales ─── */
 .btn-crear,
 .btn-dashboard,
 .btn-nino,
@@ -227,15 +261,17 @@
     -fx-font-size: 14px;
     -fx-background-radius: 16px;
     -fx-padding: 10px 16px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.16), 6, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.16), 6, 0, 0, 2);
 }
 
 .btn-crear:hover,
 .btn-completar:hover,
 .btn-completar-nino:hover {
-    -fx-background-color: -apptism-principal;
+    -fx-background-color: -apptism-hover;
 }
 
+/* ─── Botón volver / salir ─── */
+/* Hueso medio — visible sobre header verde sin competir con él */
 .btn-volver,
 .btn-volver-nino {
     -fx-background-color: -apptism-gris-light;
@@ -245,17 +281,18 @@
     -fx-background-radius: 14px;
     -fx-padding: 8px 16px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.08), 4, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.08), 4, 0, 0, 1);
 }
 
 .btn-volver:hover,
 .btn-volver-nino:hover {
-    -fx-background-color: -apptism-gris-light;
+    -fx-background-color: #DDD8CF;
 }
 
+/* ─── Botón eliminar ─── */
 .btn-eliminar {
-    -fx-background-color: #F1D1D1;
-    -fx-text-fill: #8B5E5E;
+    -fx-background-color: -apptism-error-bg;
+    -fx-text-fill: -apptism-error-text;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-background-radius: 14px;
@@ -264,76 +301,77 @@
 }
 
 .btn-eliminar:hover {
-    -fx-background-color: #F1D1D1;
+    -fx-background-color: #EAC8C8;
 }
 
+/* ─── Botón dashboard (pantalla principal tutor) ─── */
 .btn-dashboard {
     -fx-font-size: 17px;
     -fx-background-radius: 22px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.14), 10, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.14), 10, 0, 0, 3);
 }
 
 .btn-dashboard:hover {
-    -fx-background-color: -apptism-principal;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.20), 12, 0, 0, 4);
+    -fx-background-color: -apptism-hover;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.22), 12, 0, 0, 4);
 }
 
+/* ─── Botones de navegación del niño ─── */
 .btn-nino {
     -fx-font-size: 18px;
     -fx-background-radius: 20px;
     -fx-padding: 16px 24px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.14), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.14), 8, 0, 0, 2);
     -fx-text-alignment: center;
     -fx-content-display: top;
     -fx-graphic-text-gap: 10px;
 }
 
 .btn-nino:hover {
-    -fx-background-color: -apptism-principal;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.20), 10, 0, 0, 3);
+    -fx-background-color: -apptism-hover;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.22), 10, 0, 0, 3);
 }
 
-.btn-nino-azul,
-.btn-nino-verde,
-.btn-nino-amarillo,
-.btn-nino-morado,
-.btn-nino-naranja,
-.btn-nino-rosa {
-    -fx-background-color: -apptism-principal;
-    -fx-text-fill: -apptism-text-main;
-}
+/* Variantes de color para los botones del niño en el dashboard */
+.btn-nino-azul    { -fx-background-color: #7EC8A0; -fx-text-fill: #1A4433; }
+.btn-nino-verde   { -fx-background-color: #A8DFC4; -fx-text-fill: #1A4433; }
+.btn-nino-amarillo{ -fx-background-color: #E8C96A; -fx-text-fill: #4A3A00; }
+.btn-nino-morado  { -fx-background-color: #7EC8A0; -fx-text-fill: #1A4433; }
+.btn-nino-naranja { -fx-background-color: #F5A97A; -fx-text-fill: #5C2A00; }
+.btn-nino-rosa    { -fx-background-color: #A8DFC4; -fx-text-fill: #1A4433; }
 
-.btn-nino-azul:hover,
-.btn-nino-verde:hover,
-.btn-nino-amarillo:hover,
-.btn-nino-morado:hover,
-.btn-nino-naranja:hover,
-.btn-nino-rosa:hover {
-    -fx-background-color: -apptism-principal;
-}
+.btn-nino-azul:hover     { -fx-background-color: #5BAF8A; -fx-text-fill: #1A4433; }
+.btn-nino-verde:hover    { -fx-background-color: #8DD0B0; -fx-text-fill: #1A4433; }
+.btn-nino-amarillo:hover { -fx-background-color: #C9A83A; -fx-text-fill: #4A3A00; }
+.btn-nino-morado:hover   { -fx-background-color: #5BAF8A; -fx-text-fill: #1A4433; }
+.btn-nino-naranja:hover  { -fx-background-color: #D4845A; -fx-text-fill: #5C2A00; }
+.btn-nino-rosa:hover     { -fx-background-color: #8DD0B0; -fx-text-fill: #1A4433; }
 
+/* ─── Puntos y recompensas — ámbar dorado exclusivo ─── */
+/* El dorado se reserva SOLO para puntos/logros para crear asociación cognitiva */
 .puntos-nino {
-    -fx-text-fill: -apptism-text-main;
+    -fx-text-fill: #4A3A00;
     -fx-font-size: 26px;
     -fx-font-weight: bold;
-    -fx-background-color: -apptism-principal-soft;
+    -fx-background-color: -apptism-accent-gold;
     -fx-background-radius: 24px;
     -fx-padding: 10px 30px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.14), 6, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.14), 6, 0, 0, 2);
 }
 
 .puntos-label {
-    -fx-text-fill: -apptism-text-main;
+    -fx-text-fill: #4A3A00;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-background-color: rgba(255,255,255,0.70);
+    -fx-background-color: -apptism-accent-gold;
     -fx-background-radius: 20px;
     -fx-padding: 4px 14px;
 }
 
+/* ─── Badge de notificación — melocotón (urgencia suave) ─── */
 .badge-notificacion {
     -fx-background-color: -apptism-accent;
-    -fx-text-fill: -apptism-text-main;
+    -fx-text-fill: #5C2A00;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-background-radius: 12px;
@@ -342,6 +380,7 @@
     -fx-translate-y: 5px;
 }
 
+/* ─── Confirmación de emoción enviada ─── */
 .confirmacion-label {
     -fx-background-color: -apptism-principal-soft;
     -fx-text-fill: -apptism-text-main;
@@ -351,19 +390,21 @@
     -fx-padding: 14px 32px;
 }
 
+/* ─── Burbujas del chat ─── */
 .burbuja-propia {
-    -fx-background-color: #EFF7F2;
+    -fx-background-color: #E4F4EC;   /* Verde muy suave — mensaje propio  */
     -fx-background-radius: 16px 16px 4px 16px;
 }
 
 .burbuja-recibida {
     -fx-background-color: -apptism-bg-white;
     -fx-background-radius: 16px 16px 16px 4px;
-    -fx-effect: dropshadow(gaussian, rgba(80,110,95,0.10), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 5, 0, 0, 2);
 }
 
+/* ─── Gráficos ─── */
 .chart-plot-background {
-    -fx-background-color: #FBFDFC;
+    -fx-background-color: #FDFAF6;
 }
 
 .chart-background {
@@ -371,8 +412,9 @@
     -fx-background-radius: 16px;
 }
 
+/* ─── Tabs (rutinas: mañana / mediodía / noche) ─── */
 .tab-pane > .tab-header-area > .headers-region > .tab {
-    -fx-background-color: -apptism-violeta-light;
+    -fx-background-color: #EDE8DF;   /* Hueso medio — tab inactiva */
     -fx-background-radius: 10px 10px 0 0;
     -fx-padding: 8px 18px;
 }
@@ -384,7 +426,7 @@
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
-    -fx-background-color: -apptism-principal;
+    -fx-background-color: -apptism-principal;   /* Verde menta — tab activa */
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {

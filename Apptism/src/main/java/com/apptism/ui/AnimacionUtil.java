@@ -35,7 +35,7 @@ public class AnimacionUtil {
      * Aparece desde abajo, sube flotando y desaparece con fade.
      */
     public static void mostrarPuntos(StackPane contenedor, int puntos) {
-        String texto = puntos > 0 ? "🌟 ¡Bien hecho! +" + puntos + " pts" : "🌟 ¡Muy bien! ¡Sigue así!";
+        String texto = puntos > 0 ? "Has ganado +" + puntos + " pts" : "¡Muy bien! ¡Sigue así!";
         Label lblPuntos = new Label(texto);
         lblPuntos.setStyle(
                 "-fx-background-color: #6FCF97;" +

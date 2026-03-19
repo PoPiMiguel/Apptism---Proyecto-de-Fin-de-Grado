@@ -12,13 +12,13 @@
     <top>
         <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
+            <!-- Icono clicable a la izquierda: navega al dashboard -->
+            <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
+                       onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                <image><Image url="@../images/apptism_icon.png"/></image>
+            </ImageView>
             <Label text="¿Cómo me siento?" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
             <HBox HBox.hgrow="ALWAYS"/>
-            <ImageView fitHeight="26" preserveRatio="true" styleClass="app-logo">
-                <image>
-                    <Image url="@../images/apptism_icon.png"/>
-                </image>
-            </ImageView>
             <Button text="Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
         </HBox>
     </top>

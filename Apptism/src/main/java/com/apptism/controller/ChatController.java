@@ -42,6 +42,7 @@ public class ChatController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         cargarContactos();
         // Mostrar pictogramas por defecto SIN necesidad de buscar
         cargarPictogramasPorDefecto();

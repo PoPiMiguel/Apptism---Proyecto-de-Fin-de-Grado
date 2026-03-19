@@ -42,6 +42,7 @@ public class EmocionesController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         lblConfirmacion.setVisible(false);
         cargarTutores();
         cargarEmocionesBasicas();

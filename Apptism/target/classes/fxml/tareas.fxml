@@ -14,9 +14,11 @@
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <Label text="Tareas" styleClass="titulo-header"/>
-                <Label text="(Asigna tareas a los niños)" styleClass="titulo-header"
-                       style="-fx-font-size:14px; -fx-text-fill: rgba(255,255,255,0.75);"/>
+                <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
+                <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
+                           onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                    <image><Image url="@../images/apptism_icon.png"/></image>
+                </ImageView>
                 <HBox HBox.hgrow="ALWAYS"/>
                 <Label fx:id="lblPuntosTotales" styleClass="puntos-label"/>
                 <Button text="Volver" onAction="#onVolver" styleClass="btn-volver"/>
@@ -54,14 +56,13 @@
             <top>
                 <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                     <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                    <Label text="Mis Tareas" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
+                    <!-- Icono clicable a la izquierda: navega al dashboard -->
+                    <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
+                               onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                        <image><Image url="@../images/apptism_icon.png"/></image>
+                    </ImageView>
                     <HBox HBox.hgrow="ALWAYS"/>
                     <Label fx:id="lblPuntosNino" styleClass="puntos-nino" text="0 puntos"/>
-                    <ImageView fitHeight="26" preserveRatio="true" styleClass="app-logo">
-                        <image>
-                            <Image url="@../images/apptism_icon.png"/>
-                        </image>
-                    </ImageView>
                     <Button text="Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
                 </HBox>
             </top>
