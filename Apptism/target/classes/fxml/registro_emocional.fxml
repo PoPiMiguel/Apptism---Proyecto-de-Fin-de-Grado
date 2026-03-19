@@ -11,7 +11,7 @@
     <top>
         <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <Label text="❤️ Registro Emocional" styleClass="titulo-header"/>
+            <Label text="Registro Emocional" styleClass="titulo-header"/>
             <Label text="(Solo lectura)" styleClass="titulo-header"
                    style="-fx-font-size:14px; -fx-text-fill:rgba(255,255,255,0.75);"/>
             <HBox HBox.hgrow="ALWAYS"/>
@@ -43,7 +43,7 @@
 
                 <!-- Gráfico emocional semanal -->
                 <VBox spacing="10" styleClass="panel">
-                    <Label text="📊 Historial de la semana" styleClass="subtitulo"/>
+                    <Label text="Historial de la semana" styleClass="subtitulo"/>
                     <BarChart fx:id="graficoEmociones" VBox.vgrow="ALWAYS"
                               style="-fx-background-color:white; -fx-background-radius:16px;">
                         <xAxis><CategoryAxis fx:id="ejeX"/></xAxis>

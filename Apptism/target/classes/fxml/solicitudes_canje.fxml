@@ -29,7 +29,7 @@
                     <Label text="Filtrar:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
                     <ToggleButton fx:id="btnTodos" text="Todos" onAction="#onFiltrarTodos"
                                   style="-fx-background-color:#C8BBEE; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
-                    <ToggleButton fx:id="btnPendientes" text="⏳ Pendientes" onAction="#onFiltrarPendientes"
+                    <ToggleButton fx:id="btnPendientes" text="Pendientes" onAction="#onFiltrarPendientes"
                                   style="-fx-background-color:#FFE0A0; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>
                     <ToggleButton fx:id="btnAprobadas" text="Aprobadas" onAction="#onFiltrarAprobadas"
                                   style="-fx-background-color:#C8F0C8; -fx-background-radius:12px; -fx-cursor:hand; -fx-font-weight:bold;"/>

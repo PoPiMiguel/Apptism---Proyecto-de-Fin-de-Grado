@@ -26,12 +26,12 @@
             <SplitPane dividerPositions="0.65">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
                 <TabPane fx:id="tabZonas" tabClosingPolicy="UNAVAILABLE">
-                    <Tab text="🌅 Mañana"><ListView fx:id="listaManana"/></Tab>
-                    <Tab text="☀️ Mediodía"><ListView fx:id="listaMediodia"/></Tab>
-                    <Tab text="🌙 Noche"><ListView fx:id="listaNoche"/></Tab>
+                    <Tab text="Mañana"><ListView fx:id="listaManana"/></Tab>
+                    <Tab text="Mediodía"><ListView fx:id="listaMediodia"/></Tab>
+                    <Tab text="Noche"><ListView fx:id="listaNoche"/></Tab>
                 </TabPane>
                 <VBox spacing="15" styleClass="panel">
-                    <Label text="➕ Nueva rutina" styleClass="subtitulo"/>
+                    <Label text="Nueva rutina" styleClass="subtitulo"/>
                     <Label text="Nombre:"/>
                     <TextField fx:id="txtNombreRutina" promptText="Ej: Lavarse los dientes" styleClass="input-field"/>
                     <Label text="Zona horaria:"/>
@@ -58,7 +58,7 @@
                             <Image url="@../images/apptism_icon.png"/>
                         </image>
                     </ImageView>
-                    <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
+                    <Button text="Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
                 </HBox>
             </top>
             <center>

@@ -13,7 +13,7 @@
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <Label text="🧩 Apptism" styleClass="titulo-header"/>
+                <Label text="Apptism" styleClass="titulo-header"/>
                 <Label fx:id="lblBienvenida" styleClass="titulo-header"/>
                 <HBox HBox.hgrow="ALWAYS"/>
                 <Button text="Cerrar sesión" onAction="#onCerrarSesion" styleClass="btn-volver"/>
@@ -30,7 +30,7 @@
                 <HBox spacing="20" alignment="CENTER">
                     <Button text="Rutinas" onAction="#onIrRutinas"
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
-                    <Button text="📚 Tareas" onAction="#onIrTareas"
+                    <Button text="Tareas" onAction="#onIrTareas"
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
                     <Button text="Chat" onAction="#onIrChat"
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
@@ -40,7 +40,7 @@
                 <HBox fx:id="hboxTutor" spacing="20" alignment="CENTER">
                     <Button text="Recompensas" onAction="#onIrRecompensas"
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
-                    <Button text="❤️ Reg. Emocional" onAction="#onIrRegistroEmocional"
+                    <Button text="Reg. Emocional" onAction="#onIrRegistroEmocional"
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
                     <StackPane>
                         <Button text="Canjes" onAction="#onIrSolicitudes"
@@ -60,10 +60,10 @@
         <top>
             <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <Label text="🧩 Apptism" styleClass="titulo-header"/>
+                <Label text="Apptism" styleClass="titulo-header"/>
                 <Label fx:id="lblBienvenidaNino" styleClass="titulo-header"/>
                 <HBox HBox.hgrow="ALWAYS"/>
-<Button text="🚪 Salir" onAction="#onCerrarSesion" styleClass="btn-volver-nino"/>
+<Button text="Salir" onAction="#onCerrarSesion" styleClass="btn-volver-nino"/>
             </HBox>
         </top>
 

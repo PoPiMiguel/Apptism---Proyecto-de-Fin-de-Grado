@@ -14,7 +14,7 @@
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <Label text="📚 Tareas" styleClass="titulo-header"/>
+                <Label text="Tareas" styleClass="titulo-header"/>
                 <Label text="(Asigna tareas a los niños)" styleClass="titulo-header"
                        style="-fx-font-size:14px; -fx-text-fill: rgba(255,255,255,0.75);"/>
                 <HBox HBox.hgrow="ALWAYS"/>
@@ -28,11 +28,11 @@
                 <VBox spacing="10" styleClass="panel">
                     <Label text="Tareas asignadas" styleClass="subtitulo"/>
                     <ListView fx:id="listaTareas" VBox.vgrow="ALWAYS"/>
-                    <Button text="🗑️ Eliminar seleccionada" onAction="#onEliminarTarea"
+                    <Button text="Eliminar seleccionada" onAction="#onEliminarTarea"
                             styleClass="btn-eliminar" maxWidth="Infinity"/>
                 </VBox>
                 <VBox spacing="15" styleClass="panel">
-                    <Label text="➕ Nueva tarea" styleClass="subtitulo"/>
+                    <Label text="Nueva tarea" styleClass="subtitulo"/>
                     <Label text="Título:"/>
                     <TextField fx:id="txtTitulo" promptText="Ej: Tabla del 2" styleClass="input-field"/>
                     <Label text="Asignar a niño:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
@@ -54,7 +54,7 @@
             <top>
                 <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                     <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                    <Label text="📚 Mis Tareas" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
+                    <Label text="Mis Tareas" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
                     <HBox HBox.hgrow="ALWAYS"/>
                     <Label fx:id="lblPuntosNino" styleClass="puntos-nino" text="0 puntos"/>
                     <ImageView fitHeight="26" preserveRatio="true" styleClass="app-logo">
@@ -62,7 +62,7 @@
                             <Image url="@../images/apptism_icon.png"/>
                         </image>
                     </ImageView>
-                    <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
+                    <Button text="Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
                 </HBox>
             </top>
             <center>

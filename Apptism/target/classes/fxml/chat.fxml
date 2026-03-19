@@ -38,7 +38,7 @@
                 <Label text="Enviar pictograma" styleClass="subtitulo"/>
                 <HBox spacing="10">
                     <TextField fx:id="txtBuscar" promptText="Buscar..." styleClass="input-field" HBox.hgrow="ALWAYS"/>
-                    <Button text="🔍 Buscar" onAction="#onBuscar" styleClass="btn-crear"/>
+                    <Button text="Buscar" onAction="#onBuscar" styleClass="btn-crear"/>
                 </HBox>
                 <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
                             style="-fx-background-color:transparent; -fx-border-color:transparent;">

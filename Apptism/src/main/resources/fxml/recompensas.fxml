@@ -30,7 +30,7 @@
                     <ListView fx:id="listaRecompensas" VBox.vgrow="ALWAYS"/>
                 </VBox>
                 <VBox spacing="15" styleClass="panel">
-                    <Label text="➕ Nueva recompensa" styleClass="subtitulo"/>
+                    <Label text="Nueva recompensa" styleClass="subtitulo"/>
                     <Label text="Descripción:"/>
                     <TextField fx:id="txtDescripcion" promptText="Ej: Salir al parque" styleClass="input-field"/>
                     <Label text="Puntos necesarios:"/>
@@ -56,7 +56,7 @@
                             <Image url="@../images/apptism_icon.png"/>
                         </image>
                     </ImageView>
-                    <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
+                    <Button text="Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
                 </HBox>
             </top>
             <center>

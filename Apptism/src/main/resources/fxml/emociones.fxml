@@ -19,7 +19,7 @@
                     <Image url="@../images/apptism_icon.png"/>
                 </image>
             </ImageView>
-            <Button text="⬅️ Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
+            <Button text="Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
         </HBox>
     </top>
 
