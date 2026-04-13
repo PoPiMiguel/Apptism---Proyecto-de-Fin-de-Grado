@@ -42,7 +42,7 @@ public class TareasController implements Initializable {
     @FXML private Label lblPuntosNino;
 
     @Autowired private TareaService tareaService;
-    @Autowired private RutinaService rutinaService; // Para obtener niños del tutor
+    @Autowired private RutinaService rutinaService;
     @Autowired private StageManager stageManager;
 
     private List<Tarea> tareasActualesTutor;
