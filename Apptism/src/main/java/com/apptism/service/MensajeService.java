@@ -86,27 +86,4 @@ public class MensajeService {
         return mensajeRepository.findByReceptorIdAndTipoOrderByFechaDesc(
                 tutorId, TipoMensaje.EMOCION);
     }
-
-    /**
-     * Marca como leídos todos los mensajes de chat no leídos de un receptor.
-     *
-     * @param receptorId identificador del usuario receptor
-     */
-    @Transactional
-    public void marcarLeidos(Long receptorId) {
-        List<Mensaje> noLeidos = mensajeRepository
-                .findByReceptorIdAndTipoOrderByFechaDesc(receptorId, TipoMensaje.CHAT);
-        noLeidos.forEach(m -> m.setLeido(true));
-        mensajeRepository.saveAll(noLeidos);
-    }
-
-    /**
-     * Cuenta el número de mensajes no leídos de un receptor.
-     *
-     * @param receptorId identificador del usuario receptor
-     * @return cantidad de mensajes con {@code leido = false}
-     */
-    public long contarNoLeidos(Long receptorId) {
-        return mensajeRepository.countByReceptorIdAndLeidoFalse(receptorId);
-    }
 }

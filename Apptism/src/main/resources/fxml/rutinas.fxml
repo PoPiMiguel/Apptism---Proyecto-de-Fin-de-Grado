@@ -15,7 +15,6 @@
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
                 <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
                            onMouseClicked="#onVolver" style="-fx-cursor:hand;">
                     <image><Image url="@../images/apptism_icon.png"/></image>
@@ -27,11 +26,20 @@
         <center>
             <SplitPane dividerPositions="0.65">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-                <TabPane fx:id="tabZonas" tabClosingPolicy="UNAVAILABLE">
-                    <Tab text="Mañana"><ListView fx:id="listaManana"/></Tab>
-                    <Tab text="Mediodía"><ListView fx:id="listaMediodia"/></Tab>
-                    <Tab text="Noche"><ListView fx:id="listaNoche"/></Tab>
-                </TabPane>
+
+                <!-- Lista de rutinas por zona horaria con botón eliminar -->
+                <VBox spacing="10" styleClass="panel">
+                    <Label text="Rutinas del niño" styleClass="subtitulo"/>
+                    <TabPane fx:id="tabZonas" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                        <Tab text="Mañana"><ListView fx:id="listaManana" VBox.vgrow="ALWAYS"/></Tab>
+                        <Tab text="Mediodía"><ListView fx:id="listaMediodia" VBox.vgrow="ALWAYS"/></Tab>
+                        <Tab text="Noche"><ListView fx:id="listaNoche" VBox.vgrow="ALWAYS"/></Tab>
+                    </TabPane>
+                    <Button text="Eliminar rutina seleccionada" onAction="#onEliminarRutina"
+                            styleClass="btn-eliminar" maxWidth="Infinity"/>
+                </VBox>
+
+                <!-- Panel de creación de nueva rutina -->
                 <VBox spacing="15" styleClass="panel">
                     <Label text="Nueva rutina" styleClass="subtitulo"/>
                     <Label text="Nombre:"/>
@@ -47,13 +55,11 @@
     </BorderPane>
 
     <!-- ===== VISTA NIÑO ===== -->
-    <!-- StackPane interno para poder inyectar fx:id y usar animaciones -->
     <StackPane fx:id="rootStackNino" visible="false">
         <BorderPane styleClass="root-pane-nino">
             <top>
                 <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                     <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                    <!-- Icono clicable a la izquierda: navega al dashboard -->
                     <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
                                onMouseClicked="#onVolver" style="-fx-cursor:hand;">
                         <image><Image url="@../images/apptism_icon.png"/></image>

@@ -192,35 +192,4 @@ public class UsuarioService {
     public void eliminarUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }
-
-    /**
-     * Suma una cantidad de puntos al saldo acumulado de un niño.
-     *
-     * @param ninoId identificador del niño
-     * @param puntos cantidad de puntos a añadir (puede ser negativa para restar)
-     * @return entidad {@link Usuario} actualizada con el nuevo saldo
-     * @throws RuntimeException si no existe ningún niño con ese identificador
-     */
-    @Transactional
-    public Usuario actualizarPuntos(Long ninoId, int puntos) {
-        Usuario nino = usuarioRepository.findById(ninoId)
-                .orElseThrow(() -> new RuntimeException("Alumno no encontrado"));
-        nino.setPuntosAcumulados(nino.getPuntosAcumulados() + puntos);
-        return usuarioRepository.save(nino);
-    }
-
-    /**
-     * Registra un nuevo usuario validando que el email no esté en uso.
-     *
-     * @param usuario entidad {@link Usuario} con los datos a persistir
-     * @return entidad persistida con su identificador generado
-     * @throws RuntimeException si el email ya está registrado
-     */
-    @Transactional
-    public Usuario registrar(Usuario usuario) {
-        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
-            throw new RuntimeException("El email ya está registrado");
-        }
-        return usuarioRepository.save(usuario);
-    }
 }

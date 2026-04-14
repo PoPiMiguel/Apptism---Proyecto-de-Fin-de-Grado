@@ -13,9 +13,9 @@ public class PasoRutina {
     private Long id;
 
     @Column(nullable = false)
-    private String descripcion; // "Levantarse de la cama"
+    private String descripcion;
 
-    private String pictogramaUrl; // URL de ARASAAC
+    private String pictogramaUrl;
 
     private Integer orden;
 

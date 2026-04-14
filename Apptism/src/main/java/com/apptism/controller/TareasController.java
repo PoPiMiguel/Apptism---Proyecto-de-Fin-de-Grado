@@ -92,10 +92,10 @@ public class TareasController implements Initializable {
         listaTareas.setItems(FXCollections.observableArrayList(
                 tareasActualesTutor.stream().map(t ->
                         (t.isCompletada() ? "[OK] " : "[ ] ") +
-                        "[" + t.getNino().getNombre() + "] " +
-                        t.getTitulo() +
-                        (t.getPuntosPorCompletar() > 0 ? " [+" + t.getPuntosPorCompletar() + " pts]" : "") +
-                        (t.getCategoria() != null ? " · " + t.getCategoria().name() : "")
+                                "[" + t.getNino().getNombre() + "] " +
+                                t.getTitulo() +
+                                (t.getPuntosPorCompletar() > 0 ? " [+" + t.getPuntosPorCompletar() + " pts]" : "") +
+                                (t.getCategoria() != null ? " · " + t.getCategoria().name() : "")
                 ).toList()
         ));
         lblPuntosTotales.setText(tareasActualesTutor.size() + " tareas asignadas");
@@ -111,7 +111,7 @@ public class TareasController implements Initializable {
         int idxNino = cmbNinoTutor.getSelectionModel().getSelectedIndex();
         if (idxNino < 0 || ninosDisponibles == null || ninosDisponibles.isEmpty()) {
             alerta("Selecciona un niño al que asignar la tarea.\n" +
-                   "Asegúrate de que tienes niños asignados en el sistema.");
+                    "Asegúrate de que tienes niños asignados en el sistema.");
             return;
         }
 
@@ -167,9 +167,9 @@ public class TareasController implements Initializable {
         String colorFondo = tarea.isCompletada() ? "#E8FAF4" : "white";
         String catStr = tarea.getCategoria() != null ? tarea.getCategoria().name() : "";
         tarjeta.setStyle(
-            "-fx-background-color:" + colorFondo + ";" +
-            "-fx-background-radius:24px;" +
-            "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.10),10,0,0,3);"
+                "-fx-background-color:" + colorFondo + ";" +
+                        "-fx-background-radius:24px;" +
+                        "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.10),10,0,0,3);"
         );
 
         Label lblEmoji = new Label(emojiCategoria(catStr));
@@ -188,9 +188,9 @@ public class TareasController implements Initializable {
         if (!tarea.isCompletada()) {
             Button btn = new Button("¡Hecho!");
             btn.setStyle(
-                "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
-                "-fx-font-size:15px; -fx-font-weight:bold;" +
-                "-fx-background-radius:16px; -fx-padding:9px 18px; -fx-cursor:hand;"
+                    "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
+                            "-fx-font-size:15px; -fx-font-weight:bold;" +
+                            "-fx-background-radius:16px; -fx-padding:9px 18px; -fx-cursor:hand;"
             );
             btn.setOnAction(e -> completarTareaNino(tarea, tarjeta));
             tarjeta.getChildren().add(btn);
@@ -208,7 +208,6 @@ public class TareasController implements Initializable {
         LoginController.usuarioActivo.setPuntosAcumulados(nuevosPuntos);
         tarea.setCompletada(true);
 
-        AnimacionUtil.animarExito(tarjeta);
         if (rootStackNino != null) AnimacionUtil.mostrarPuntos(rootStackNino, puntos);
 
         actualizarPuntosNino();

@@ -42,16 +42,6 @@ public class TareaService {
     }
 
     /**
-     * Devuelve únicamente las tareas pendientes (no completadas) de un niño.
-     *
-     * @param ninoId identificador del niño
-     * @return lista de tareas con {@code completada = false}
-     */
-    public List<Tarea> getTareasPendientes(Long ninoId) {
-        return tareaRepository.findByNinoIdAndCompletada(ninoId, false);
-    }
-
-    /**
      * Crea una nueva tarea y la asigna a un niño concreto.
      *
      * @param titulo       título descriptivo de la tarea
@@ -80,21 +70,6 @@ public class TareaService {
                 .build();
 
         return tareaRepository.save(tarea);
-    }
-
-    /**
-     * Sobrecarga de {@link #crearTarea(String, String, int, Long, Long)} que
-     * asigna la tarea y la marca como creada por el mismo usuario.
-     *
-     * @param titulo       título de la tarea
-     * @param categoriaStr categoría de la tarea
-     * @param puntos       puntos por completar
-     * @param usuarioId    identificador del usuario (actúa como niño y creador)
-     * @return entidad {@link Tarea} persistida
-     */
-    @Transactional
-    public Tarea crearTarea(String titulo, String categoriaStr, int puntos, Long usuarioId) {
-        return crearTarea(titulo, categoriaStr, puntos, usuarioId, usuarioId);
     }
 
     /**
@@ -133,16 +108,6 @@ public class TareaService {
     @Transactional
     public void eliminarTarea(Long tareaId) {
         tareaRepository.deleteById(tareaId);
-    }
-
-    /**
-     * Devuelve todas las tareas creadas por un tutor concreto.
-     *
-     * @param creadorId identificador del tutor creador
-     * @return lista de tareas creadas por ese tutor
-     */
-    public List<Tarea> getTareasCreadasPor(Long creadorId) {
-        return tareaRepository.findByCreadorId(creadorId);
     }
 
     /**

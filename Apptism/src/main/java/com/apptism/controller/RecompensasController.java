@@ -23,33 +23,40 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controlador del módulo de recompensas.
+ *
+ * Vista tutor: crear y listar recompensas.
+ * Vista niño: ver recompensas disponibles y canjearlas si tiene puntos suficientes.
+ * Al canjear, los puntos se descuentan inmediatamente y queda registrado
+ * en el historial de canjes visible para el tutor.
+ */
 @Component
 public class RecompensasController implements Initializable {
 
     // ---- Vista TUTOR ----
-
-    @FXML private BorderPane panelTutor;
+    @FXML private BorderPane       panelTutor;
     @FXML private ListView<String> listaRecompensas;
-    @FXML private TextField txtDescripcion;
+    @FXML private TextField        txtDescripcion;
     @FXML private Spinner<Integer> spinnerPuntos;
-    @FXML private Label lblPuntosDisponibles;
+    @FXML private Label            lblPuntosDisponibles;
 
     // ---- Vista NIÑO ----
     @FXML private StackPane rootStackNino;
-    @FXML private FlowPane flowRecompensasNino;
-    @FXML private Label lblPuntosNino;
+    @FXML private FlowPane  flowRecompensasNino;
+    @FXML private Label     lblPuntosNino;
 
     @Autowired private RecompensaService recompensaService;
-    @Autowired private UsuarioService usuarioService;
+    @Autowired private UsuarioService    usuarioService;
     @Lazy @Autowired private StageManager stageManager;
 
     private List<Recompensa> recompensasActualesTutor;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         Usuario usuario = LoginController.usuarioActivo;
-        boolean esTutor = usuario.getRol() == RolUsuario.PADRE || usuario.getRol() == RolUsuario.PROFESOR;
+        boolean esTutor = usuario.getRol() == RolUsuario.PADRE
+                || usuario.getRol() == RolUsuario.PROFESOR;
 
         if (panelTutor != null)    panelTutor.setVisible(esTutor);
         if (rootStackNino != null) rootStackNino.setVisible(!esTutor);
@@ -93,8 +100,6 @@ public class RecompensasController implements Initializable {
     // ======================== NIÑO ========================
 
     private void cargarRecompensasNino() {
-        // El niño ve SOLO las recompensas creadas por sus tutores asignados
-        // Si no tiene tutores asignados, ve un mensaje vacío
         Usuario nino = LoginController.usuarioActivo;
         List<Usuario> tutoresDelNino = usuarioService.getTutoresDeNino(nino.getId());
 
@@ -103,8 +108,7 @@ public class RecompensasController implements Initializable {
             recompensasDelNino.addAll(recompensaService.getRecompensasDisponibles(tutor.getId()));
         }
 
-        int puntosNino = nino.getPuntosAcumulados();
-        renderizarTarjetasNino(recompensasDelNino, puntosNino);
+        renderizarTarjetasNino(recompensasDelNino, nino.getPuntosAcumulados());
     }
 
     private void renderizarTarjetasNino(List<Recompensa> recompensas, int puntosDisponibles) {
@@ -125,6 +129,7 @@ public class RecompensasController implements Initializable {
 
     private VBox crearTarjetaRecompensaNino(Recompensa recompensa, int puntosDisponibles) {
         boolean puedeGanar = puntosDisponibles >= recompensa.getPuntosNecesarios();
+
         VBox tarjeta = new VBox(12);
         tarjeta.setAlignment(Pos.CENTER);
         tarjeta.setPadding(new Insets(18));
@@ -137,17 +142,19 @@ public class RecompensasController implements Initializable {
                         (puedeGanar ? "" : "-fx-opacity:0.7;")
         );
 
-        Label lblGift = new Label("");
+        Label lblGift = new Label("🎁");
         lblGift.setStyle("-fx-font-size:50px;");
         tarjeta.getChildren().add(lblGift);
 
         Label lblNombre = new Label(recompensa.getDescripcion());
         lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
-        lblNombre.setMaxWidth(180); lblNombre.setWrapText(true);
+        lblNombre.setMaxWidth(180);
+        lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
         Label lblPts = new Label(recompensa.getPuntosNecesarios() + " pts");
-        lblPts.setStyle("-fx-font-size:14px; -fx-text-fill:" + (puedeGanar ? "#4A6F5A" : "#9BB0A0") + "; -fx-font-weight:bold;");
+        lblPts.setStyle("-fx-font-size:14px; -fx-text-fill:"
+                + (puedeGanar ? "#4A6F5A" : "#9BB0A0") + "; -fx-font-weight:bold;");
         tarjeta.getChildren().add(lblPts);
 
         if (puedeGanar) {
@@ -168,9 +175,9 @@ public class RecompensasController implements Initializable {
         boolean exito = recompensaService.canjearRecompensa(
                 LoginController.usuarioActivo.getId(), recompensa.getId());
         if (exito) {
-            int nuevos = LoginController.usuarioActivo.getPuntosAcumulados() - recompensa.getPuntosNecesarios();
+            int nuevos = LoginController.usuarioActivo.getPuntosAcumulados()
+                    - recompensa.getPuntosNecesarios();
             LoginController.usuarioActivo.setPuntosAcumulados(nuevos);
-            AnimacionUtil.animarExito(tarjeta);
             if (rootStackNino != null) AnimacionUtil.mostrarPuntos(rootStackNino, 0);
             actualizarPuntosNino();
             cargarRecompensasNino();
@@ -181,7 +188,8 @@ public class RecompensasController implements Initializable {
 
     private void actualizarPuntosNino() {
         if (lblPuntosNino != null)
-            lblPuntosNino.setText(LoginController.usuarioActivo.getPuntosAcumulados() + " puntos");
+            lblPuntosNino.setText(
+                    LoginController.usuarioActivo.getPuntosAcumulados() + " puntos");
     }
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }

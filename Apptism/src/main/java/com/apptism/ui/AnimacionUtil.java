@@ -107,77 +107,7 @@ public class AnimacionUtil {
 
             entrada.play();
             desaparecer.play();
-
-            if (puntos > 0) {
-                lluviaEmojis(contenedor);
-            }
         });
     }
 
-    /**
-     * Genera un efecto de lluvia de emojis de celebración sobre el contenedor.
-     *
-     * <p>Lanza 10 emojis en posiciones horizontales aleatorias con retardos
-     * escalonados. Cada emoji sube y desaparece con un efecto de desvanecimiento,
-     * siendo eliminado del contenedor al finalizar su animación.
-     *
-     * @param contenedor {@link StackPane} sobre el que se añaden los emojis temporalmente
-     */
-    private static void lluviaEmojis(StackPane contenedor) {
-        String[] emojis = {"⭐", "🌟", "🎉", "✨", "🎊", "💫"};
-        Random rnd = new Random();
-
-        for (int i = 0; i < 10; i++) {
-            int delay = rnd.nextInt(600);
-
-            Label star = new Label(emojis[rnd.nextInt(emojis.length)]);
-            double startX = rnd.nextDouble() * 800 - 400;
-            star.setStyle("-fx-font-size: " + (18 + rnd.nextInt(20)) + "px;");
-            star.setTranslateX(startX);
-            star.setTranslateY(200);
-            star.setOpacity(0);
-
-            Platform.runLater(() -> contenedor.getChildren().add(star));
-
-            // Retardo escalonado para que los emojis no aparezcan todos a la vez
-            PauseTransition pausa = new PauseTransition(Duration.millis(delay));
-            pausa.setOnFinished(e -> {
-                FadeTransition fa = new FadeTransition(Duration.millis(200), star);
-                fa.setFromValue(0);
-                fa.setToValue(1);
-
-                TranslateTransition sube = new TranslateTransition(Duration.millis(900), star);
-                sube.setToY(-300);
-
-                FadeTransition fd = new FadeTransition(Duration.millis(500), star);
-                fd.setFromValue(1);
-                fd.setToValue(0);
-                fd.setDelay(Duration.millis(500));
-                fd.setOnFinished(ev ->
-                        Platform.runLater(() -> contenedor.getChildren().remove(star))
-                );
-
-                new ParallelTransition(fa, sube).play();
-                fd.play();
-            });
-            pausa.play();
-        }
-    }
-
-    /**
-     * Aplica un parpadeo suave en verde sobre el nodo indicado para destacar
-     * que ha sido actualizado o que ha ocurrido un cambio relevante.
-     *
-     * <p>La opacidad oscila entre 1,0 y 0,3 en 6 ciclos con reversión automática.
-     *
-     * @param nodo nodo JavaFX sobre el que se aplica el efecto de parpadeo
-     */
-    public static void parpadearVerde(Node nodo) {
-        FadeTransition fade = new FadeTransition(Duration.millis(300), nodo);
-        fade.setFromValue(1.0);
-        fade.setToValue(0.3);
-        fade.setCycleCount(6);
-        fade.setAutoReverse(true);
-        fade.play();
-    }
 }

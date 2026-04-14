@@ -48,8 +48,13 @@ public class RutinasController implements Initializable {
     @Autowired private RutinaService rutinaService;
     @Lazy @Autowired private StageManager stageManager;
 
-    private List<Rutina> rutinasActualesNino;
-    private List<Usuario> ninosDisponibles; // Para el tutor
+    private List<Rutina>  rutinasActualesNino;
+    private List<Usuario> ninosDisponibles;
+
+    // Referencias a las listas por zona para poder eliminar por índice
+    private List<Rutina> rutinasManana;
+    private List<Rutina> rutinasMediodia;
+    private List<Rutina> rutinasNoche;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -94,7 +99,7 @@ public class RutinasController implements Initializable {
         // Usar primer niño seleccionado para mostrar
         int idx = cmbNinoTutor.getSelectionModel().getSelectedIndex();
         Long ninoId = (idx >= 0) ? ninosDisponibles.get(idx).getId()
-                                 : ninosDisponibles.get(0).getId();
+                : ninosDisponibles.get(0).getId();
 
         cargarRutinasPorZona(ninoId, ZonaHoraria.MANANA, listaManana);
         cargarRutinasPorZona(ninoId, ZonaHoraria.MEDIODIA, listaMediodia);
@@ -103,11 +108,49 @@ public class RutinasController implements Initializable {
 
     private void cargarRutinasPorZona(Long ninoId, ZonaHoraria zona, ListView<String> lista) {
         List<Rutina> rutinas = rutinaService.getRutinasByZona(ninoId, zona);
+
+        // Guardar referencia local para poder eliminar por índice
+        switch (zona) {
+            case MANANA   -> rutinasManana   = rutinas;
+            case MEDIODIA -> rutinasMediodia = rutinas;
+            case NOCHE    -> rutinasNoche    = rutinas;
+        }
+
         lista.setItems(FXCollections.observableArrayList(
                 rutinas.stream()
-                       .map(r -> (r.isCompletada() ? "[OK] " : "[ ] ") + r.getNombre())
-                       .toList()
+                        .map(r -> (r.isCompletada() ? "[OK] " : "[ ] ") + r.getNombre())
+                        .toList()
         ));
+    }
+
+    @FXML
+    private void onEliminarRutina() {
+        int tabIdx = tabZonas.getSelectionModel().getSelectedIndex();
+
+        ListView<String> listaActiva;
+        List<Rutina>     rutinasActivas;
+
+        switch (tabIdx) {
+            case 1  -> { listaActiva = listaMediodia; rutinasActivas = rutinasMediodia; }
+            case 2  -> { listaActiva = listaNoche;    rutinasActivas = rutinasNoche;    }
+            default -> { listaActiva = listaManana;   rutinasActivas = rutinasManana;   }
+        }
+
+        int idx = listaActiva.getSelectionModel().getSelectedIndex();
+        if (idx < 0 || rutinasActivas == null || rutinasActivas.isEmpty()) {
+            alerta("Selecciona una rutina de la lista para eliminarla.");
+            return;
+        }
+
+        Rutina rutina = rutinasActivas.get(idx);
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "¿Eliminar la rutina \"" + rutina.getNombre() + "\"?\nEsta acción no se puede deshacer.");
+        confirm.showAndWait().ifPresent(resp -> {
+            if (resp == ButtonType.OK) {
+                rutinaService.eliminarRutina(rutina.getId());
+                cargarTodasLasRutinasTutor();
+            }
+        });
     }
 
     @FXML
@@ -121,7 +164,7 @@ public class RutinasController implements Initializable {
         int idxNino = cmbNinoTutor.getSelectionModel().getSelectedIndex();
         if (idxNino < 0 || ninosDisponibles == null || ninosDisponibles.isEmpty()) {
             alerta("Selecciona un niño al que asignar la rutina.\n" +
-                   "Asegúrate de que tienes niños asignados en el sistema.");
+                    "Asegúrate de que tienes niños asignados en el sistema.");
             return;
         }
 
@@ -164,27 +207,10 @@ public class RutinasController implements Initializable {
         tarjeta.setPrefHeight(220);
         String colorFondo = rutina.isCompletada() ? "#E8FAF4" : "white";
         tarjeta.setStyle(
-            "-fx-background-color:" + colorFondo + ";" +
-            "-fx-background-radius:24px;" +
-            "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.10),10,0,0,3);"
+                "-fx-background-color:" + colorFondo + ";" +
+                        "-fx-background-radius:24px;" +
+                        "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.10),10,0,0,3);"
         );
-
-        if (rutina.getPictogramaUrl() != null && !rutina.getPictogramaUrl().isBlank()) {
-            ImageView img = new ImageView();
-            img.setFitWidth(90); img.setFitHeight(90);
-            img.setPreserveRatio(true);
-            new Thread(() -> {
-                try {
-                    Image imagen = new Image(rutina.getPictogramaUrl(), 90, 90, true, true, true);
-                    Platform.runLater(() -> img.setImage(imagen));
-                } catch (Exception ignored) {}
-            }).start();
-            tarjeta.getChildren().add(img);
-        } else {
-            Label emoji = new Label(emojiZonaEmoji(rutina.getZonaHoraria()));
-            emoji.setStyle("-fx-font-size:48px;");
-            tarjeta.getChildren().add(emoji);
-        }
 
         Label lblNombre = new Label(rutina.getNombre());
         lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
@@ -198,9 +224,9 @@ public class RutinasController implements Initializable {
         if (!rutina.isCompletada()) {
             Button btn = new Button("¡Hecho!");
             btn.setStyle(
-                "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
-                "-fx-font-size:14px; -fx-font-weight:bold;" +
-                "-fx-background-radius:16px; -fx-padding:8px 16px; -fx-cursor:hand;"
+                    "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
+                            "-fx-font-size:14px; -fx-font-weight:bold;" +
+                            "-fx-background-radius:16px; -fx-padding:8px 16px; -fx-cursor:hand;"
             );
             btn.setOnAction(e -> completarRutinaNino(rutina, tarjeta));
             tarjeta.getChildren().add(btn);
@@ -215,7 +241,6 @@ public class RutinasController implements Initializable {
     private void completarRutinaNino(Rutina rutina, VBox tarjeta) {
         rutinaService.marcarCompletada(rutina.getId());
         rutina.setCompletada(true);
-        AnimacionUtil.animarExito(tarjeta);
         if (rootStackNino != null) AnimacionUtil.mostrarPuntos(rootStackNino, 0);
         Platform.runLater(this::renderizarTarjetasNino);
     }

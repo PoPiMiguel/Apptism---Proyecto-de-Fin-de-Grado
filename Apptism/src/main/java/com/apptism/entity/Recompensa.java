@@ -21,8 +21,6 @@ public class Recompensa {
     @Column(nullable = false)
     private Integer puntosNecesarios;
 
-    private String pictogramaUrl;
-
     @Builder.Default
     private boolean activa = true;
 

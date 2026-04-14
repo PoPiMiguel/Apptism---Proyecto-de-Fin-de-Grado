@@ -131,7 +131,6 @@ public class ArasaacService {
         String cacheKey = "__emociones_basicas__";
         if (cache.containsKey(cacheKey)) return cache.get(cacheKey);
 
-        // Pares [término de búsqueda, etiqueta de fallback con emoji]
         String[][] emocionesQuery = {
                 {"alegre",      "😊 Alegre"},
                 {"triste",      "😢 Triste"},
@@ -160,13 +159,6 @@ public class ArasaacService {
 
         cache.put(cacheKey, resultado);
         return resultado;
-    }
-
-    /**
-     * Vacía la caché de pictogramas para forzar nuevas peticiones a la API.
-     */
-    public void limpiarCache() {
-        cache.clear();
     }
 
     /**

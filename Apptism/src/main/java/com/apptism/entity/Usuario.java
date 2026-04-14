@@ -31,8 +31,6 @@ public class Usuario {
     @Column(nullable = false)
     private String nombre;
 
-    private LocalDate fechaNacimiento;
-
     @Builder.Default
     private Integer puntosAcumulados = 0;
 

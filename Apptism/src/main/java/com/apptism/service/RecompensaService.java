@@ -42,25 +42,6 @@ public class RecompensaService {
     }
 
     /**
-     * Devuelve todas las recompensas activas del sistema, sin filtrar por tutor.
-     *
-     * @return lista de todas las recompensas con {@code activa = true}
-     */
-    public List<Recompensa> getTodasRecompensasActivas() {
-        return recompensaRepository.findByActivaTrue();
-    }
-
-    /**
-     * Devuelve las recompensas cuyo coste en puntos es menor o igual al indicado.
-     *
-     * @param puntos saldo de puntos disponible del niño
-     * @return lista de recompensas accesibles con ese saldo
-     */
-    public List<Recompensa> getRecompensasAccesibles(int puntos) {
-        return recompensaRepository.findByPuntosNecesariosLessThanEqual(puntos);
-    }
-
-    /**
      * Crea una nueva recompensa asociada al tutor indicado.
      *
      * @param descripcion texto descriptivo de la recompensa
@@ -110,7 +91,6 @@ public class RecompensaService {
                     nino.getPuntosAcumulados() - recompensa.getPuntosNecesarios());
             usuarioRepository.save(nino);
 
-            // Registrar la solicitud para que el tutor pueda revisarla
             SolicitudCanje solicitud = SolicitudCanje.builder()
                     .nino(nino)
                     .recompensa(recompensa)
@@ -120,15 +100,5 @@ public class RecompensaService {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Elimina permanentemente una recompensa por su identificador.
-     *
-     * @param recompensaId identificador de la recompensa a eliminar
-     */
-    @Transactional
-    public void eliminarRecompensa(Long recompensaId) {
-        recompensaRepository.deleteById(recompensaId);
     }
 }

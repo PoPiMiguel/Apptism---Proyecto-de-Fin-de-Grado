@@ -25,8 +25,6 @@ public class Rutina {
     @Column(nullable = false)
     private ZonaHoraria zonaHoraria;
 
-    private String pictogramaUrl;
-
     @Builder.Default
     private boolean completada = false;
 

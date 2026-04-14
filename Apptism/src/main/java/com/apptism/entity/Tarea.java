@@ -19,8 +19,6 @@ public class Tarea {
     @Column(nullable = false)
     private String titulo;
 
-    private String descripcion;
-
     @Enumerated(EnumType.STRING)
     private CategoriaTarea categoria;
 
@@ -29,8 +27,6 @@ public class Tarea {
 
     @Builder.Default
     private boolean completada = false;
-
-    private LocalDateTime fechaProgramada;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nino_id", nullable = false)

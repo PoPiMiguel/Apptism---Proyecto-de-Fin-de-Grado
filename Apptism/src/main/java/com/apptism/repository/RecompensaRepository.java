@@ -8,6 +8,4 @@ import java.util.List;
 @Repository
 public interface RecompensaRepository extends JpaRepository<Recompensa, Long> {
     List<Recompensa> findByFamiliaIdAndActivaTrue(Long familiaId);
-    List<Recompensa> findByActivaTrue();
-    List<Recompensa> findByPuntosNecesariosLessThanEqual(Integer puntos);
 }
