@@ -75,8 +75,8 @@ public class AnimacionUtil {
 
         Label lblPuntos = new Label(texto);
         lblPuntos.setStyle(
-                "-fx-background-color: #6FCF97;" +
-                        "-fx-text-fill: white;" +
+                "-fx-background-color: -apptism-principal;" +
+                        "-fx-text-fill: -apptism-text-light;" +
                         "-fx-font-size: 26px;" +
                         "-fx-font-weight: bold;" +
                         "-fx-padding: 18px 36px;" +

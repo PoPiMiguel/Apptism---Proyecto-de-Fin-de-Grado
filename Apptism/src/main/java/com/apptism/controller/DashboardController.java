@@ -6,7 +6,7 @@ package com.apptism.controller;
 import com.apptism.config.FxmlView;
 import com.apptism.entity.RolUsuario;
 import com.apptism.entity.Usuario;
-import com.apptism.repository.SolicitudCanjeRepository;
+import com.apptism.service.SolicitudCanjeService;
 import com.apptism.ui.StageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,7 +42,7 @@ public class DashboardController implements Initializable {
     @FXML private Label      lblBienvenidaNino;
     @FXML private Label      lblPuntosNino;
 
-    @Autowired private SolicitudCanjeRepository solicitudRepo;
+    @Autowired private SolicitudCanjeService solicitudCanjeService;
     @Autowired private StageManager stageManager;
 
     /**
@@ -67,8 +67,7 @@ public class DashboardController implements Initializable {
             lblBienvenida.setText("¡Hola, " + usuario.getNombre() + "!");
 
             // Badge de notificación: solicitudes de canje pendientes
-            long pendientes = solicitudRepo
-                    .countByRecompensaFamiliaIdAndLeidaFalse(usuario.getId());
+            long pendientes = solicitudCanjeService.contarNoLeidas(usuario.getId());
             lblBadgeSolicitudes.setText(String.valueOf(pendientes));
             lblBadgeSolicitudes.setVisible(pendientes > 0);
         } else {
