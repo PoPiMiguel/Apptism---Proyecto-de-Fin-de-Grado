@@ -1,6 +1,6 @@
 /* =============================================
    APPTISM — ESTILOS (JavaFX)
-   Paleta definitiva v2.0
+   Paleta definitiva v3.0
    ─────────────────────────────────────────────
    Principal:      #7EC8A0  Verde menta
    Principal soft: #A8DFC4  Menta suave (header niño)
@@ -21,21 +21,21 @@
     -apptism-accent-gold:     #E8C96A;
 
     /* ── Fondos ── */
-    -apptism-bg-soft:         #F5F0E8;   /* Fondo tutor — hueso cálido      */
-    -apptism-bg-nino:         #FAF7F2;   /* Fondo niño  — hueso luminoso     */
+    -apptism-bg-soft:         #F5F0E8;
+    -apptism-bg-nino:         #FAF7F2;
     -apptism-bg-white:        #FFFFFF;
 
     /* ── Texto ── */
-    -apptism-text-main:       #2F5244;   /* Verde muy oscuro — más cálido que negro */
-    -apptism-text-muted:      #5C7A6E;   /* Verde medio para texto secundario       */
+    -apptism-text-main:       #2F5244;
+    -apptism-text-muted:      #5C7A6E;
     -apptism-text-light:      #FFFFFF;
 
     /* ── Bordes y sombras ── */
-    -apptism-border:          #D8CCBA;   /* Borde hueso — armoniza con el fondo     */
+    -apptism-border:          #D8CCBA;
     -apptism-shadow:          rgba(47, 82, 68, 0.14);
 
     /* ── Grises funcionales ── */
-    -apptism-gris-light:      #EDE8DF;   /* Botón volver — hueso medio              */
+    -apptism-gris-light:      #EDE8DF;
     -apptism-gris-medium:     #8A9E96;
     -apptism-gris-dark:       #2F5244;
 
@@ -82,7 +82,6 @@
 }
 
 /* ─── Fondos de pantalla ─── */
-/* Tutor usa fondo hueso cálido, niño usa hueso luminoso */
 .root-pane,
 .login-root {
     -fx-background-color: -apptism-bg-soft;
@@ -99,7 +98,6 @@
     -fx-min-height: Infinity;
 }
 
-/* Círculos decorativos del login — coherentes con la nueva paleta */
 .deco-circle-purple { -fx-fill: rgba(126, 200, 160, 0.18); }
 .deco-circle-orange { -fx-fill: rgba(245, 169, 122, 0.18); }
 .deco-circle-blue   { -fx-fill: rgba(232, 201, 106, 0.20); }
@@ -140,7 +138,6 @@
     -fx-padding: 2px 0 0 0;
 }
 
-
 .login-field-group { -fx-padding: 14px 0 0 0; }
 
 .login-field-label {
@@ -163,7 +160,6 @@
     -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.26), 10, 0, 0, 4);
 }
 
-/* Puntos decorativos del login — usan todos los colores de la paleta */
 .login-dots-row { -fx-padding: 20px 0 0 0; }
 
 .dot-morado, .dot-azul, .dot-verde, .dot-amarillo, .dot-naranja {
@@ -188,7 +184,7 @@
     -fx-border-color: -apptism-border;
     -fx-border-radius: 12px;
     -fx-border-width: 1.4px;
-    -fx-background-color: #FDFAF6;   /* Blanco ligeramente hueso */
+    -fx-background-color: #FDFAF6;
     -fx-text-fill: -apptism-text-main;
 }
 
@@ -204,42 +200,108 @@
 }
 
 /* ─── Headers ─── */
-/* Tutor: verde menta principal / Niño: menta suave más clara */
 .header {
     -fx-background-color: -apptism-principal;
-    -fx-padding: 15px 25px;
-    -fx-background-radius: 0 0 18px 18px;
-    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.12), 8, 0, 0, 2);
+    -fx-padding: 18px 28px;
+    -fx-background-radius: 0 0 20px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.15), 10, 0, 0, 3);
+    -fx-border-color: transparent transparent #5BAF8A transparent;
+    -fx-border-width: 0 0 2px 0;
 }
 
 .header-nino {
     -fx-background-color: -apptism-principal-soft;
-    -fx-padding: 15px 25px;
-    -fx-background-radius: 0 0 18px 18px;
-    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 8, 0, 0, 2);
+    -fx-padding: 18px 28px;
+    -fx-background-radius: 0 0 20px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.12), 10, 0, 0, 3);
+    -fx-border-color: transparent transparent #5BAF8A transparent;
+    -fx-border-width: 0 0 2px 0;
 }
 
 .titulo-header {
     -fx-text-fill: -apptism-text-main;
-    -fx-font-size: 22px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 2, 0, 0, 1);
 }
 
 /* ─── Paneles y tarjetas ─── */
-/* Blanco puro para máximo contraste sobre los fondos hueso */
 .panel,
 .tarjeta-nino {
     -fx-background-color: -apptism-bg-white;
     -fx-background-radius: 20px;
     -fx-padding: 22px;
-    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 10, 0, 0, 3);
-    -fx-border-color: rgba(216, 204, 186, 0.70);
-    -fx-border-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.07), 12, 0, 0, 2);
 }
 
 .subtitulo {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
+    -fx-text-fill: -apptism-text-main;
+}
+
+/* ─── ListView ─── */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-background-radius: 14px;
+    -fx-border-color: -apptism-border;
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-padding: 4px;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 13px;
+    -fx-text-fill: -apptism-text-main;
+    -fx-border-color: transparent;
+}
+
+.list-view .list-cell:odd {
+    -fx-background-color: rgba(216, 204, 186, 0.18);
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: -apptism-principal-soft;
+    -fx-text-fill: -apptism-text-main;
+    -fx-background-radius: 10px;
+}
+
+/* ─── ComboBox ─── */
+.combo-box {
+    -fx-background-color: -apptism-bg-white;
+    -fx-border-color: -apptism-border;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-border-width: 1.4px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: -apptism-text-main;
+    -fx-cursor: hand;
+}
+
+.combo-box:focused {
+    -fx-border-color: -apptism-principal;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: -apptism-text-main;
+    -fx-font-size: 14px;
+}
+
+/* ─── Spinner ─── */
+.spinner {
+    -fx-background-color: -apptism-bg-white;
+    -fx-border-color: -apptism-border;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-border-width: 1.4px;
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
     -fx-text-fill: -apptism-text-main;
 }
 
@@ -270,8 +332,23 @@
     -fx-background-color: -apptism-hover;
 }
 
+/* ─── Botón de acción principal (admin) ─── */
+.btn-accion {
+    -fx-background-color: -apptism-principal;
+    -fx-text-fill: -apptism-text-main;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 16px;
+    -fx-padding: 12px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.16), 6, 0, 0, 2);
+}
+
+.btn-accion:hover {
+    -fx-background-color: -apptism-hover;
+}
+
 /* ─── Botón volver / salir ─── */
-/* Hueso medio — visible sobre header verde sin competir con él */
 .btn-volver,
 .btn-volver-nino {
     -fx-background-color: -apptism-gris-light;
@@ -304,7 +381,7 @@
     -fx-background-color: #EAC8C8;
 }
 
-/* ─── Botón dashboard (pantalla principal tutor) ─── */
+/* ─── Botón dashboard ─── */
 .btn-dashboard {
     -fx-font-size: 17px;
     -fx-background-radius: 22px;
@@ -332,7 +409,6 @@
     -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.22), 10, 0, 0, 3);
 }
 
-/* Variantes de color para los botones del niño en el dashboard */
 .btn-nino-azul    { -fx-background-color: #7EC8A0; -fx-text-fill: #1A4433; }
 .btn-nino-verde   { -fx-background-color: #A8DFC4; -fx-text-fill: #1A4433; }
 .btn-nino-amarillo{ -fx-background-color: #E8C96A; -fx-text-fill: #4A3A00; }
@@ -347,8 +423,7 @@
 .btn-nino-naranja:hover  { -fx-background-color: #D4845A; -fx-text-fill: #5C2A00; }
 .btn-nino-rosa:hover     { -fx-background-color: #8DD0B0; -fx-text-fill: #1A4433; }
 
-/* ─── Puntos y recompensas — ámbar dorado exclusivo ─── */
-/* El dorado se reserva SOLO para puntos/logros para crear asociación cognitiva */
+/* ─── Puntos y recompensas ─── */
 .puntos-nino {
     -fx-text-fill: #4A3A00;
     -fx-font-size: 26px;
@@ -368,7 +443,7 @@
     -fx-padding: 4px 14px;
 }
 
-/* ─── Badge de notificación — melocotón (urgencia suave) ─── */
+/* ─── Badge de notificación ─── */
 .badge-notificacion {
     -fx-background-color: -apptism-accent;
     -fx-text-fill: #5C2A00;
@@ -392,7 +467,7 @@
 
 /* ─── Burbujas del chat ─── */
 .burbuja-propia {
-    -fx-background-color: #E4F4EC;   /* Verde muy suave — mensaje propio  */
+    -fx-background-color: #E4F4EC;
     -fx-background-radius: 16px 16px 4px 16px;
 }
 
@@ -412,9 +487,9 @@
     -fx-background-radius: 16px;
 }
 
-/* ─── Tabs (rutinas: mañana / mediodía / noche) ─── */
+/* ─── Tabs ─── */
 .tab-pane > .tab-header-area > .headers-region > .tab {
-    -fx-background-color: #EDE8DF;   /* Hueso medio — tab inactiva */
+    -fx-background-color: #EDE8DF;
     -fx-background-radius: 10px 10px 0 0;
     -fx-padding: 8px 18px;
 }
@@ -426,7 +501,7 @@
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
-    -fx-background-color: -apptism-principal;   /* Verde menta — tab activa */
+    -fx-background-color: -apptism-principal;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
