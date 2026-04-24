@@ -29,14 +29,12 @@ import java.util.stream.Collectors;
 import java.util.ResourceBundle;
 
 /**
- * Controlador del módulo de registro emocional (exclusivo para tutores).
+ * Controlador de la pantalla de registro emocional (exclusivo para tutores).
  *
- * <p>Muestra los pictogramas de emoción enviados por los niños del tutor,
- * y una representación gráfica de barras con la frecuencia de cada emoción
- * por día de la semana durante los últimos 7 días.
- *
- * <p>El tutor puede seleccionar a qué niño ver mediante un combo,
- * actualizándose tanto el panel de pictogramas como el gráfico.
+ * Muestra los pictogramas de emoción que han enviado los niños del tutor,
+ * y un gráfico de barras con la frecuencia de cada emoción por día durante
+ * la última semana. El tutor puede cambiar de niño con el desplegable y
+ * tanto el panel de pictogramas como el gráfico se actualizan solos.
  */
 @Component
 public class RegistroEmocionalController implements Initializable {
@@ -54,9 +52,7 @@ public class RegistroEmocionalController implements Initializable {
 
     private List<Usuario> ninos;
 
-    /**
-     * Configura el gráfico y carga los niños vinculados al tutor.
-     */
+    /** Prepara el gráfico y carga los niños vinculados al tutor. */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarGrafico();
@@ -64,9 +60,8 @@ public class RegistroEmocionalController implements Initializable {
     }
 
     /**
-     * Carga en el combo los niños vinculados al tutor. Si no hay ninguno,
-     * muestra un mensaje informativo. Configura el listener para recargar
-     * los datos al cambiar la selección.
+     * Carga los niños del tutor en el desplegable. Si no tiene ninguno asignado,
+     * muestra un aviso. Configura el listener para recargar al cambiar de niño.
      */
     private void cargarNinos() {
         ninos = usuarioService.getNinosDetutor(LoginController.usuarioActivo.getId());
@@ -86,9 +81,7 @@ public class RegistroEmocionalController implements Initializable {
         cmbNino.getSelectionModel().selectFirst();
     }
 
-    /**
-     * Establece las etiquetas de los ejes y el título del gráfico de barras.
-     */
+    /** Configura las etiquetas de los ejes y el título del gráfico. */
     private void configurarGrafico() {
         if (ejeX != null) ejeX.setLabel("Día de la semana");
         if (ejeY != null) ejeY.setLabel("Nº de emociones");
@@ -99,11 +92,10 @@ public class RegistroEmocionalController implements Initializable {
     }
 
     /**
-     * Carga y muestra los pictogramas emocionales enviados por el niño
-     * seleccionado, filtrando los mensajes del tutor activo por emisor.
-     * Actualiza también el gráfico semanal.
+     * Carga y muestra las emociones enviadas por un niño concreto.
+     * Filtra los mensajes del tutor por emisor y actualiza también el gráfico.
      *
-     * @param nino niño cuyo historial emocional se desea visualizar
+     * @param nino el niño cuyo historial queremos ver
      */
     private void cargarEmociones(Usuario nino) {
         if (panelMensajes != null) panelMensajes.getChildren().clear();
@@ -153,11 +145,10 @@ public class RegistroEmocionalController implements Initializable {
     }
 
     /**
-     * Genera las series del gráfico de barras agrupando los mensajes
-     * por emoción (nombre del pictograma) y por día de la semana,
-     * considerando únicamente los mensajes de los últimos 7 días.
+     * Actualiza el gráfico de barras agrupando los mensajes por emoción y por
+     * día de la semana, considerando solo los últimos 7 días.
      *
-     * @param mensajes lista de mensajes emocionales a representar
+     * @param mensajes la lista de mensajes emocionales a representar
      */
     private void actualizarGrafico(List<Mensaje> mensajes) {
         if (graficoEmociones == null) return;
@@ -184,6 +175,6 @@ public class RegistroEmocionalController implements Initializable {
         });
     }
 
-    /** Vuelve al dashboard principal. */
+    /** Vuelve al dashboard. */
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }
 }

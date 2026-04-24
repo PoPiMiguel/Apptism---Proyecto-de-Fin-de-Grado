@@ -14,12 +14,12 @@
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
             <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
             <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                           onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                           onMouseClicked="#onVolver">
                     <image><Image url="@../images/apptism_icon.png"/></image>
                 </ImageView>
             <HBox HBox.hgrow="ALWAYS"/>
             <ComboBox fx:id="cmbInterlocutor" promptText="Selecciona contacto" prefWidth="220"
-                      style="-fx-background-radius:12px; -fx-font-size:14px;"/>
+                      styleClass="combo-box"/>
             <Button text="Volver" onAction="#onVolver" styleClass="btn-volver"/>
         </HBox>
     </top>
@@ -32,7 +32,7 @@
             <VBox spacing="0" styleClass="panel">
                 <Label text="Conversación" styleClass="subtitulo" style="-fx-padding: 0 0 10 0;"/>
                 <ScrollPane fx:id="scrollMensajes" fitToWidth="true" VBox.vgrow="ALWAYS"
-                            style="-fx-background-color:transparent; -fx-border-color:transparent;">
+                            styleClass="scroll-transparente">
                     <VBox fx:id="panelMensajes" spacing="6">
                         <padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
                     </VBox>
@@ -47,7 +47,7 @@
                     <Button text="Buscar" onAction="#onBuscar" styleClass="btn-crear"/>
                 </HBox>
                 <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
-                            style="-fx-background-color:transparent; -fx-border-color:transparent;">
+                            styleClass="scroll-transparente">
                     <FlowPane fx:id="panelPictos" hgap="12" vgap="12"/>
                 </ScrollPane>
             </VBox>

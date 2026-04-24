@@ -19,17 +19,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controlador del panel de inicio (dashboard) de la aplicación.
+ * Controlador de la pantalla de inicio (dashboard).
  *
- * <p>Muestra una interfaz adaptada al rol del usuario autenticado:
- * <ul>
- *   <li><b>Tutor</b>: acceso a rutinas, tareas, recompensas, chat,
- *       registro emocional y solicitudes de canje. Incluye un badge
- *       con el número de solicitudes pendientes.</li>
- *   <li><b>Niño</b>: acceso simplificado a rutinas, tareas,
- *       recompensas, chat y módulo de emociones, junto con su
- *       saldo de puntos acumulados.</li>
- * </ul>
+ * Muestra una interfaz distinta según el rol del usuario:
+ * - Tutor: acceso a rutinas, tareas, recompensas, chat, registro emocional
+ *   y canjes, con un badge que muestra las solicitudes pendientes.
+ * - Niño: acceso simplificado a sus módulos junto con sus puntos acumulados.
  */
 @Component
 public class DashboardController implements Initializable {
@@ -46,12 +41,8 @@ public class DashboardController implements Initializable {
     @Autowired private StageManager stageManager;
 
     /**
-     * Configura la vista según el rol del usuario autenticado.
-     * Muestra el panel de tutor o de niño y personaliza el saludo
-     * y los datos mostrados.
-     *
-     * @param url URL del FXML (no se usa)
-     * @param rb  ResourceBundle de internacionalización (no se usa)
+     * Prepara la pantalla según el rol del usuario. Muestra el panel
+     * de tutor o el de niño y personaliza el saludo y los datos.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -66,7 +57,6 @@ public class DashboardController implements Initializable {
             panelNino.setVisible(false);
             lblBienvenida.setText("¡Hola, " + usuario.getNombre() + "!");
 
-            // Badge de notificación: solicitudes de canje pendientes
             long pendientes = solicitudCanjeService.contarNoLeidas(usuario.getId());
             lblBadgeSolicitudes.setText(String.valueOf(pendientes));
             lblBadgeSolicitudes.setVisible(pendientes > 0);
@@ -78,39 +68,34 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // ── Navegación común ──────────────────────────────────────────
 
-    /** Navega al módulo de gestión de rutinas. */
+    /** Abre la pantalla de rutinas. */
     @FXML private void onIrRutinas()      { stageManager.switchScene(FxmlView.RUTINAS); }
 
-    /** Navega al módulo de gestión de tareas. */
+    /** Abre la pantalla de tareas. */
     @FXML private void onIrTareas()       { stageManager.switchScene(FxmlView.TAREAS); }
 
-    /** Navega al módulo de chat con pictogramas. */
+    /** Abre la pantalla de chat. */
     @FXML private void onIrChat()         { stageManager.switchScene(FxmlView.CHAT); }
 
-    /** Navega al módulo de recompensas. */
+    /** Abre la pantalla de recompensas. */
     @FXML private void onIrRecompensas()  { stageManager.switchScene(FxmlView.RECOMPENSAS); }
 
-    // ── Navegación exclusiva para tutores ─────────────────────────
-
-    /** Navega al módulo de registro emocional (solo tutores). */
+    /** Abre el registro emocional (solo tutores). */
     @FXML private void onIrRegistroEmocional() {
         stageManager.switchScene(FxmlView.REGISTRO_EMOCIONAL);
     }
 
-    /** Navega al módulo de solicitudes de canje (solo tutores). */
+    /** Abre el historial de canjes (solo tutores). */
     @FXML private void onIrSolicitudes() {
         stageManager.switchScene(FxmlView.SOLICITUDES_CANJE);
     }
 
-    // ── Navegación exclusiva para niños ───────────────────────────
-
-    /** Navega al módulo de expresión emocional con pictogramas (solo niños). */
+    /** Abre la pantalla de emociones (solo niños). */
     @FXML private void onIrEmociones() { stageManager.switchScene(FxmlView.EMOCIONES); }
 
     /**
-     * Cierra la sesión del usuario actual, limpia {@link LoginController#usuarioActivo}
+     * Cierra la sesión del usuario, limpia el usuario activo
      * y vuelve a la pantalla de login.
      */
     @FXML

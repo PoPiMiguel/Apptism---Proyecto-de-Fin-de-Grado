@@ -23,14 +23,11 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de inicio de sesión.
  *
- * <p>Gestiona la autenticación del usuario mediante email y contraseña.
- * Tras una autenticación exitosa, redirige al panel de administración si
- * el usuario tiene rol {@code ADMIN}, o al dashboard general en cualquier
- * otro caso.
+ * Gestiona la autenticación por email y contraseña. Si el usuario
+ * tiene rol ADMIN lo lleva al panel de administración; si no, al dashboard.
  *
- * <p>Almacena el usuario autenticado en la variable estática
- * {@link #usuarioActivo}, que actúa como sesión compartida entre
- * todos los controladores mientras la aplicación está en uso.
+ * El usuario autenticado se guarda en {@link #usuarioActivo}, que actúa
+ * como sesión compartida accesible desde el resto de controladores.
  */
 @Component
 public class LoginController implements Initializable {
@@ -47,18 +44,13 @@ public class LoginController implements Initializable {
     @Autowired private StageManager stageManager;
 
     /**
-     * Usuario autenticado actualmente en la sesión.
-     * Es accedido por el resto de controladores para obtener
-     * el contexto de usuario sin necesidad de parámetros entre vistas.
+     * El usuario que ha iniciado sesión. Lo leen el resto de controladores
+     * para saber quién está usando la aplicación en cada momento.
      */
     public static Usuario usuarioActivo;
 
     /**
-     * Inicializa la pantalla de login: oculta el label de error
-     * y carga el logotipo de la aplicación.
-     *
-     * @param url            URL de localización del archivo FXML (no se usa)
-     * @param rb             ResourceBundle de internacionalización (no se usa)
+     * Prepara la pantalla: oculta el mensaje de error y carga el logotipo.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -67,8 +59,8 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Carga la imagen del logotipo desde el classpath y la muestra en
-     * la vista. Si la imagen no se encuentra, oculta el componente.
+     * Carga el logotipo desde los recursos y lo muestra en la pantalla.
+     * Si no se encuentra la imagen, oculta el componente sin romper nada.
      */
     private void cargarLogo() {
         try {
@@ -83,12 +75,10 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Maneja el evento del botón de inicio de sesión.
-     *
-     * <p>Valida que los campos no estén vacíos, delega la autenticación
-     * en {@link UsuarioService#login(String, String)} y navega a la
-     * vista correspondiente al rol del usuario. Si las credenciales
-     * son incorrectas, muestra un mensaje de error.
+     * Se ejecuta cuando el usuario pulsa "Entrar".
+     * Valida que los campos no estén vacíos, comprueba las credenciales
+     * y navega a la pantalla correspondiente según el rol. Si algo falla,
+     * muestra el mensaje de error.
      */
     @FXML
     private void onLogin() {
@@ -114,9 +104,9 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Muestra un mensaje de error bajo el formulario de login.
+     * Muestra un mensaje de error bajo el formulario.
      *
-     * @param mensaje texto descriptivo del error a mostrar
+     * @param mensaje el texto a mostrar
      */
     private void mostrarError(String mensaje) {
         lblError.setText(mensaje);

@@ -28,8 +28,8 @@ public class RutinaService {
     }
 
     /**
-     * Obtiene todas las rutinas de todos los niños del tutor.
-     * La colección ninos es LAZY — hay que cargarla dentro de transacción.
+     * Devuelve las rutinas de una zona horaria concreta de todos los niños del tutor.
+     * La colección de niños es LAZY, así que se ejecuta dentro de una transacción.
      */
     @Transactional(readOnly = true)
     public List<Rutina> getRutinasPorZonaDeNinosDelTutor(Long tutorId, ZonaHoraria zona) {
@@ -44,7 +44,8 @@ public class RutinaService {
     }
 
     /**
-     * Obtiene los niños del tutor dentro de transacción.
+     * Devuelve los niños asignados a un tutor. Necesita transacción porque
+     * la colección es LAZY.
      */
     @Transactional(readOnly = true)
     public List<Usuario> getNinosDelTutor(Long tutorId) {

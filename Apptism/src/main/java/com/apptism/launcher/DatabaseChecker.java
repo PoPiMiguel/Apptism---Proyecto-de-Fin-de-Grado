@@ -5,44 +5,32 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
- * Utilidad estática para comprobar el estado de MySQL antes de arrancar
+ * Utilidad estática para comprobar si MySQL está disponible antes de arrancar
  * el contexto de Spring Boot.
  *
- * <p>Proporciona tres métodos independientes que se ejecutan de forma
- * secuencial desde {@link LauncherApp}:
- * <ol>
- *   <li>{@link #isMySQLRunning()} — comprueba si el puerto 3306 está escuchando.</li>
- *   <li>{@link #isMySQLInstalled()} — comprueba si el ejecutable {@code mysql}
- *       está en el PATH del sistema.</li>
- *   <li>{@link #tryStartMySQLService()} — intenta arrancar el servicio de Windows
- *       con {@code net start}.</li>
- * </ol>
- *
- * <p>Todos los métodos son estáticos y no requieren instanciación.
+ * Tiene tres métodos que se usan en secuencia desde {@link LauncherApp}:
+ * primero mira si MySQL está corriendo, luego si está instalado, y por último
+ * intenta arrancarlo si puede. Todos son estáticos, no hace falta instanciar la clase.
  */
 public class DatabaseChecker {
 
-    /** Host donde se espera encontrar MySQL. */
+    /** Host donde esperamos encontrar MySQL. */
     private static final String HOST = "localhost";
 
     /** Puerto estándar de MySQL. */
     private static final int PORT = 3306;
 
-    /** Tiempo máximo de espera para abrir el socket TCP, en milisegundos. */
+    /** Tiempo máximo que esperamos al intentar conectar, en milisegundos. */
     private static final int TIMEOUT_MS = 2000;
 
-    // Constructor privado: clase de utilidad, no se instancia.
+    // Clase de utilidad: no se instancia.
     private DatabaseChecker() {}
 
     /**
-     * Comprueba si MySQL está activo intentando abrir una conexión TCP
-     * al puerto 3306 en localhost.
+     * Comprueba si MySQL está corriendo intentando abrir una conexión al puerto 3306.
+     * No necesita usuario ni contraseña, solo mira si el puerto responde.
      *
-     * <p>No requiere credenciales; únicamente verifica que el puerto
-     * esté escuchando, lo que indica que el servicio está en ejecución.
-     *
-     * @return {@code true} si el puerto 3306 responde dentro del tiempo
-     *         de espera definido; {@code false} en caso contrario
+     * @return {@code true} si el puerto responde antes de los 2 segundos; {@code false} si no
      */
     public static boolean isMySQLRunning() {
         try (Socket socket = new Socket()) {
@@ -57,15 +45,11 @@ public class DatabaseChecker {
     }
 
     /**
-     * Comprueba si MySQL está instalado en el sistema buscando el ejecutable
-     * {@code mysql} en el PATH del sistema operativo.
+     * Comprueba si MySQL está instalado buscando el ejecutable {@code mysql}
+     * en el PATH del sistema. Ejecuta {@code mysql --version} y mira si la
+     * salida contiene la palabra "mysql".
      *
-     * <p>Ejecuta {@code mysql --version} y analiza la salida. Un resultado
-     * que contenga la palabra {@code mysql} indica que el cliente está instalado,
-     * aunque el servicio pueda no estar en ejecución.
-     *
-     * @return {@code true} si el ejecutable {@code mysql} está accesible desde
-     *         el PATH; {@code false} si no se encuentra o si ocurre algún error
+     * @return {@code true} si el ejecutable está en el PATH; {@code false} si no se encuentra
      */
     public static boolean isMySQLInstalled() {
         try {
@@ -86,17 +70,12 @@ public class DatabaseChecker {
     }
 
     /**
-     * Intenta arrancar el servicio de Windows de MySQL usando el comando
-     * {@code net start <nombre_servicio>}.
+     * Intenta arrancar el servicio de MySQL en Windows usando {@code net start}.
+     * Prueba los nombres más habituales que deja el instalador oficial:
+     * {@code MySQL80}, {@code MySQL}, {@code MySQL57} y {@code MySQL56}.
+     * Si alguno arranca, espera 2 segundos y comprueba que la conexión funciona.
      *
-     * <p>Prueba los nombres de servicio más comunes instalados por el instalador
-     * oficial de MySQL para Windows: {@code MySQL80}, {@code MySQL},
-     * {@code MySQL57} y {@code MySQL56}. Si alguno arranca correctamente,
-     * espera 2 segundos para que el servicio esté listo y verifica la conexión
-     * con {@link #isMySQLRunning()}.
-     *
-     * @return {@code true} si alguno de los servicios arrancó y la conexión
-     *         TCP al puerto 3306 fue exitosa; {@code false} en caso contrario
+     * @return {@code true} si algún servicio arrancó y el puerto responde; {@code false} si no
      */
     public static boolean tryStartMySQLService() {
         String[] serviceNames = {"MySQL80", "MySQL", "MySQL57", "MySQL56"};
@@ -111,7 +90,7 @@ public class DatabaseChecker {
                 int exitCode = process.waitFor();
 
                 if (exitCode == 0) {
-                    // Espera prudencial para que el servicio esté completamente listo
+                    // Esperamos un poco para que el servicio termine de arrancar
                     Thread.sleep(2000);
                     return isMySQLRunning();
                 }

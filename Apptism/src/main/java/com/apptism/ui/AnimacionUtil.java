@@ -10,32 +10,28 @@ import javafx.util.Duration;
 import java.util.Random;
 
 /**
- * Utilidad estática de animaciones para refuerzo positivo ABA (Applied Behaviour Analysis).
+ * Utilidad estática con las animaciones de refuerzo positivo de la aplicación.
  *
- * <p>Proporciona efectos visuales de celebración que se activan cuando el
- * usuario (niño) completa una tarea, rutina o canjea una recompensa. Estos
- * efectos están diseñados siguiendo principios de refuerzo positivo utilizados
- * en terapias ABA para personas con TEA.
+ * Los efectos visuales de celebración se activan cuando el niño completa una
+ * tarea, una rutina o canjea una recompensa. Están pensados siguiendo los
+ * principios ABA (Applied Behaviour Analysis) para personas con TEA.
  *
- * <p>Todos los métodos son estáticos. Las actualizaciones de la UI que se
- * invocan desde hilos secundarios se delegan a {@link Platform#runLater(Runnable)}.
+ * Todos los métodos son estáticos. Los que se llaman desde hilos secundarios
+ * envuelven sus cambios de interfaz en {@link Platform#runLater}.
  */
 public class AnimacionUtil {
 
-    // Constructor privado: clase de utilidad, no se instancia.
+    // Clase de utilidad: no se instancia.
     private AnimacionUtil() {}
 
     /**
-     * Reproduce una animación de éxito sobre el nodo indicado.
+     * Reproduce una animación de éxito sobre el elemento indicado.
      *
-     * <p>La animación consta de tres fases en secuencia:
-     * <ol>
-     *   <li>Escala el nodo un 25% hacia arriba (180 ms).</li>
-     *   <li>Aplica una rotación de celebración de ±12° (120 ms, 6 ciclos).</li>
-     *   <li>Devuelve el nodo a su tamaño original (220 ms).</li>
-     * </ol>
+     * Consta de tres fases seguidas: primero escala el elemento un 25% hacia arriba
+     * (180 ms), luego lo rota de un lado a otro como celebración (120 ms, 6 ciclos),
+     * y por último vuelve a su tamaño original (220 ms).
      *
-     * @param nodo nodo JavaFX sobre el que se aplica la animación
+     * @param nodo el elemento de JavaFX sobre el que se aplica la animación
      */
     public static void animarExito(Node nodo) {
         ScaleTransition escalar = new ScaleTransition(Duration.millis(180), nodo);
@@ -55,18 +51,17 @@ public class AnimacionUtil {
     }
 
     /**
-     * Muestra un mensaje flotante de puntos obtenidos sobre el contenedor indicado.
+     * Muestra un mensaje flotante con los puntos conseguidos sobre el contenedor.
      *
-     * <p>El mensaje aparece desde la parte inferior, sube flotando y desaparece
-     * con un efecto de desvanecimiento. Si los puntos son mayores que cero,
-     * se acompaña de un efecto de lluvia de emojis de celebración.
+     * El mensaje sube desde abajo mientras aparece, se queda un momento visible
+     * y luego se desvanece. Si los puntos son mayores que cero se acompaña de
+     * emojis de celebración; si no, muestra un mensaje de ánimo genérico.
      *
-     * <p>Este método es seguro para llamarse desde hilos secundarios ya que
-     * todas las operaciones de UI se envuelven en {@link Platform#runLater(Runnable)}.
+     * Es seguro llamarlo desde un hilo secundario porque todo lo que toca
+     * la interfaz lo mete en {@link Platform#runLater}.
      *
-     * @param contenedor {@link StackPane} sobre el que se superpone el mensaje flotante
-     * @param puntos     cantidad de puntos a mostrar; si es 0 se muestra un mensaje
-     *                   de ánimo genérico
+     * @param contenedor el {@link StackPane} donde se superpone el mensaje flotante
+     * @param puntos los puntos a mostrar; si es 0 sale un mensaje de ánimo
      */
     public static void mostrarPuntos(StackPane contenedor, int puntos) {
         String texto = puntos > 0

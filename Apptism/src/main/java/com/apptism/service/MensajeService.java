@@ -15,14 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Servicio de negocio para la gestión del sistema de mensajería con pictogramas.
+ * Servicio que gestiona los mensajes con pictogramas entre niños y tutores.
  *
- * <p>Gestiona dos tipos de mensajes diferenciados por {@link TipoMensaje}:
- * <ul>
- *   <li>{@code CHAT}: mensajes de comunicación general entre niño y tutor.</li>
- *   <li>{@code EMOCION}: pictogramas enviados por el niño para expresar
- *       su estado emocional, visibles en el módulo de registro emocional.</li>
- * </ul>
+ * Hay dos tipos de mensaje según {@link TipoMensaje}:
+ * - CHAT: comunicación general entre niño y tutor.
+ * - EMOCION: el niño envía cómo se siente, visible en el registro emocional del tutor.
  */
 @Service
 @RequiredArgsConstructor
@@ -32,15 +29,14 @@ public class MensajeService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Persiste un nuevo mensaje con pictograma entre dos usuarios.
+     * Guarda un mensaje nuevo con su pictograma.
      *
-     * @param emisorId   identificador del usuario que envía el mensaje
-     * @param receptorId identificador del usuario que recibe el mensaje
-     * @param pictoUrl   URL de la imagen del pictograma seleccionado
-     * @param texto      nombre o texto descriptivo del pictograma
-     * @param tipo       tipo del mensaje: {@code CHAT} o {@code EMOCION}
-     * @return entidad {@link Mensaje} persistida con su identificador generado
-     * @throws RuntimeException si el emisor o el receptor no existen
+     * @param emisorId   el identificador de quien envía
+     * @param receptorId el identificador de quien recibe
+     * @param pictoUrl   URL de la imagen del pictograma
+     * @param texto      nombre o descripción del pictograma
+     * @param tipo       CHAT o EMOCION
+     * @return el mensaje guardado en base de datos
      */
     @Transactional
     public Mensaje enviarMensaje(Long emisorId, Long receptorId,
@@ -61,13 +57,12 @@ public class MensajeService {
     }
 
     /**
-     * Obtiene el historial de conversación de chat entre dos usuarios,
-     * incluyendo los mensajes enviados en ambas direcciones, ordenados
-     * cronológicamente de forma ascendente.
+     * Devuelve el historial de chat entre dos usuarios, con los mensajes
+     * de ambas direcciones ordenados cronológicamente.
      *
-     * @param userId1 identificador del primer participante
-     * @param userId2 identificador del segundo participante
-     * @return lista de mensajes de chat entre ambos usuarios, ordenados por fecha
+     * @param userId1 el identificador del primer participante
+     * @param userId2 el identificador del segundo participante
+     * @return lista de mensajes ordenados por fecha ascendente
      */
     public List<Mensaje> getConversacion(Long userId1, Long userId2) {
         return mensajeRepository
@@ -76,11 +71,11 @@ public class MensajeService {
     }
 
     /**
-     * Obtiene los mensajes de tipo {@code EMOCION} recibidos por un tutor,
-     * ordenados de más reciente a más antiguo.
+     * Devuelve los mensajes emocionales recibidos por un tutor,
+     * del más reciente al más antiguo.
      *
-     * @param tutorId identificador del tutor receptor
-     * @return lista de mensajes emocionales recibidos por el tutor
+     * @param tutorId el identificador del tutor
+     * @return lista de mensajes de tipo EMOCION recibidos
      */
     public List<Mensaje> getEmocionesRecibidas(Long tutorId) {
         return mensajeRepository.findByReceptorIdAndTipoOrderByFechaDesc(

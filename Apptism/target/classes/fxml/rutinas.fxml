@@ -5,18 +5,16 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-<!-- NOTA: El nodo raíz NO tiene fx:id para evitar el error de inyección -->
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.apptism.controller.RutinasController"
            prefWidth="1280" prefHeight="800">
 
-    <!-- ===== VISTA TUTOR ===== -->
     <BorderPane fx:id="panelTutor" styleClass="root-pane">
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
                 <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                           onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                           onMouseClicked="#onVolver">
                     <image><Image url="@../images/apptism_icon.png"/></image>
                 </ImageView>
                 <HBox HBox.hgrow="ALWAYS"/>
@@ -27,7 +25,6 @@
             <SplitPane dividerPositions="0.65">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 
-                <!-- Lista de rutinas por zona horaria con botón eliminar -->
                 <VBox spacing="10" styleClass="panel">
                     <Label text="Rutinas del niño" styleClass="subtitulo"/>
                     <TabPane fx:id="tabZonas" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
@@ -39,29 +36,28 @@
                             styleClass="btn-eliminar" maxWidth="Infinity"/>
                 </VBox>
 
-                <!-- Panel de creación de nueva rutina -->
-                <VBox spacing="15" styleClass="panel">
+                <VBox spacing="15" styleClass="panel" VBox.vgrow="ALWAYS">
                     <Label text="Nueva rutina" styleClass="subtitulo"/>
                     <Label text="Nombre:"/>
                     <TextField fx:id="txtNombreRutina" promptText="Ej: Lavarse los dientes" styleClass="input-field"/>
                     <Label text="Zona horaria:"/>
-                    <ComboBox fx:id="cmbZona" maxWidth="Infinity"/>
-                    <Label text="Asignar a niño:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
-                    <ComboBox fx:id="cmbNinoTutor" promptText="Selecciona un niño" maxWidth="Infinity"/>
+                    <ComboBox fx:id="cmbZona" maxWidth="Infinity" visibleRowCount="3"/>
+                    <Label text="Asignar a niño:" styleClass="form-label"/>
+                    <ComboBox fx:id="cmbNinoTutor" promptText="Selecciona un niño"
+                              maxWidth="Infinity" visibleRowCount="4"/>
                     <Button text="Crear rutina" onAction="#onCrearRutina" styleClass="btn-crear" maxWidth="Infinity"/>
                 </VBox>
             </SplitPane>
         </center>
     </BorderPane>
 
-    <!-- ===== VISTA NIÑO ===== -->
     <StackPane fx:id="rootStackNino" visible="false">
         <BorderPane styleClass="root-pane-nino">
             <top>
                 <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                     <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
                     <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                               onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                               onMouseClicked="#onVolver">
                         <image><Image url="@../images/apptism_icon.png"/></image>
                     </ImageView>
                     <HBox HBox.hgrow="ALWAYS"/>
@@ -69,7 +65,7 @@
                 </HBox>
             </top>
             <center>
-                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <ScrollPane fitToWidth="true" styleClass="scroll-transparente">
                     <FlowPane fx:id="flowRutinasNino" hgap="22" vgap="22" alignment="CENTER">
                         <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
                     </FlowPane>

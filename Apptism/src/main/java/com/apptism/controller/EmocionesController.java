@@ -25,6 +25,13 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controlador de la pantalla de emociones (exclusivo para niños).
+ *
+ * Muestra los pictogramas de las emociones básicas de ARASAAC para que el niño
+ * pueda indicar cómo se siente y enviárselo a su tutor. El tutor lo verá
+ * después en el registro emocional.
+ */
 @Component
 public class EmocionesController implements Initializable {
 
@@ -50,10 +57,8 @@ public class EmocionesController implements Initializable {
 
     private void cargarTutores() {
         Usuario nino = LoginController.usuarioActivo;
-        // Usar getTutoresDeNino() que carga lazy dentro de @Transactional
         tutores = usuarioService.getTutoresDeNino(nino.getId());
 
-        // Fallback: si no hay relación tutor-niño, mostrar todos los tutores del sistema
         if (tutores.isEmpty()) {
             tutores = usuarioService.getTodosLosTutores();
         }
@@ -89,7 +94,6 @@ public class EmocionesController implements Initializable {
         img.setFitWidth(100); img.setFitHeight(100);
         img.setPreserveRatio(true);
 
-        // Solo intentar cargar imagen si la URL no está vacía (puede ser fallback emoji)
         if (picto.url() != null && !picto.url().isBlank()) {
             new Thread(() -> {
                 try {
@@ -101,11 +105,9 @@ public class EmocionesController implements Initializable {
             }).start();
         }
 
-        // Nombre (incluye emoji de fallback si la URL está vacía)
         Label lblNombre = new Label(picto.nombre());
-        // Si es fallback (sin imagen), hacer el texto más grande y visible
         if (picto.url() == null || picto.url().isBlank()) {
-            lblNombre.setStyle("-fx-font-size:40px;");  // Emoji grande como pictograma
+            lblNombre.setStyle("-fx-font-size:40px;");
         } else {
             lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
         }

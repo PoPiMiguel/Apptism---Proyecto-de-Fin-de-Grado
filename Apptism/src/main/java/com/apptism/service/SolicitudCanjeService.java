@@ -9,10 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Servicio de negocio para la consulta del historial de canjes.
- *
- * Gestiona la obtención de las solicitudes de canje generadas cuando
- * un niño canjea una recompensa, y su marcado como leídas.
+ * Servicio que gestiona el historial de canjes: obtiene las solicitudes
+ * de canje generadas cuando un niño canjea una recompensa, y las marca como leídas.
  */
 @Service
 @RequiredArgsConstructor
@@ -23,11 +21,12 @@ public class SolicitudCanjeService {
     private final RecompensaRepository     recompensaRepo;
 
     /**
-     * Obtiene todas las solicitudes de canje asociadas a las recompensas
-     * creadas por un tutor, ordenadas de más reciente a más antigua.
+     * Devuelve todas las solicitudes de canje de las recompensas de un tutor,
+     * de la más reciente a la más antigua. Inicializa las relaciones LAZY
+     * dentro de la transacción para que no fallen al usarlas después.
      *
-     * @param tutorId identificador del tutor
-     * @return lista de solicitudes con sus relaciones inicializadas
+     * @param tutorId el identificador del tutor
+     * @return lista de solicitudes con sus datos ya cargados
      */
     @Transactional(readOnly = true)
     public List<SolicitudCanje> getSolicitudesTutor(Long tutorId) {
@@ -45,21 +44,21 @@ public class SolicitudCanjeService {
     }
 
     /**
-     * Cuenta las solicitudes no leídas de las recompensas de un tutor.
-     * Se usa para el badge de notificación en el dashboard.
+     * Cuenta las solicitudes no leídas del tutor.
+     * Se usa para mostrar el número en el badge del dashboard.
      *
-     * @param tutorId identificador del tutor
-     * @return número de solicitudes con leida = false
+     * @param tutorId el identificador del tutor
+     * @return número de solicitudes sin leer
      */
     public long contarNoLeidas(Long tutorId) {
         return solicitudRepo.countByRecompensaFamiliaIdAndLeidaFalse(tutorId);
     }
 
     /**
-     * Marca como leídas todas las solicitudes de canje de un tutor.
-     * Se invoca al entrar en el módulo para limpiar el badge del dashboard.
+     * Marca como leídas todas las solicitudes del tutor.
+     * Se llama al entrar al módulo para limpiar el badge del dashboard.
      *
-     * @param tutorId identificador del tutor
+     * @param tutorId el identificador del tutor
      */
     @Transactional
     public void marcarTodasLeidas(Long tutorId) {

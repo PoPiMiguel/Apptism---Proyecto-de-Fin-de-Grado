@@ -6,62 +6,54 @@ import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Clase principal de Apptism.
+ * Punto de entrada de Apptism.
  *
- * <p>Actúa como punto de entrada de la aplicación. Está anotada con
- * {@code @SpringBootApplication} para que Spring Boot pueda escanear
- * los componentes del proyecto, aunque el contexto de Spring no se
- * levanta aquí directamente, sino dentro de {@link ApptismApp}.
+ * Está anotada con {@code @SpringBootApplication} para que Spring
+ * encuentre todos los componentes del proyecto. El contexto de Spring
+ * no se levanta aquí, sino más adelante dentro de {@link ApptismApp}.
  *
- * <p>Flujo de arranque:
- * <ol>
- *   <li>JavaFX lanza {@link LauncherFxBridge}.</li>
- *   <li>{@link LauncherFxBridge} muestra {@link LauncherApp}, que comprueba MySQL.</li>
- *   <li>Si MySQL está disponible, se lanza {@link ApptismApp} en un nuevo Stage.</li>
- *   <li>{@link ApptismApp} arranca Spring Boot y navega a la pantalla de login.</li>
- * </ol>
+ * El flujo de arranque es este:
+ * 1. JavaFX lanza {@link LauncherFxBridge}.
+ * 2. {@link LauncherFxBridge} muestra el lanzador, que comprueba MySQL.
+ * 3. Si todo va bien, se lanza {@link ApptismApp} en una ventana nueva.
+ * 4. {@link ApptismApp} arranca Spring y lleva al usuario al login.
  */
 @SpringBootApplication
 public class Main {
 
-    /**
-     * Punto de entrada de la JVM.
-     * Delega el arranque a JavaFX a través de {@link LauncherFxBridge}.
-     *
-     * @param args argumentos de línea de comandos (no se usan actualmente)
-     */
+    /** Punto de entrada de la JVM. Delega el arranque a JavaFX. */
     public static void main(String[] args) {
         Application.launch(LauncherFxBridge.class, args);
     }
 
     // ─────────────────────────────────────────────────────────────────
-    //  Clase interna: puente entre JavaFX y el Launcher
+    //  Puente entre JavaFX y el lanzador
     // ─────────────────────────────────────────────────────────────────
 
     /**
-     * Aplicación JavaFX auxiliar que muestra el launcher de comprobación
-     * de MySQL y, cuando éste da luz verde, instancia y lanza {@link ApptismApp}.
+     * Aplicación JavaFX auxiliar que muestra la ventana de comprobación
+     * de MySQL y, cuando todo está listo, abre la aplicación principal.
      *
-     * <p>Se define como clase estática interna para mantener toda la lógica
-     * de arranque en un único archivo sin romper la estructura del proyecto.
+     * Está aquí como clase interna para tener toda la lógica de arranque
+     * en un solo archivo sin liar la estructura del proyecto.
      */
     public static class LauncherFxBridge extends Application {
 
         /**
-         * Punto de entrada de JavaFX. Muestra el launcher en el Stage primario
-         * y, si la comprobación de MySQL es exitosa, abre la aplicación principal.
+         * Punto de entrada de JavaFX. Muestra el lanzador y, si MySQL
+         * responde bien, abre la aplicación principal.
          *
-         * @param primaryStage ventana principal proporcionada por JavaFX
+         * @param primaryStage la ventana que nos proporciona JavaFX
          */
         @Override
         public void start(Stage primaryStage) {
-            // Se crea el launcher pasándole el callback de éxito.
-            // Cuando MySQL esté disponible, el callback se ejecutará en el hilo de JavaFX.
+            // Se crea el lanzador pasándole qué hacer cuando MySQL esté listo.
+            // Ese callback se ejecutará en el hilo de JavaFX.
             LauncherApp launcher = new LauncherApp(() -> {
                 Stage appStage = new Stage();
                 ApptismApp app = new ApptismApp();
                 try {
-                    app.init();          // Arranca el contexto de Spring Boot
+                    app.init();          // Arranca Spring Boot
                     app.start(appStage); // Muestra la pantalla de login
                 } catch (Exception e) {
                     e.printStackTrace();

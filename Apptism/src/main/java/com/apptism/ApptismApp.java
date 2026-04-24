@@ -8,33 +8,21 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * Clase principal de la aplicación JavaFX de Apptism.
+ * Clase principal de la aplicación JavaFX.
  *
- * <p>Extiende {@link Application} de JavaFX e integra el contexto de
- * Spring Boot dentro del ciclo de vida de la ventana gráfica. Es
- * responsable de:
- * <ul>
- *   <li>Arrancar el contexto de Spring Boot en el método {@link #init()}.</li>
- *   <li>Obtener el {@link StageManager} del contexto y mostrar la pantalla
- *       de login en {@link #start(Stage)}.</li>
- *   <li>Cerrar el contexto de Spring Boot al cerrar la ventana en
- *       {@link #stop()}.</li>
- * </ul>
- *
- * <p>Esta clase no se lanza directamente desde {@code main()}; lo hace
- * {@link Main.LauncherFxBridge} una vez que el launcher confirma que
- * MySQL está disponible.
+ * Es la que arranca Spring Boot, abre la ventana y la cierra cuando
+ * el usuario sale. No se lanza directamente desde el {@code main()};
+ * primero pasa por {@link Main.LauncherFxBridge}, que comprueba que
+ * MySQL esté disponible antes de llegar aquí.
  */
 public class ApptismApp extends Application {
 
-    /** Contexto de Spring Boot, inicializado en {@link #init()} y cerrado en {@link #stop()}. */
+    /** El contexto de Spring: se crea al iniciar y se cierra al salir. */
     private ConfigurableApplicationContext springContext;
 
     /**
-     * Inicializa el contexto de Spring Boot antes de que JavaFX muestre ninguna ventana.
-     *
-     * <p>Se ejecuta en el hilo de inicialización de JavaFX, no en el hilo de la UI,
-     * por lo que es seguro realizar operaciones bloqueantes como el arranque de Spring.
+     * Arranca Spring Boot antes de que aparezca ninguna ventana.
+     * Se ejecuta en un hilo separado al de la interfaz, así que no bloquea nada.
      */
     @Override
     public void init() {
@@ -42,12 +30,9 @@ public class ApptismApp extends Application {
     }
 
     /**
-     * Configura y muestra la ventana principal de la aplicación.
+     * Abre la ventana principal y navega a la pantalla de inicio de sesión.
      *
-     * <p>Obtiene el {@link StageManager} del contexto de Spring, le asigna
-     * el Stage principal y navega a la vista de login.
-     *
-     * @param primaryStage ventana principal proporcionada por el runtime de JavaFX
+     * @param primaryStage la ventana que nos proporciona JavaFX
      */
     @Override
     public void start(Stage primaryStage) {
@@ -57,10 +42,8 @@ public class ApptismApp extends Application {
     }
 
     /**
-     * Cierra el contexto de Spring Boot cuando el usuario cierra la aplicación.
-     *
-     * <p>Garantiza que todos los beans de Spring (conexiones a base de datos,
-     * repositorios JPA, etc.) se destruyan correctamente antes de que la JVM termine.
+     * Cierra el contexto de Spring cuando el usuario cierra la aplicación,
+     * para que se limpien bien las conexiones a la base de datos y demás.
      */
     @Override
     public void stop() {

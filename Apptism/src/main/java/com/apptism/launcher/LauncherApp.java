@@ -19,65 +19,51 @@ import java.awt.Desktop;
 import java.net.URI;
 
 /**
- * Ventana de lanzador que se muestra antes de arrancar Spring Boot.
+ * Ventana de arranque que aparece antes de que Spring Boot empiece a cargar.
  *
- * <p>Gestiona la comprobación del estado de MySQL mediante
- * {@link DatabaseChecker} y presenta al usuario uno de los tres
- * estados posibles:
- * <ul>
- *   <li><b>MySQL disponible</b>: cierra el launcher y ejecuta el
- *       callback de éxito para lanzar la aplicación principal.</li>
- *   <li><b>MySQL instalado pero no activo</b>: informa al usuario y
- *       ofrece un botón para reintentar tras arrancar el servicio
- *       manualmente.</li>
- *   <li><b>MySQL no instalado</b>: guía al usuario paso a paso para
- *       descargarlo e instalarlo, con enlace directo a la web oficial.</li>
- * </ul>
+ * Usa {@link DatabaseChecker} para saber si MySQL está disponible y presenta
+ * al usuario uno de estos tres estados:
  *
- * <p>La comprobación se realiza en un hilo secundario para no bloquear
- * el hilo de la UI de JavaFX. Todas las actualizaciones de la interfaz
- * se delegan a {@link Platform#runLater(Runnable)}.
+ * - MySQL funcionando: cierra el lanzador y arranca la aplicación.
+ * - MySQL instalado pero parado: pide al usuario que lo arranque y ofrece un botón para reintentar.
+ * - MySQL no instalado: guía paso a paso para descargarlo e instalarlo.
+ *
+ * La comprobación se hace en un hilo secundario para no congelar la interfaz.
+ * Todas las actualizaciones de pantalla se delegan al hilo de JavaFX con {@link Platform#runLater}.
  */
 public class LauncherApp {
 
-    /**
-     * Callback que se invoca en el hilo de JavaFX cuando MySQL está
-     * disponible y la aplicación principal puede arrancar.
-     */
+    /** Lo que hay que hacer cuando MySQL esté listo: arrancar la aplicación principal. */
     private final Runnable onSuccess;
 
-    /** Stage principal del launcher. */
+    /** La ventana del lanzador. */
     private Stage stage;
 
     // ── Nodos de la UI reutilizados entre transiciones de estado ──
 
-    /** Etiqueta principal que muestra el estado actual de la comprobación. */
+    /** Etiqueta principal con el estado actual de la comprobación. */
     private Label lblEstado;
 
-    /** Etiqueta secundaria con información adicional o instrucciones. */
+    /** Etiqueta secundaria con instrucciones o detalles. */
     private Label lblDetalle;
 
-    /** Panel contenedor de los botones e instrucciones paso a paso. */
+    /** Panel donde metemos los botones y los pasos de instrucción. */
     private VBox panelBotones;
 
     /**
-     * Construye un nuevo launcher con el callback que se ejecutará
-     * cuando MySQL esté disponible.
+     * Crea el lanzador con la acción que se ejecutará cuando MySQL esté listo.
      *
-     * @param onSuccess acción a ejecutar en el hilo de JavaFX tras
-     *                  confirmar que MySQL está accesible
+     * @param onSuccess qué hacer cuando MySQL responde correctamente
      */
     public LauncherApp(Runnable onSuccess) {
         this.onSuccess = onSuccess;
     }
 
     /**
-     * Construye la escena del launcher y la muestra en el Stage indicado.
+     * Construye la pantalla del lanzador y la muestra. Después lanza en un
+     * hilo secundario la comprobación de MySQL con {@link #checkDatabase()}.
      *
-     * <p>Tras mostrar la ventana, lanza en un hilo secundario la
-     * comprobación de MySQL mediante {@link #checkDatabase()}.
-     *
-     * @param primaryStage Stage de JavaFX sobre el que se muestra el launcher
+     * @param primaryStage la ventana de JavaFX donde mostrar el lanzador
      */
     public void show(Stage primaryStage) {
         this.stage = primaryStage;
@@ -149,17 +135,13 @@ public class LauncherApp {
     // ─────────────────────────────────────────────────────────────────
 
     /**
-     * Ejecuta la comprobación del estado de MySQL en el siguiente orden:
-     * <ol>
-     *   <li>Intenta conectar al puerto 3306 con {@link DatabaseChecker#isMySQLRunning()}.</li>
-     *   <li>Si falla, comprueba si MySQL está instalado con
-     *       {@link DatabaseChecker#isMySQLInstalled()} e intenta arrancar
-     *       el servicio con {@link DatabaseChecker#tryStartMySQLService()}.</li>
-     *   <li>Si MySQL no está instalado, muestra la guía de instalación.</li>
-     * </ol>
+     * Comprueba el estado de MySQL en este orden:
+     * 1. ¿Está corriendo? → si sí, arrancamos.
+     * 2. ¿Está instalado? → intentamos arrancar el servicio.
+     * 3. ¿No está instalado? → mostramos la guía de instalación.
      *
-     * <p>Este método se ejecuta en un hilo secundario. Todas las
-     * actualizaciones de la UI se realizan mediante {@link Platform#runLater(Runnable)}.
+     * Se ejecuta en un hilo secundario. Los cambios de pantalla van
+     * siempre por {@link Platform#runLater}.
      */
     private void checkDatabase() {
         // Paso 1: ¿MySQL está corriendo?
@@ -193,8 +175,8 @@ public class LauncherApp {
     // ─────────────────────────────────────────────────────────────────
 
     /**
-     * Actualiza la UI para indicar que MySQL está disponible y
-     * lanza la aplicación principal tras una breve pausa visual.
+     * MySQL está listo: muestra el mensaje de éxito y arranca la aplicación
+     * después de una pequeña pausa para que el usuario lo vea.
      */
     private void onMySQLOk() {
         lblEstado.setText("✔ Conexión establecida correctamente.");
@@ -211,11 +193,8 @@ public class LauncherApp {
     }
 
     /**
-     * Muestra instrucciones para que el usuario arranque manualmente el
-     * servicio de MySQL, junto con un botón para reintentar la conexión.
-     *
-     * <p>Se muestra cuando MySQL está instalado pero el servicio no pudo
-     * arrancarse automáticamente.
+     * MySQL está instalado pero no pudo arrancarse solo. Muestra los pasos
+     * para que el usuario lo arranque a mano y un botón para reintentar.
      */
     private void onMySQLInstalledButNotStarted() {
         lblEstado.setStyle(
@@ -239,10 +218,8 @@ public class LauncherApp {
     }
 
     /**
-     * Muestra una guía de instalación de MySQL con un enlace a la descarga
-     * oficial y un botón para reintentar una vez finalizada la instalación.
-     *
-     * <p>Se muestra cuando MySQL no está instalado en el sistema.
+     * MySQL no está instalado. Muestra los pasos para descargarlo e instalarlo,
+     * con un enlace directo a la web oficial y un botón para reintentar.
      */
     private void onMySQLNotInstalled() {
         lblEstado.setStyle(
@@ -283,10 +260,8 @@ public class LauncherApp {
     }
 
     /**
-     * Restablece la UI al estado de comprobación y relanza {@link #checkDatabase()}
-     * en un nuevo hilo secundario.
-     *
-     * <p>Se invoca desde los botones «Reintentar conexión» de los estados de error.
+     * Vuelve al estado de "comprobando..." y lanza otra vez la comprobación
+     * de MySQL en un hilo secundario. Lo llaman los botones de reintentar.
      */
     private void reintentar() {
         panelBotones.getChildren().clear();
@@ -305,10 +280,10 @@ public class LauncherApp {
     // ─────────────────────────────────────────────────────────────────
 
     /**
-     * Crea una etiqueta con estilo de paso de instrucción.
+     * Crea una etiqueta con el estilo de paso numerado para las instrucciones.
      *
-     * @param text texto descriptivo del paso
-     * @return {@link Label} con el estilo aplicado
+     * @param text el texto del paso
+     * @return la etiqueta con el estilo aplicado
      */
     private Label styledStep(String text) {
         Label lbl = new Label(text);
@@ -319,10 +294,10 @@ public class LauncherApp {
     }
 
     /**
-     * Crea un botón principal con el estilo corporativo de Apptism.
+     * Crea un botón principal con el estilo visual de Apptism.
      *
-     * @param text texto que mostrará el botón
-     * @return {@link Button} con el estilo aplicado
+     * @param text el texto que mostrará el botón
+     * @return el botón con el estilo aplicado
      */
     private Button primaryButton(String text) {
         Button btn = new Button(text);
@@ -335,9 +310,9 @@ public class LauncherApp {
     }
 
     /**
-     * Abre la URL indicada en el navegador predeterminado del sistema.
+     * Abre una URL en el navegador predeterminado del sistema.
      *
-     * @param url dirección web a abrir
+     * @param url la dirección que queremos abrir
      */
     private void openBrowser(String url) {
         try {

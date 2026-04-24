@@ -21,7 +21,7 @@
     </top>
 
     <center>
-        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color:#F5F0FF;">
+        <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane-app">
             <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
 
             <!-- ==================== TAB: CREAR USUARIO ==================== -->
@@ -34,37 +34,36 @@
                         <Label text="Nuevo usuario" styleClass="subtitulo"/>
 
                         <VBox spacing="6">
-                            <Label text="Nombre completo:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                            <Label text="Nombre completo:" styleClass="form-label"/>
                             <TextField fx:id="txtNombre" promptText="Ej: Ana García" styleClass="input-field"/>
                         </VBox>
 
                         <VBox spacing="6">
-                            <Label text="Email:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                            <Label text="Email:" styleClass="form-label"/>
                             <TextField fx:id="txtEmail" promptText="ana@email.com" styleClass="input-field"/>
                         </VBox>
 
                         <VBox spacing="6">
-                            <Label text="Contraseña:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                            <Label text="Contraseña:" styleClass="form-label"/>
                             <PasswordField fx:id="txtPassword" promptText="••••••••" styleClass="input-field"/>
                         </VBox>
 
                         <VBox spacing="6">
-                            <Label text="Rol:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                            <Label text="Rol:" styleClass="form-label"/>
                             <HBox spacing="12">
                                 <RadioButton fx:id="rbNino" text="Alumno" toggleGroup="$grupoRol"
-                                             style="-fx-font-size:14px;"/>
+                                             styleClass="radio-button-form"/>
                                 <RadioButton fx:id="rbPadre" text="Padre" toggleGroup="$grupoRol"
-                                             style="-fx-font-size:14px;"/>
+                                             styleClass="radio-button-form"/>
                                 <RadioButton fx:id="rbProfesor" text="Profesor" toggleGroup="$grupoRol"
-                                             style="-fx-font-size:14px;"/>
+                                             styleClass="radio-button-form"/>
                             </HBox>
                         </VBox>
 
-                        <Label fx:id="lblMensaje" text="" style="-fx-font-size:13px;"/>
+                        <Label fx:id="lblMensaje" text="" styleClass="texto-vacio"/>
 
                         <Button text="Crear usuario" onAction="#onCrearUsuario"
-                                styleClass="btn-crear" maxWidth="Infinity"
-                                style="-fx-font-size:16px; -fx-padding:12px; -fx-background-color:#8B72D4; -fx-text-fill:white;"/>
+                                styleClass="btn-accion" maxWidth="Infinity"/>
                     </VBox>
 
                     <!-- Lista de usuarios existentes -->
@@ -77,18 +76,14 @@
 
                         <!-- Filtro rápido por rol -->
                         <HBox spacing="10" alignment="CENTER_LEFT">
-                            <Label text="Ver:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
+                            <Label text="Ver:" styleClass="form-label"/>
                             <Button text="Todos" onAction="#onVerTodos" styleClass="btn-volver"/>
-                            <Button text="Alumnos" onAction="#onVerNinos"
-                                    style="-fx-background-color:#BDE3FF; -fx-background-radius:10px; -fx-cursor:hand; -fx-padding:6px 12px;"/>
-                            <Button text="Padres" onAction="#onVerPadres"
-                                    style="-fx-background-color:#C8F0C8; -fx-background-radius:10px; -fx-cursor:hand; -fx-padding:6px 12px;"/>
-                            <Button text="Profes" onAction="#onVerProfesores"
-                                    style="-fx-background-color:#FFE0A0; -fx-background-radius:10px; -fx-cursor:hand; -fx-padding:6px 12px;"/>
+                            <Button text="Alumnos" onAction="#onVerNinos" styleClass="btn-filtro-alumno"/>
+                            <Button text="Padres" onAction="#onVerPadres" styleClass="btn-filtro-padre"/>
+                            <Button text="Profes" onAction="#onVerProfesores" styleClass="btn-filtro-profe"/>
                         </HBox>
 
-                        <ListView fx:id="listaUsuarios" VBox.vgrow="ALWAYS"
-                                  style="-fx-font-size:14px;"/>
+                        <ListView fx:id="listaUsuarios" VBox.vgrow="ALWAYS"/>
 
                         <Button text="Eliminar usuario seleccionado" onAction="#onEliminarUsuario"
                                 styleClass="btn-eliminar" maxWidth="Infinity"/>
@@ -103,31 +98,26 @@
 
                     <Label text="Asignar alumno a padre o profesor" styleClass="subtitulo"/>
                     <Label text="Selecciona el tutor y el alumno y pulsa Vincular."
-                           style="-fx-text-fill:#777; -fx-font-size:14px;"/>
+                           styleClass="texto-vacio"/>
 
                     <HBox spacing="40" alignment="CENTER_LEFT">
                         <VBox spacing="8">
-                            <Label text="Tutor (Padre / Profesor):" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
-                            <ComboBox fx:id="cmbTutor" prefWidth="280"
-                                      style="-fx-background-radius:12px; -fx-font-size:14px;"/>
+                            <Label text="Tutor (Padre / Profesor):" styleClass="form-label"/>
+                            <ComboBox fx:id="cmbTutor" prefWidth="280" styleClass="combo-box"/>
                         </VBox>
                         <VBox spacing="8">
-                            <Label text="Alumno:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
-                            <ComboBox fx:id="cmbNino" prefWidth="280"
-                                      style="-fx-background-radius:12px; -fx-font-size:14px;"/>
+                            <Label text="Alumno:" styleClass="form-label"/>
+                            <ComboBox fx:id="cmbNino" prefWidth="280" styleClass="combo-box"/>
                         </VBox>
                     </HBox>
 
                     <Button text="Vincular alumno a este tutor" onAction="#onVincular"
-                            styleClass="btn-crear" prefWidth="320" prefHeight="48"
-                            style="-fx-font-size:16px; -fx-background-color:#8B72D4; -fx-text-fill:white;"/>
+                            styleClass="btn-accion" prefWidth="320" prefHeight="48"/>
 
-                    <Label fx:id="lblMensajeVinculo" text="" style="-fx-font-size:14px;"/>
+                    <Label fx:id="lblMensajeVinculo" text="" styleClass="texto-vacio"/>
 
-                    <!-- Tabla de vínculos actuales -->
                     <Label text="Vínculos actuales:" styleClass="subtitulo" style="-fx-padding:16px 0 0 0;"/>
-                    <ListView fx:id="listaVinculos" VBox.vgrow="ALWAYS"
-                              style="-fx-font-size:14px;"/>
+                    <ListView fx:id="listaVinculos" VBox.vgrow="ALWAYS"/>
                 </VBox>
             </Tab>
 

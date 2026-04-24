@@ -6,29 +6,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Clase de configuración central de Spring para Apptism.
+ * Configuración central de Spring para Apptism.
  *
- * <p>Define los beans de infraestructura de la aplicación que no pueden
- * ser gestionados automáticamente por Spring mediante anotaciones
- * de estereotipo ({@code @Component}, {@code @Service}, etc.).
- *
- * <p>En particular, registra el {@link StageManager} como bean de Spring
- * para que pueda ser inyectado con {@code @Autowired} en los controladores
- * JavaFX sin necesidad de instanciarlo manualmente.
+ * Aquí se registran los componentes que Spring no puede crear solo
+ * con sus anotaciones habituales ({@code @Component}, {@code @Service}...).
+ * En concreto, el {@link StageManager} necesita que le pasemos el contexto
+ * de Spring a mano, así que lo creamos nosotros aquí.
  */
 @Configuration
 public class ApplicationConfig {
 
     /**
-     * Registra el {@link StageManager} como bean singleton en el contexto de Spring.
+     * Registra el {@link StageManager} como componente único en el contexto.
      *
-     * <p>El {@link StageManager} necesita el {@link ApplicationContext} para
-     * poder instanciar los controladores JavaFX a través de Spring (de modo que
-     * éstos tengan sus dependencias inyectadas). Por eso recibe el contexto
-     * como parámetro, que Spring inyecta automáticamente.
+     * El gestor de ventanas necesita el contexto de Spring para poder
+     * crear los controladores con sus dependencias inyectadas. Spring
+     * nos pasa ese contexto automáticamente como parámetro.
      *
-     * @param context contexto de Spring Boot, inyectado automáticamente
-     * @return instancia única de {@link StageManager} para toda la aplicación
+     * @param context el contexto de Spring, inyectado automáticamente
+     * @return la instancia única del {@link StageManager} para toda la app
      */
     @Bean
     public StageManager stageManager(ApplicationContext context) {

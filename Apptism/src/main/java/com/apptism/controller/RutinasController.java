@@ -26,10 +26,15 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controlador de la pantalla de rutinas.
+ *
+ * Vista tutor: crear rutinas para sus niños organizadas por zona horaria
+ * (mañana, mediodía, noche) y eliminarlas.
+ * Vista niño: ver sus rutinas como tarjetas visuales y marcarlas como completadas.
+ */
 @Component
 public class RutinasController implements Initializable {
-
-    // --- Vista TUTOR ---
 
     @FXML private BorderPane panelTutor;
     @FXML private TabPane tabZonas;
@@ -40,8 +45,6 @@ public class RutinasController implements Initializable {
     @FXML private ComboBox<String> cmbZona;
     @FXML private ComboBox<String> cmbNinoTutor;  // Selector de niño para tutor
 
-    // --- Vista NIÑO ---
-    // rootStackNino es el StackPane INTERNO (no el raíz) — así se puede inyectar
     @FXML private StackPane rootStackNino;
     @FXML private FlowPane flowRutinasNino;
 
@@ -51,7 +54,6 @@ public class RutinasController implements Initializable {
     private List<Rutina>  rutinasActualesNino;
     private List<Usuario> ninosDisponibles;
 
-    // Referencias a las listas por zona para poder eliminar por índice
     private List<Rutina> rutinasManana;
     private List<Rutina> rutinasMediodia;
     private List<Rutina> rutinasNoche;
@@ -75,7 +77,6 @@ public class RutinasController implements Initializable {
         }
     }
 
-    // ======================== VISTA TUTOR ========================
 
     private void cargarNinosEnComboTutor() {
         ninosDisponibles = rutinaService.getNinosDelTutor(LoginController.usuarioActivo.getId());
@@ -174,8 +175,6 @@ public class RutinasController implements Initializable {
         txtNombreRutina.clear();
         cargarTodasLasRutinasTutor();
     }
-
-    // ======================== VISTA NIÑO ========================
 
     private void cargarRutinasNino() {
         Long ninoId = LoginController.usuarioActivo.getId();

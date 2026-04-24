@@ -1,87 +1,40 @@
-/* =============================================
-   APPTISM — ESTILOS (JavaFX)
-   Paleta definitiva v3.0
-   ─────────────────────────────────────────────
-   Principal:      #7EC8A0  Verde menta
-   Principal soft: #A8DFC4  Menta suave (header niño)
-   Hover/activo:   #5BAF8A  Verde esmeralda
-   Acento dorado:  #E8C96A  Ámbar (puntos y recompensas)
-   Acento cálido:  #F5A97A  Melocotón (notificaciones)
-   Fondo tutor:    #F5F0E8  Hueso cálido
-   Fondo niño:     #FAF7F2  Hueso luminoso
-   Texto:          #2F5244  Verde muy oscuro
-   ============================================= */
-
+/* Estilos para la aplicación*/
 .root {
-    /* ── Tokens principales ── */
+    /* Colores principales */
     -apptism-principal:       #7EC8A0;
     -apptism-principal-soft:  #A8DFC4;
     -apptism-hover:           #5BAF8A;
     -apptism-accent:          #F5A97A;
     -apptism-accent-gold:     #E8C96A;
 
-    /* ── Fondos ── */
+    /* Colores de fondo */
     -apptism-bg-soft:         #F5F0E8;
     -apptism-bg-nino:         #FAF7F2;
     -apptism-bg-white:        #FFFFFF;
 
-    /* ── Texto ── */
+    /* Colores para el texto */
     -apptism-text-main:       #2F5244;
     -apptism-text-muted:      #5C7A6E;
     -apptism-text-light:      #FFFFFF;
 
-    /* ── Bordes y sombras ── */
+    /* Bordes */
     -apptism-border:          #D8CCBA;
-    -apptism-shadow:          rgba(47, 82, 68, 0.14);
-
-    /* ── Grises funcionales ── */
     -apptism-gris-light:      #EDE8DF;
-    -apptism-gris-medium:     #8A9E96;
-    -apptism-gris-dark:       #2F5244;
-
-    /* ── Estados funcionales ── */
     -apptism-error-bg:        #F1D8D8;
     -apptism-error-text:      #7A3030;
-    -apptism-success-bg:      #DFF0E8;
-    -apptism-warn-bg:         #FFF3D6;
-
-    /* ── Compatibilidad con nombres legacy del código ── */
-    -apptism-violeta:         #7EC8A0;
-    -apptism-verde:           #7EC8A0;
-    -apptism-lila:            #A8DFC4;
-    -apptism-indigo:          #2F5244;
-    -apptism-verde-claro:     #F5F0E8;
-    -apptism-lila-medio:      #C4E5D4;
-    -apptism-violeta-dark:    #5BAF8A;
-    -apptism-verde-dark:      #5BAF8A;
-    -apptism-lila-dark:       #A8DFC4;
-    -apptism-indigo-dark:     #2F5244;
-    -apptism-violeta-light:   #F0FAF5;
-    -apptism-verde-light:     #F5F0E8;
-    -apptism-lila-light:      #F0FAF5;
-    -apptism-indigo-light:    #EAF3EE;
-    -apptism-azul:            #7EC8A0;
-    -apptism-amarillo:        #E8C96A;
-    -apptism-morado:          #2F5244;
-    -apptism-naranja:         #F5A97A;
-    -apptism-azul-dark:       #5BAF8A;
-    -apptism-amarillo-dark:   #C9A83A;
-    -apptism-morado-dark:     #2F5244;
     -apptism-naranja-dark:    #D4845A;
-    -apptism-amarillo-light:  #FFF8E6;
-    -apptism-morado-light:    #F0FAF5;
-    -apptism-naranja-light:   #FEF0E6;
-    -apptism-bg-padre:        #F5F0E8;
-    -apptism-hover-soft:      #5BAF8A;
-    -apptism-white:           #FFFFFF;
 }
 
-/* ─── Fuente global ─── */
+/* Fuente de la app */
 * {
-    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-family: "Segoe UI", sans-serif, sans-serif;
 }
 
-/* ─── Fondos de pantalla ─── */
+/* Logo de la app */
+.app-logo {
+    -fx-cursor: hand;
+}
+
 .root-pane,
 .login-root {
     -fx-background-color: -apptism-bg-soft;
@@ -91,7 +44,7 @@
     -fx-background-color: -apptism-bg-nino;
 }
 
-/* ─── Login ─── */
+/* Login */
 .login-background {
     -fx-background-color: linear-gradient(145deg, #F5F0E8 0%, #EDE8DF 55%, #FEF0E6 100%);
     -fx-min-width: Infinity;
@@ -125,13 +78,6 @@
     -fx-padding: 6px 10px;
 }
 
-.titulo-login {
-    -fx-font-size: 26px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -apptism-text-main;
-    -fx-padding: 10px 0 0 0;
-}
-
 .subtitulo-login {
     -fx-font-size: 13px;
     -fx-text-fill: -apptism-text-muted;
@@ -152,6 +98,8 @@
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-background-radius: 14px;
+    -fx-padding: 13px;
+    -fx-font-size: 15px;
     -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.18), 8, 0, 0, 3);
 }
 
@@ -176,7 +124,6 @@
 .dot-amarillo { -fx-background-color: #E8C96A; }
 .dot-naranja  { -fx-background-color: #F5A97A; }
 
-/* ─── Campos de texto ─── */
 .input-field {
     -fx-font-size: 14px;
     -fx-padding: 12px 14px;
@@ -199,23 +146,18 @@
     -fx-font-weight: bold;
 }
 
-/* ─── Headers ─── */
 .header {
     -fx-background-color: -apptism-principal;
     -fx-padding: 18px 28px;
     -fx-background-radius: 0 0 20px 20px;
-    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.15), 10, 0, 0, 3);
-    -fx-border-color: transparent transparent #5BAF8A transparent;
-    -fx-border-width: 0 0 2px 0;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.18), 14, 0, 0, 2);
 }
 
 .header-nino {
     -fx-background-color: -apptism-principal-soft;
     -fx-padding: 18px 28px;
     -fx-background-radius: 0 0 20px 20px;
-    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.12), 10, 0, 0, 3);
-    -fx-border-color: transparent transparent #5BAF8A transparent;
-    -fx-border-width: 0 0 2px 0;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 14, 0, 0, 2);
 }
 
 .titulo-header {
@@ -225,9 +167,7 @@
     -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 2, 0, 0, 1);
 }
 
-/* ─── Paneles y tarjetas ─── */
-.panel,
-.tarjeta-nino {
+.panel {
     -fx-background-color: -apptism-bg-white;
     -fx-background-radius: 20px;
     -fx-padding: 22px;
@@ -240,7 +180,6 @@
     -fx-text-fill: -apptism-text-main;
 }
 
-/* ─── ListView ─── */
 .list-view {
     -fx-background-color: transparent;
     -fx-background-radius: 14px;
@@ -268,7 +207,6 @@
     -fx-background-radius: 10px;
 }
 
-/* ─── ComboBox ─── */
 .combo-box {
     -fx-background-color: -apptism-bg-white;
     -fx-border-color: -apptism-border;
@@ -281,6 +219,31 @@
     -fx-cursor: hand;
 }
 
+.combo-box-popup .list-view {
+    -fx-background-color: -apptism-bg-white;
+    -fx-border-color: -apptism-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.16), 12, 0, 0, 4);
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 14px;
+    -fx-text-fill: -apptism-text-main;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: -apptism-gris-light;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: -apptism-principal-soft;
+    -fx-text-fill: -apptism-text-main;
+}
+
 .combo-box:focused {
     -fx-border-color: -apptism-principal;
 }
@@ -290,7 +253,6 @@
     -fx-font-size: 14px;
 }
 
-/* ─── Spinner ─── */
 .spinner {
     -fx-background-color: -apptism-bg-white;
     -fx-border-color: -apptism-border;
@@ -305,34 +267,26 @@
     -fx-text-fill: -apptism-text-main;
 }
 
-/* ─── Botones principales ─── */
 .btn-crear,
 .btn-dashboard,
-.btn-nino,
-.btn-completar,
-.btn-completar-nino {
+.btn-nino {
     -fx-background-color: -apptism-principal;
     -fx-text-fill: -apptism-text-main;
     -fx-font-weight: bold;
     -fx-cursor: hand;
 }
 
-.btn-crear,
-.btn-completar,
-.btn-completar-nino {
+.btn-crear {
     -fx-font-size: 14px;
     -fx-background-radius: 16px;
     -fx-padding: 10px 16px;
     -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.16), 6, 0, 0, 2);
 }
 
-.btn-crear:hover,
-.btn-completar:hover,
-.btn-completar-nino:hover {
+.btn-crear:hover {
     -fx-background-color: -apptism-hover;
 }
 
-/* ─── Botón de acción principal (admin) ─── */
 .btn-accion {
     -fx-background-color: -apptism-principal;
     -fx-text-fill: -apptism-text-main;
@@ -348,7 +302,6 @@
     -fx-background-color: -apptism-hover;
 }
 
-/* ─── Botón volver / salir ─── */
 .btn-volver,
 .btn-volver-nino {
     -fx-background-color: -apptism-gris-light;
@@ -366,7 +319,6 @@
     -fx-background-color: #DDD8CF;
 }
 
-/* ─── Botón eliminar ─── */
 .btn-eliminar {
     -fx-background-color: -apptism-error-bg;
     -fx-text-fill: -apptism-error-text;
@@ -381,7 +333,6 @@
     -fx-background-color: #EAC8C8;
 }
 
-/* ─── Botón dashboard ─── */
 .btn-dashboard {
     -fx-font-size: 17px;
     -fx-background-radius: 22px;
@@ -393,7 +344,6 @@
     -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.22), 12, 0, 0, 4);
 }
 
-/* ─── Botones de navegación del niño ─── */
 .btn-nino {
     -fx-font-size: 18px;
     -fx-background-radius: 20px;
@@ -414,16 +364,54 @@
 .btn-nino-amarillo{ -fx-background-color: #E8C96A; -fx-text-fill: #4A3A00; }
 .btn-nino-morado  { -fx-background-color: #7EC8A0; -fx-text-fill: #1A4433; }
 .btn-nino-naranja { -fx-background-color: #F5A97A; -fx-text-fill: #5C2A00; }
-.btn-nino-rosa    { -fx-background-color: #A8DFC4; -fx-text-fill: #1A4433; }
 
 .btn-nino-azul:hover     { -fx-background-color: #5BAF8A; -fx-text-fill: #1A4433; }
 .btn-nino-verde:hover    { -fx-background-color: #8DD0B0; -fx-text-fill: #1A4433; }
 .btn-nino-amarillo:hover { -fx-background-color: #C9A83A; -fx-text-fill: #4A3A00; }
 .btn-nino-morado:hover   { -fx-background-color: #5BAF8A; -fx-text-fill: #1A4433; }
 .btn-nino-naranja:hover  { -fx-background-color: #D4845A; -fx-text-fill: #5C2A00; }
-.btn-nino-rosa:hover     { -fx-background-color: #8DD0B0; -fx-text-fill: #1A4433; }
 
-/* ─── Puntos y recompensas ─── */
+/* Botones de filtro del admin */
+.btn-filtro-alumno {
+    -fx-background-color: -apptism-principal-soft;
+    -fx-text-fill: -apptism-text-main;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-padding: 6px 12px;
+    -fx-font-weight: bold;
+}
+
+.btn-filtro-alumno:hover {
+    -fx-background-color: #8DD0B0;
+}
+
+.btn-filtro-padre {
+    -fx-background-color: -apptism-accent-gold;
+    -fx-text-fill: #4A3A00;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-padding: 6px 12px;
+    -fx-font-weight: bold;
+}
+
+.btn-filtro-padre:hover {
+    -fx-background-color: #C9A83A;
+}
+
+.btn-filtro-profe {
+    -fx-background-color: -apptism-accent;
+    -fx-text-fill: #5C2A00;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-padding: 6px 12px;
+    -fx-font-weight: bold;
+}
+
+.btn-filtro-profe:hover {
+    -fx-background-color: -apptism-naranja-dark;
+}
+
+/* Puntos del niño */
 .puntos-nino {
     -fx-text-fill: #4A3A00;
     -fx-font-size: 26px;
@@ -442,8 +430,7 @@
     -fx-background-radius: 20px;
     -fx-padding: 4px 14px;
 }
-
-/* ─── Badge de notificación ─── */
+/* Icono de notificación */
 .badge-notificacion {
     -fx-background-color: -apptism-accent;
     -fx-text-fill: #5C2A00;
@@ -455,7 +442,6 @@
     -fx-translate-y: 5px;
 }
 
-/* ─── Confirmación de emoción enviada ─── */
 .confirmacion-label {
     -fx-background-color: -apptism-principal-soft;
     -fx-text-fill: -apptism-text-main;
@@ -465,19 +451,6 @@
     -fx-padding: 14px 32px;
 }
 
-/* ─── Burbujas del chat ─── */
-.burbuja-propia {
-    -fx-background-color: #E4F4EC;
-    -fx-background-radius: 16px 16px 4px 16px;
-}
-
-.burbuja-recibida {
-    -fx-background-color: -apptism-bg-white;
-    -fx-background-radius: 16px 16px 16px 4px;
-    -fx-effect: dropshadow(gaussian, rgba(47,82,68,0.10), 5, 0, 0, 2);
-}
-
-/* ─── Gráficos ─── */
 .chart-plot-background {
     -fx-background-color: #FDFAF6;
 }
@@ -487,7 +460,6 @@
     -fx-background-radius: 16px;
 }
 
-/* ─── Tabs ─── */
 .tab-pane > .tab-header-area > .headers-region > .tab {
     -fx-background-color: #EDE8DF;
     -fx-background-radius: 10px 10px 0 0;
@@ -505,5 +477,35 @@
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
+    -fx-text-fill: -apptism-text-main;
+}
+
+.tab-pane-app {
+    -fx-background-color: -apptism-bg-soft;
+}
+
+.scroll-transparente {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -apptism-text-muted;
+}
+
+.radio-button-form {
+    -fx-font-size: 14px;
+    -fx-text-fill: -apptism-text-main;
+}
+
+.texto-vacio {
+    -fx-text-fill: -apptism-text-muted;
+    -fx-font-size: 14px;
+}
+
+.titulo-seccion-nino {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
     -fx-text-fill: -apptism-text-main;
 }

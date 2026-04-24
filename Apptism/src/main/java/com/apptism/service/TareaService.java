@@ -16,12 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servicio de negocio para la gestión de tareas asignadas a los niños.
- *
- * <p>Gestiona el ciclo de vida completo de una tarea: creación por parte
- * del tutor, completación por parte del niño (con acumulación automática
- * de puntos) y eliminación. También proporciona consultas filtradas por
- * niño, creador y estado.
+ * Servicio que gestiona el ciclo de vida de las tareas: el tutor las crea,
+ * el niño las completa (y acumula puntos), y el tutor puede eliminarlas.
+ * También tiene consultas filtradas por niño, creador y estado.
  */
 @Service
 @RequiredArgsConstructor
@@ -31,26 +28,24 @@ public class TareaService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Devuelve todas las tareas asignadas a un niño, independientemente
-     * de su estado de completación.
+     * Devuelve todas las tareas asignadas a un niño, estén completadas o no.
      *
-     * @param ninoId identificador del niño
-     * @return lista de tareas del niño ordenadas por el repositorio
+     * @param ninoId el identificador del niño
+     * @return lista de sus tareas
      */
     public List<Tarea> getTareasByNino(Long ninoId) {
         return tareaRepository.findByNinoId(ninoId);
     }
 
     /**
-     * Crea una nueva tarea y la asigna a un niño concreto.
+     * Crea una tarea nueva y la asigna a un niño concreto.
      *
-     * @param titulo       título descriptivo de la tarea
-     * @param categoriaStr nombre de la categoría (debe coincidir con {@link CategoriaTarea})
-     * @param puntos       puntos que recibirá el niño al completarla
+     * @param titulo       título de la tarea
+     * @param categoriaStr nombre de la categoría (tiene que coincidir con {@link CategoriaTarea})
+     * @param puntos       puntos que gana el niño al completarla
      * @param ninoId       identificador del niño al que se asigna
      * @param creadorId    identificador del tutor que la crea
-     * @return entidad {@link Tarea} persistida
-     * @throws RuntimeException si el niño o el creador no existen
+     * @return la tarea guardada en base de datos
      */
     @Transactional
     public Tarea crearTarea(String titulo, String categoriaStr, int puntos,
@@ -73,15 +68,12 @@ public class TareaService {
     }
 
     /**
-     * Marca una tarea como completada y suma los puntos correspondientes
-     * al saldo del niño.
+     * Marca una tarea como completada y le suma los puntos al niño.
+     * Si la tarea ya estaba completada, devuelve el saldo actual sin tocar nada
+     * para evitar que se acumulen puntos dos veces.
      *
-     * <p>Si la tarea ya estaba completada, devuelve el saldo actual
-     * sin modificar nada, evitando doble acumulación de puntos.
-     *
-     * @param tareaId identificador de la tarea a completar
-     * @return nuevo saldo de puntos acumulados del niño tras la completación
-     * @throws RuntimeException si no existe ninguna tarea con ese identificador
+     * @param tareaId el identificador de la tarea a completar
+     * @return el nuevo saldo de puntos del niño
      */
     @Transactional
     public int completarTarea(Long tareaId) {
@@ -101,9 +93,9 @@ public class TareaService {
     }
 
     /**
-     * Elimina permanentemente una tarea por su identificador.
+     * Elimina una tarea del sistema.
      *
-     * @param tareaId identificador de la tarea a eliminar
+     * @param tareaId el identificador de la tarea a borrar
      */
     @Transactional
     public void eliminarTarea(Long tareaId) {
@@ -111,16 +103,13 @@ public class TareaService {
     }
 
     /**
-     * Devuelve todas las tareas de los niños vinculados a un tutor,
-     * incluyendo también las que el tutor creó directamente.
+     * Devuelve todas las tareas de los niños asignados a un tutor, incluidas las
+     * que el propio tutor creó directamente. Los duplicados se eliminan.
      *
-     * <p>La colección {@code ninos} del tutor es LAZY, por lo que este
-     * método se ejecuta dentro de una transacción de solo lectura.
-     * Los duplicados se eliminan comparando por identidad de entidad.
+     * La colección de niños es LAZY, así que se ejecuta dentro de una transacción.
      *
-     * @param tutorId identificador del tutor
-     * @return lista deduplicada de tareas de los niños del tutor
-     * @throws RuntimeException si no existe ningún tutor con ese identificador
+     * @param tutorId el identificador del tutor
+     * @return lista deduplicada de tareas de todos sus niños
      */
     @Transactional(readOnly = true)
     public List<Tarea> getTareasDeNinosDelTutor(Long tutorId) {

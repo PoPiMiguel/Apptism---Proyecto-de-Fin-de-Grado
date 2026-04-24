@@ -14,10 +14,10 @@
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
             <!-- Icono clicable a la izquierda: navega al dashboard -->
             <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                       onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                       onMouseClicked="#onVolver">
                 <image><Image url="@../images/apptism_icon.png"/></image>
             </ImageView>
-            <Label text="¿Cómo me siento?" style="-fx-font-size:24px; -fx-font-weight:bold; -fx-text-fill:#5652A0;"/>
+            <Label text="¿Cómo me siento?" styleClass="titulo-seccion-nino"/>
             <HBox HBox.hgrow="ALWAYS"/>
             <Button text="Volver" onAction="#onVolver" styleClass="btn-volver-nino"/>
         </HBox>
@@ -29,14 +29,13 @@
                 <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
 
                 <HBox alignment="CENTER" spacing="15">
-                    <Label text="Enviar a:" style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#555;"/>
-                    <ComboBox fx:id="cmbDestinatario" prefWidth="220"
-                              style="-fx-background-radius:12px; -fx-font-size:14px;"/>
+                    <Label text="Enviar a:" styleClass="form-label" style="-fx-font-size:16px;"/>
+                    <ComboBox fx:id="cmbDestinatario" prefWidth="220" styleClass="combo-box"/>
                 </HBox>
 
-                <Label text="Toca cómo te sientes:" style="-fx-font-size:20px; -fx-font-weight:bold; -fx-text-fill:#8B72D4;"/>
+                <Label text="Toca cómo te sientes:" styleClass="titulo-seccion-nino"/>
 
-                <ScrollPane fitToWidth="true" style="-fx-background-color:transparent; -fx-border-color:transparent;"
+                <ScrollPane fitToWidth="true" styleClass="scroll-transparente"
                             VBox.vgrow="ALWAYS">
                     <FlowPane fx:id="panelPictogramas" hgap="20" vgap="20" alignment="CENTER">
                         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
@@ -44,8 +43,7 @@
                 </ScrollPane>
 
                 <Label fx:id="lblConfirmacion" styleClass="confirmacion-label"
-                       text="¡Enviado!" visible="false"
-                       style="-fx-alignment:center;" maxWidth="Infinity"/>
+                       text="¡Enviado!" visible="false" maxWidth="Infinity"/>
             </VBox>
         </StackPane>
     </center>

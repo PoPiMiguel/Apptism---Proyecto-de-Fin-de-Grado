@@ -23,10 +23,15 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controlador de la pantalla de tareas.
+ *
+ * Vista tutor: crear tareas para sus niños, verlas y eliminarlas.
+ * Vista niño: ver sus tareas pendientes como tarjetas visuales y marcarlas
+ * como completadas para ganar puntos.
+ */
 @Component
 public class TareasController implements Initializable {
-
-    // --- Vista TUTOR ---
 
     @FXML private BorderPane panelTutor;
     @FXML private ListView<String> listaTareas;
@@ -36,7 +41,6 @@ public class TareasController implements Initializable {
     @FXML private Spinner<Integer> spinnerPuntos;
     @FXML private Label lblPuntosTotales;
 
-    // --- Vista NIÑO ---
     @FXML private StackPane rootStackNino;
     @FXML private FlowPane flowTareasNino;
     @FXML private Label lblPuntosNino;
@@ -67,7 +71,6 @@ public class TareasController implements Initializable {
                     "MATEMATICAS", "LENGUA", "ARTE", "JUEGO", "HABITOS"));
             cmbCategoria.getSelectionModel().selectFirst();
 
-            // Cargar niños del tutor en el combo
             ninosDisponibles = rutinaService.getNinosDelTutor(usuario.getId());
             if (!ninosDisponibles.isEmpty()) {
                 cmbNinoTutor.setItems(FXCollections.observableArrayList(
@@ -83,7 +86,6 @@ public class TareasController implements Initializable {
         }
     }
 
-    // ======================== TUTOR ========================
 
     private void cargarTareasTutor() {
         // Mostrar las tareas creadas por el tutor (para sus niños asignados)
@@ -132,8 +134,6 @@ public class TareasController implements Initializable {
         tareaService.eliminarTarea(tareasActualesTutor.get(idx).getId());
         cargarTareasTutor();
     }
-
-    // ======================== NIÑO ========================
 
     private void cargarTareasNino() {
         Usuario usuario = LoginController.usuarioActivo;
@@ -221,12 +221,12 @@ public class TareasController implements Initializable {
 
     private String emojiCategoria(String cat) {
         return switch (cat) {
-            case "MATEMATICAS" -> "🔢";
-            case "LENGUA"      -> "📖";
-            case "ARTE"        -> "🎨";
-            case "JUEGO"       -> "🎮";
-            case "HABITOS"     -> "🦷";
-            default            -> "📚";
+            case "MATEMATICAS" -> "&#128290";
+            case "LENGUA"      -> "&#128214";
+            case "ARTE"        -> "&#127912";
+            case "JUEGO"       -> "&#127918";
+            case "HABITOS"     -> "&#9200";
+            default            -> "&#128218";
         };
     }
 

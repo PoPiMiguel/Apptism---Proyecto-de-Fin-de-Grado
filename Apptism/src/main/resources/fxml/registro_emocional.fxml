@@ -15,7 +15,7 @@
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
             <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
             <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                           onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                           onMouseClicked="#onVolver">
                     <image><Image url="@../images/apptism_icon.png"/></image>
                 </ImageView>
             <HBox HBox.hgrow="ALWAYS"/>
@@ -28,9 +28,8 @@
             <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
 
             <HBox alignment="CENTER_LEFT" spacing="15">
-                <Label text="Ver emociones de:" style="-fx-font-weight:bold; -fx-font-size:15px; -fx-text-fill:#555;"/>
-                <ComboBox fx:id="cmbNino" prefWidth="220"
-                          style="-fx-background-radius:12px; -fx-font-size:14px;"/>
+                <Label text="Ver emociones de:" styleClass="form-label" style="-fx-font-size:15px;"/>
+                <ComboBox fx:id="cmbNino" prefWidth="220" styleClass="combo-box"/>
             </HBox>
 
             <SplitPane dividerPositions="0.45" VBox.vgrow="ALWAYS">
@@ -38,9 +37,9 @@
                 <VBox spacing="10" styleClass="panel">
                     <Label text="Emociones recibidas" styleClass="subtitulo"/>
                     <Label fx:id="lblSinMensajes" text="Aún no hay emociones registradas."
-                           style="-fx-text-fill:#B0ACCC; -fx-font-size:14px;" visible="false"/>
+                           styleClass="texto-vacio" visible="false"/>
                     <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
-                                style="-fx-background-color:transparent; -fx-border-color:transparent;">
+                                styleClass="scroll-transparente">
                         <FlowPane fx:id="panelMensajes" hgap="16" vgap="16"/>
                     </ScrollPane>
                 </VBox>
@@ -49,7 +48,7 @@
                 <VBox spacing="10" styleClass="panel">
                     <Label text="Historial de la semana" styleClass="subtitulo"/>
                     <BarChart fx:id="graficoEmociones" VBox.vgrow="ALWAYS"
-                              style="-fx-background-color:white; -fx-background-radius:16px;">
+                              styleClass="chart-background">
                         <xAxis><CategoryAxis fx:id="ejeX"/></xAxis>
                         <yAxis><NumberAxis fx:id="ejeY"/></yAxis>
                     </BarChart>

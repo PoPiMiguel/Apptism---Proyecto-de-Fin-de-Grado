@@ -44,7 +44,7 @@
         <Label fx:id="lblError" text="" styleClass="error-label" style="-fx-padding: 4 0 0 0;"/>
 
         <Button text="Entrar" onAction="#onLogin" styleClass="btn-login-principal"
-                maxWidth="Infinity" style="-fx-padding: 13; -fx-background-radius: 14; -fx-font-size: 15;"/>
+                maxWidth="Infinity"/>
 
         <HBox alignment="CENTER" spacing="8.0" styleClass="login-dots-row">
             <Region styleClass="dot-morado"/>

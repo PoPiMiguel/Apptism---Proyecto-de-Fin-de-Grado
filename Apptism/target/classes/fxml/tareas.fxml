@@ -9,14 +9,12 @@
            fx:controller="com.apptism.controller.TareasController"
            prefWidth="1280" prefHeight="800">
 
-    <!-- ===== VISTA TUTOR ===== -->
     <BorderPane fx:id="panelTutor" styleClass="root-pane">
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
                 <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                           onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                           onMouseClicked="#onVolver">
                     <image><Image url="@../images/apptism_icon.png"/></image>
                 </ImageView>
                 <HBox HBox.hgrow="ALWAYS"/>
@@ -33,14 +31,15 @@
                     <Button text="Eliminar seleccionada" onAction="#onEliminarTarea"
                             styleClass="btn-eliminar" maxWidth="Infinity"/>
                 </VBox>
-                <VBox spacing="15" styleClass="panel">
+                <VBox spacing="15" styleClass="panel" VBox.vgrow="ALWAYS">
                     <Label text="Nueva tarea" styleClass="subtitulo"/>
                     <Label text="Título:"/>
                     <TextField fx:id="txtTitulo" promptText="Ej: Tabla del 2" styleClass="input-field"/>
-                    <Label text="Asignar a niño:" style="-fx-font-weight:bold; -fx-text-fill:#555;"/>
-                    <ComboBox fx:id="cmbNinoTutor" promptText="Selecciona un niño" maxWidth="Infinity"/>
+                    <Label text="Asignar a niño:" styleClass="form-label"/>
+                    <ComboBox fx:id="cmbNinoTutor" promptText="Selecciona un niño"
+                              maxWidth="Infinity" visibleRowCount="4"/>
                     <Label text="Categoría:"/>
-                    <ComboBox fx:id="cmbCategoria" maxWidth="Infinity"/>
+                    <ComboBox fx:id="cmbCategoria" maxWidth="Infinity" visibleRowCount="5"/>
                     <Label text="Puntos:"/>
                     <Spinner fx:id="spinnerPuntos" maxWidth="Infinity" editable="true"/>
                     <Button text="Crear tarea" onAction="#onCrearTarea"
@@ -50,15 +49,13 @@
         </center>
     </BorderPane>
 
-    <!-- ===== VISTA NIÑO ===== -->
     <StackPane fx:id="rootStackNino" visible="false">
         <BorderPane styleClass="root-pane-nino">
             <top>
                 <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                     <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                    <!-- Icono clicable a la izquierda: navega al dashboard -->
                     <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                               onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                               onMouseClicked="#onVolver">
                         <image><Image url="@../images/apptism_icon.png"/></image>
                     </ImageView>
                     <HBox HBox.hgrow="ALWAYS"/>
@@ -67,7 +64,7 @@
                 </HBox>
             </top>
             <center>
-                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <ScrollPane fitToWidth="true" styleClass="scroll-transparente">
                     <FlowPane fx:id="flowTareasNino" hgap="22" vgap="22" alignment="CENTER">
                         <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
                     </FlowPane>

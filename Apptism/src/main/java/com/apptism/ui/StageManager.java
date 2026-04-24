@@ -8,59 +8,53 @@ import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
 
 /**
- * Gestor centralizado de ventanas y navegación entre vistas FXML.
+ * El gestor de ventanas: se encarga de cargar las pantallas y navegar entre ellas.
  *
- * <p>Es el componente responsable de cargar los archivos {@code .fxml},
- * inyectar los controladores a través del contexto de Spring Boot y
- * aplicar la hoja de estilos global de la aplicación. Actúa como
- * router de navegación: todos los controladores que necesiten cambiar
- * de pantalla llaman a {@link #switchScene(FxmlView)}.
+ * Todos los controladores que quieran cambiar de pantalla llaman a
+ * {@link #switchScene(FxmlView)}. También aplica el CSS global cada vez
+ * que se cambia de vista.
  *
- * <p>No está anotado con {@code @Component} porque requiere el Stage de
- * JavaFX para funcionar, el cual no está disponible en el momento en que
- * Spring inicializa sus beans. Se registra manualmente en
- * {@link com.apptism.config.ApplicationConfig}.
+ * No lleva {@code @Component} porque necesita el escenario de JavaFX para
+ * funcionar, y ese escenario no está disponible cuando Spring arranca sus
+ * componentes. Por eso se registra a mano en {@link com.apptism.config.ApplicationConfig}.
  */
 public class StageManager {
 
-    /** Contexto de Spring, usado como factoría de controladores FXML. */
+    /** El contexto de Spring, que usamos para crear los controladores con sus dependencias. */
     private final ApplicationContext springContext;
 
-    /** Ventana principal de la aplicación. Se asigna en {@link #setPrimaryStage(Stage)}. */
+    /** La ventana principal. Se asigna una sola vez desde {@link #setPrimaryStage(Stage)}. */
     private Stage primaryStage;
 
     /**
-     * Construye el StageManager con el contexto de Spring necesario para
-     * la inyección de dependencias en los controladores FXML.
+     * Crea el gestor con el contexto de Spring que necesita para inyectar
+     * dependencias en los controladores de los FXML.
      *
-     * @param springContext contexto de Spring Boot activo
+     * @param springContext el contexto de Spring activo
      */
     public StageManager(ApplicationContext springContext) {
         this.springContext = springContext;
     }
 
     /**
-     * Asigna la ventana principal de la aplicación.
+     * Asigna la ventana principal. Hay que llamar a esto una sola vez
+     * desde {@link com.apptism.ApptismApp#start(Stage)} antes de navegar a ninguna pantalla.
      *
-     * <p>Debe llamarse una sola vez desde {@link com.apptism.ApptismApp#start(Stage)}
-     * antes de cualquier llamada a {@link #switchScene(FxmlView)}.
-     *
-     * @param stage ventana principal proporcionada por JavaFX
+     * @param stage la ventana principal de JavaFX
      */
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
 
     /**
-     * Cambia la vista activa de la ventana principal cargando el FXML
-     * correspondiente al valor de {@link FxmlView} indicado.
+     * Cambia la pantalla activa cargando el FXML que corresponde al valor
+     * de {@link FxmlView} que se le pasa.
      *
-     * <p>En la primera llamada crea una {@link Scene} nueva con tamaño
-     * inicial de 1280×800 y aplica la hoja de estilos global. En llamadas
-     * posteriores reutiliza la escena existente y solo sustituye el nodo raíz,
-     * evitando recrear la escena cada vez.
+     * La primera vez crea la escena completa con tamaño 1280×800 y aplica
+     * el CSS. Las siguientes veces reutiliza la escena y solo cambia el
+     * contenido, para no recrearla entera cada vez.
      *
-     * @param view enumerado que identifica la vista a mostrar y su título
+     * @param view la pantalla a la que queremos navegar
      */
     public void switchScene(FxmlView view) {
         Parent root = loadFxml(view.getFxmlPath());
@@ -86,13 +80,12 @@ public class StageManager {
     }
 
     /**
-     * Carga el archivo FXML indicado y asigna como factoría de controladores
-     * el contexto de Spring, de modo que los controladores reciben sus
-     * dependencias inyectadas automáticamente.
+     * Carga el archivo FXML indicado y le pide a Spring que cree el controlador,
+     * de modo que llegue con todas sus dependencias ya inyectadas.
      *
-     * @param fxmlPath ruta al archivo {@code .fxml} dentro del classpath
-     * @return nodo raíz del árbol de escena definido en el FXML
-     * @throws RuntimeException si el archivo FXML no se encuentra o contiene errores
+     * @param fxmlPath ruta al archivo FXML dentro del classpath
+     * @return el nodo raíz de la pantalla cargada
+     * @throws RuntimeException si el archivo no existe o tiene algún error
      */
     private Parent loadFxml(String fxmlPath) {
         try {
@@ -105,12 +98,11 @@ public class StageManager {
     }
 
     /**
-     * Limpia y recarga la hoja de estilos CSS global en la escena indicada.
+     * Limpia y recarga el CSS global en la escena. Se llama cada vez que
+     * se navega entre pantallas para asegurarse de que los estilos se aplican
+     * bien después de cambiar el nodo raíz.
      *
-     * <p>Se llama cada vez que se navega entre vistas para asegurar que los
-     * estilos se aplican correctamente tras el cambio de nodo raíz.
-     *
-     * @param scene escena sobre la que se aplican los estilos
+     * @param scene la escena sobre la que aplicar los estilos
      */
     private void cargarEstilos(Scene scene) {
         try {

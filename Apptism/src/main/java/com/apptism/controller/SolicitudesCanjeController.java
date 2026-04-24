@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Controlador del módulo de historial de canjes (exclusivo para tutores).
+ * Controlador de la pantalla del historial de canjes (exclusivo para tutores).
  *
- * Muestra el listado de todas las recompensas canjeadas por los niños
- * del tutor autenticado, con el nombre del niño, la recompensa y la fecha.
+ * Muestra todas las recompensas que han canjeado los niños del tutor,
+ * con el nombre del niño, la descripción de la recompensa y la fecha.
  */
 @Component
 public class SolicitudesCanjeController implements Initializable {

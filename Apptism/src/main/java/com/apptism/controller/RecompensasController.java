@@ -24,24 +24,22 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Controlador del módulo de recompensas.
+ * Controlador de la pantalla de recompensas.
  *
- * Vista tutor: crear y listar recompensas.
- * Vista niño: ver recompensas disponibles y canjearlas si tiene puntos suficientes.
- * Al canjear, los puntos se descuentan inmediatamente y queda registrado
- * en el historial de canjes visible para el tutor.
+ * Vista tutor: crear y listar recompensas disponibles.
+ * Vista niño: ver las recompensas de sus tutores y canjearlas si tiene puntos
+ * suficientes. Al canjear, los puntos se descuentan y queda registrado en el
+ * historial de canjes que ve el tutor.
  */
 @Component
 public class RecompensasController implements Initializable {
 
-    // ---- Vista TUTOR ----
     @FXML private BorderPane       panelTutor;
     @FXML private ListView<String> listaRecompensas;
     @FXML private TextField        txtDescripcion;
     @FXML private Spinner<Integer> spinnerPuntos;
     @FXML private Label            lblPuntosDisponibles;
 
-    // ---- Vista NIÑO ----
     @FXML private StackPane rootStackNino;
     @FXML private FlowPane  flowRecompensasNino;
     @FXML private Label     lblPuntosNino;
@@ -72,8 +70,6 @@ public class RecompensasController implements Initializable {
         }
     }
 
-    // ======================== TUTOR ========================
-
     private void cargarRecompensasTutor() {
         recompensasActualesTutor = recompensaService.getRecompensasDisponibles(
                 LoginController.usuarioActivo.getId());
@@ -97,7 +93,6 @@ public class RecompensasController implements Initializable {
         cargarRecompensasTutor();
     }
 
-    // ======================== NIÑO ========================
 
     private void cargarRecompensasNino() {
         Usuario nino = LoginController.usuarioActivo;

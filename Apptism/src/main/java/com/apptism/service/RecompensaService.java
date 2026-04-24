@@ -32,9 +32,9 @@ public class RecompensaService {
     private final SolicitudCanjeRepository solicitudCanjeRepository;
 
     /**
-     * Devuelve las recompensas activas creadas por un tutor concreto.
+     * Devuelve las recompensas activas creadas por un tutor.
      *
-     * @param familiaId identificador del tutor (denominado "familia" en el modelo)
+     * @param familiaId el identificador del tutor (llamado "familia" en el modelo)
      * @return lista de recompensas activas del tutor
      */
     public List<Recompensa> getRecompensasDisponibles(Long familiaId) {
@@ -42,13 +42,12 @@ public class RecompensaService {
     }
 
     /**
-     * Crea una nueva recompensa asociada al tutor indicado.
+     * Crea una recompensa nueva asociada al tutor indicado.
      *
-     * @param descripcion texto descriptivo de la recompensa
-     * @param puntos      coste en puntos para canjearla
-     * @param familiaId   identificador del tutor que la crea
-     * @return entidad {@link Recompensa} persistida
-     * @throws RuntimeException si no existe ningún usuario con ese identificador
+     * @param descripcion descripción de la recompensa
+     * @param puntos      cuántos puntos cuesta canjearla
+     * @param familiaId   el identificador del tutor que la crea
+     * @return la recompensa guardada en base de datos
      */
     @Transactional
     public Recompensa crearRecompensa(String descripcion, int puntos, Long familiaId) {
@@ -66,18 +65,14 @@ public class RecompensaService {
     }
 
     /**
-     * Procesa la solicitud de canje de una recompensa por parte de un niño.
+     * Procesa el canje de una recompensa por parte de un niño.
      *
-     * <p>Comprueba que el niño tenga puntos suficientes. Si es así, descuenta
-     * los puntos de su saldo, persiste una {@link SolicitudCanje} en estado
-     * {@code PENDIENTE} y devuelve {@code true}. Si no tiene puntos suficientes,
-     * devuelve {@code false} sin modificar nada.
+     * Comprueba que tenga puntos suficientes. Si los tiene, descuenta los puntos
+     * y crea una solicitud de canje en estado PENDIENTE. Si no los tiene, no hace nada.
      *
-     * @param ninoId       identificador del niño que solicita el canje
-     * @param recompensaId identificador de la recompensa a canjear
-     * @return {@code true} si el canje se procesó correctamente;
-     *         {@code false} si el niño no tiene puntos suficientes
-     * @throws RuntimeException si el niño o la recompensa no existen
+     * @param ninoId       el identificador del niño que quiere canjear
+     * @param recompensaId el identificador de la recompensa que quiere canjear
+     * @return {@code true} si el canje se hizo bien; {@code false} si no tenía suficientes puntos
      */
     @Transactional
     public boolean canjearRecompensa(Long ninoId, Long recompensaId) {

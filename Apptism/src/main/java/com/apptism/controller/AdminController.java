@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: AdminController.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
@@ -21,21 +18,15 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /**
- * Controlador del panel de administración del sistema.
+ * Controlador del panel de administración.
  *
- * <p>Exclusivo para usuarios con rol {@code ADMIN}. Ofrece dos funcionalidades
- * principales organizadas en pestañas:
- * <ul>
- *   <li><b>Gestión de usuarios</b>: creación, eliminación y filtrado de usuarios
- *       por rol (niño, padre o profesor).</li>
- *   <li><b>Vinculación tutor-niño</b>: establecimiento de relaciones entre tutores
- *       y niños, con visualización de los vínculos existentes.</li>
- * </ul>
+ * Solo lo ven los usuarios con rol ADMIN. Tiene dos pestañas:
+ * - Gestión de usuarios: crear, eliminar y filtrar por rol.
+ * - Vinculación tutor-niño: asignar niños a tutores y ver los vínculos existentes.
  */
 @Component
 public class AdminController implements Initializable {
 
-    // ── Tab: Crear usuario ────────────────────────────────────────
     @FXML private TextField     txtNombre;
     @FXML private TextField     txtEmail;
     @FXML private PasswordField txtPassword;
@@ -46,7 +37,6 @@ public class AdminController implements Initializable {
     @FXML private Label         lblMensaje;
     @FXML private ListView<String> listaUsuarios;
 
-    // ── Tab: Vincular ─────────────────────────────────────────────
     @FXML private ComboBox<String> cmbTutor;
     @FXML private ComboBox<String> cmbNino;
     @FXML private Label            lblMensajeVinculo;
@@ -65,9 +55,6 @@ public class AdminController implements Initializable {
     /**
      * Inicializa el panel: selecciona el rol "Niño" por defecto y carga
      * los datos iniciales de las dos pestañas.
-     *
-     * @param url URL del FXML (no se usa)
-     * @param rb  ResourceBundle de internacionalización (no se usa)
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -76,8 +63,6 @@ public class AdminController implements Initializable {
         cargarCombosVinculo();
         actualizarTablaVinculos();
     }
-
-    // ── Tab: Gestión de usuarios ───────────────────────────────────
 
     /**
      * Carga todos los usuarios del sistema (excluyendo administradores)
@@ -169,7 +154,6 @@ public class AdminController implements Initializable {
         mostrarMensaje("Lista actualizada.", true);
     }
 
-    // Filtros de la lista de usuarios por rol
     @FXML private void onVerTodos()      { usuariosMostrados = todosUsuarios;                    renderizarLista(usuariosMostrados); }
     @FXML private void onVerNinos()      { usuariosMostrados = filtrarPorRol(RolUsuario.NINO);     renderizarLista(usuariosMostrados); }
     @FXML private void onVerPadres()     { usuariosMostrados = filtrarPorRol(RolUsuario.PADRE);    renderizarLista(usuariosMostrados); }
@@ -196,8 +180,6 @@ public class AdminController implements Initializable {
         lblMensaje.setStyle("-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:"
                 + (exito ? "#81D8A3" : "#C96070") + ";");
     }
-
-    // ── Tab: Vincular tutor-niño ───────────────────────────────────
 
     /**
      * Carga los combos de tutores y niños disponibles para establecer vínculos.

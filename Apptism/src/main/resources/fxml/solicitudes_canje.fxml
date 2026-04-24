@@ -13,7 +13,7 @@
         <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
             <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
-                       onMouseClicked="#onVolver" style="-fx-cursor:hand;">
+                       onMouseClicked="#onVolver">
                 <image><Image url="@../images/apptism_icon.png"/></image>
             </ImageView>
             <HBox HBox.hgrow="ALWAYS"/>
@@ -25,15 +25,14 @@
         <VBox spacing="20">
             <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
 
-            <Label fx:id="lblContador" styleClass="subtitulo"
-                   style="-fx-text-fill: #8B72D4; -fx-font-size:18px;"/>
+            <Label fx:id="lblContador" styleClass="subtitulo"/>
 
             <!-- Lista de canjes realizados -->
             <VBox spacing="0" styleClass="panel" VBox.vgrow="ALWAYS">
                 <Label text="Historial de canjes" styleClass="subtitulo"
                        style="-fx-padding: 0 0 12 0;"/>
                 <ListView fx:id="listaSolicitudes" VBox.vgrow="ALWAYS"
-                          style="-fx-font-size:14px; -fx-border-color: transparent;"/>
+                          styleClass="list-view" style="-fx-border-color: transparent;"/>
             </VBox>
 
         </VBox>
