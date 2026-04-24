@@ -6,9 +6,15 @@ package com.apptism.service;
 import com.apptism.entity.RolUsuario;
 import com.apptism.entity.Usuario;
 import com.apptism.repository.UsuarioRepository;
+import com.apptism.repository.MensajeRepository;
+import com.apptism.repository.RecompensaRepository;
+import com.apptism.repository.RutinaRepository;
+import com.apptism.repository.SolicitudCanjeRepository;
+import com.apptism.repository.TareaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +33,11 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
-    // ── Autenticación ──────────────────────────────────────────────
+    private final TareaRepository tareaRepository;
+    private final RutinaRepository rutinaRepository;
+    private final RecompensaRepository recompensaRepository;
+    private final SolicitudCanjeRepository solicitudCanjeRepository;
+    private final MensajeRepository mensajeRepository;
 
     /**
      * Comprueba si el email y la contraseña son correctos y devuelve el usuario.
@@ -164,12 +173,41 @@ public class UsuarioService {
     }
 
     /**
-     * Elimina un usuario del sistema por su identificador.
+     * Elimina un usuario y todos sus datos asociados, borrando en el orden
+     * correcto para no romper las claves foráneas de MySQL.
+     *
+     * Orden de borrado:
+     * 1. Mensajes donde aparece como emisor o receptor
+     * 2. Solicitudes de canje donde es el niño
+     * 3. Solicitudes de canje ligadas a sus recompensas (si es tutor)
+     * 4. Sus recompensas
+     * 5. Tareas donde es creador o niño destinatario
+     * 6. Rutinas donde es creador o niño destinatario
+     * 7. Los vínculos del usuario
+     * 8. El propio usuario
      *
      * @param id el identificador del usuario a borrar
      */
     @Transactional
     public void eliminarUsuario(Long id) {
+        mensajeRepository.deleteByEmisorId(id);
+        mensajeRepository.deleteByReceptorId(id);
+        solicitudCanjeRepository.deleteByNinoId(id);
+        recompensaRepository.findByFamiliaId(id).forEach(r ->
+                solicitudCanjeRepository.deleteByRecompensaId(r.getId()));
+        recompensaRepository.deleteByFamiliaId(id);
+        tareaRepository.deleteByCreadorId(id);
+        tareaRepository.deleteByNinoId(id);
+        rutinaRepository.deleteByCreadorId(id);
+        rutinaRepository.deleteByNinoId(id);
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario != null) {
+            usuarioRepository.findAll().forEach(tutor -> {
+                if (tutor.getNinos().removeIf(n -> n.getId().equals(id))) {
+                    usuarioRepository.save(tutor);
+                }
+            });
+        }
         usuarioRepository.deleteById(id);
     }
 }

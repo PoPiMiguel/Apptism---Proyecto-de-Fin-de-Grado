@@ -9,13 +9,11 @@ import java.util.List;
 @Repository
 public interface MensajeRepository extends JpaRepository<Mensaje, Long> {
 
-    // Chat entre dos usuarios (bidireccional)
     List<Mensaje> findByEmisorIdAndReceptorIdOrEmisorIdAndReceptorIdOrderByFechaAsc(
             Long emisor1, Long receptor1, Long emisor2, Long receptor2);
 
-    // Emociones enviadas por un niño (tipo EMOCION)
     List<Mensaje> findByReceptorIdAndTipoOrderByFechaDesc(Long receptorId, TipoMensaje tipo);
+    void deleteByEmisorId(Long emisorId);
+    void deleteByReceptorId(Long receptorId);
 
-    // Mensajes no leídos
-    long countByReceptorIdAndLeidoFalse(Long receptorId);
 }

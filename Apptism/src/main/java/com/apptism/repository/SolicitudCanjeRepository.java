@@ -10,5 +10,6 @@ import java.util.List;
 public interface SolicitudCanjeRepository extends JpaRepository<SolicitudCanje, Long> {
     List<SolicitudCanje> findByRecompensaFamiliaIdOrderByFechaDesc(Long tutorId);
     long countByRecompensaFamiliaIdAndLeidaFalse(Long tutorId);
-    List<SolicitudCanje> findByNinoIdAndEstado(Long ninoId, EstadoSolicitud estado);
+    void deleteByNinoId(Long ninoId);
+    void deleteByRecompensaId(Long recompensaId);
 }

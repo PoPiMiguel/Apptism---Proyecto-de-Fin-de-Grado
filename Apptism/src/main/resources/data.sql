@@ -1,8 +1,4 @@
--- ============================================================
--- Apptism — Datos iniciales
--- Se ejecuta al arrancar la app (Spring Boot)
--- Inserta el usuario administrador por defecto si no existe
--- ============================================================
+/* Este archivo se ejecuta al iniciar la app e inserta el usuario administrador en caso de no existir*/
 
 INSERT INTO usuarios (nombre, email, password, rol, puntos_acumulados)
 SELECT 'Administrador', 'admin@apptism.com', 'admin123', 'ADMIN', 0

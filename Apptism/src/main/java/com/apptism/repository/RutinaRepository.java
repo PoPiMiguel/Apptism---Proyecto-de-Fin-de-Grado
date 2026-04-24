@@ -10,4 +10,6 @@ import java.util.List;
 public interface RutinaRepository extends JpaRepository<Rutina, Long> {
     List<Rutina> findByNinoIdOrderByOrdenAsc(Long ninoId);
     List<Rutina> findByNinoIdAndZonaHorariaOrderByOrdenAsc(Long ninoId, ZonaHoraria zona);
+    void deleteByCreadorId(Long creadorId);
+    void deleteByNinoId(Long ninoId);
 }
