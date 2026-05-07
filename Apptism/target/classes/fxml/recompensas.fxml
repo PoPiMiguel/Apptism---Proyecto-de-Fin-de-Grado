@@ -9,12 +9,10 @@
            fx:controller="com.apptism.controller.RecompensasController"
            prefWidth="1280" prefHeight="800">
 
-    <!-- ===== VISTA TUTOR ===== -->
     <BorderPane fx:id="panelTutor" styleClass="root-pane">
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
                 <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
                            onMouseClicked="#onVolver">
                     <image><Image url="@../images/apptism_icon.png"/></image>
@@ -44,13 +42,11 @@
         </center>
     </BorderPane>
 
-    <!-- ===== VISTA NIÑO ===== -->
     <StackPane fx:id="rootStackNino" visible="false">
         <BorderPane styleClass="root-pane-nino">
             <top>
                 <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                     <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                    <!-- Icono clicable a la izquierda: navega al dashboard -->
                     <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
                                onMouseClicked="#onVolver">
                         <image><Image url="@../images/apptism_icon.png"/></image>

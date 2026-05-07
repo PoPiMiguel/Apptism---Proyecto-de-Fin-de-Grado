@@ -65,7 +65,7 @@ public class LoginController implements Initializable {
     private void cargarLogo() {
         try {
             String rutaLogo = getClass()
-                    .getResource("/images/apptism_icon_512.png").toExternalForm();
+                    .getResource("/images/apptism_icon.png").toExternalForm();
             Image logo = new Image(rutaLogo, 260, 80, true, true);
             imgLogo.setImage(logo);
         } catch (Exception e) {

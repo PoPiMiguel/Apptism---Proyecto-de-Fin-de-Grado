@@ -24,12 +24,10 @@
         <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane-app">
             <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
 
-            <!-- ==================== TAB: CREAR USUARIO ==================== -->
             <Tab text="Crear Usuario">
                 <SplitPane dividerPositions="0.42">
                     <padding><Insets top="15" right="0" bottom="0" left="0"/></padding>
 
-                    <!-- Formulario de creación -->
                     <VBox spacing="16" styleClass="panel" style="-fx-max-width:480px;">
                         <Label text="Nuevo usuario" styleClass="subtitulo"/>
 
@@ -66,7 +64,6 @@
                                 styleClass="btn-accion" maxWidth="Infinity"/>
                     </VBox>
 
-                    <!-- Lista de usuarios existentes -->
                     <VBox spacing="12" styleClass="panel">
                         <HBox alignment="CENTER_LEFT" spacing="15">
                             <Label text="Usuarios registrados" styleClass="subtitulo"/>
@@ -74,7 +71,6 @@
                             <Button text="Refrescar" onAction="#onRefrescar" styleClass="btn-volver"/>
                         </HBox>
 
-                        <!-- Filtro rápido por rol -->
                         <HBox spacing="10" alignment="CENTER_LEFT">
                             <Label text="Ver:" styleClass="form-label"/>
                             <Button text="Todos" onAction="#onVerTodos" styleClass="btn-volver"/>
@@ -91,7 +87,6 @@
                 </SplitPane>
             </Tab>
 
-            <!-- ==================== TAB: VINCULAR ==================== -->
             <Tab text="Vincular Alumno ↔ Tutor">
                 <VBox spacing="20" styleClass="panel">
                     <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>

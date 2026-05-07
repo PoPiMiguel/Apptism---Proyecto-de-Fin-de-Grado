@@ -13,7 +13,6 @@
     <top>
         <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <!-- Icono clicable: navega al dashboard (página principal del perfil) -->
             <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
                            onMouseClicked="#onVolver">
                     <image><Image url="@../images/apptism_icon.png"/></image>
@@ -33,7 +32,6 @@
             </HBox>
 
             <SplitPane dividerPositions="0.45" VBox.vgrow="ALWAYS">
-                <!-- Panel pictogramas recibidos -->
                 <VBox spacing="10" styleClass="panel">
                     <Label text="Emociones recibidas" styleClass="subtitulo"/>
                     <Label fx:id="lblSinMensajes" text="Aún no hay emociones registradas."
@@ -44,7 +42,6 @@
                     </ScrollPane>
                 </VBox>
 
-                <!-- Gráfico emocional semanal -->
                 <VBox spacing="10" styleClass="panel">
                     <Label text="Historial de la semana" styleClass="subtitulo"/>
                     <BarChart fx:id="graficoEmociones" VBox.vgrow="ALWAYS"
