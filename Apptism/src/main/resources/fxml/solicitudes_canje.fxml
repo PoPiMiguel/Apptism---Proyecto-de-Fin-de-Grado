@@ -27,7 +27,6 @@
 
             <Label fx:id="lblContador" styleClass="subtitulo"/>
 
-            <!-- Lista de canjes realizados -->
             <VBox spacing="0" styleClass="panel" VBox.vgrow="ALWAYS">
                 <Label text="Historial de canjes" styleClass="subtitulo"
                        style="-fx-padding: 0 0 12 0;"/>

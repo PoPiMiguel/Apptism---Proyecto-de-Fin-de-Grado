@@ -23,7 +23,6 @@
           StackPane.alignment="CENTER">
 
         <VBox alignment="CENTER" spacing="6.0" styleClass="login-header-section">
-            <!-- Logo de la aplicación -->
             <StackPane styleClass="login-logo-circle">
                 <ImageView fx:id="imgLogo" fitWidth="300.0" fitHeight="120.0"
                            preserveRatio="true"/>

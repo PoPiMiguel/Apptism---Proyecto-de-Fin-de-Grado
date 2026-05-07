@@ -9,13 +9,11 @@
            fx:controller="com.apptism.controller.DashboardController"
            prefWidth="1280" prefHeight="800">
 
-    <!-- ======================== PANEL TUTOR ======================== -->
     <BorderPane fx:id="panelTutor" styleClass="root-pane" visible="true">
 
         <top>
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <!-- Icono de la app: en el dashboard no navega (ya estamos en home) -->
                 <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo">
                     <image><Image url="@../images/apptism_icon.png"/></image>
                 </ImageView>
@@ -31,7 +29,6 @@
 
                 <Label text="¿Qué quieres hacer hoy?" styleClass="subtitulo"/>
 
-                <!-- Botones comunes (tutores) -->
                 <HBox spacing="20" alignment="CENTER">
                     <Button text="Rutinas" onAction="#onIrRutinas"
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
@@ -41,7 +38,6 @@
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
                 </HBox>
 
-                <!-- Exclusivo tutores -->
                 <HBox fx:id="hboxTutor" spacing="20" alignment="CENTER">
                     <Button text="Recompensas" onAction="#onIrRecompensas"
                             styleClass="btn-dashboard" prefWidth="220" prefHeight="100"/>
@@ -59,7 +55,6 @@
         </center>
     </BorderPane>
 
-    <!-- ======================== PANEL NIÑO ======================== -->
     <BorderPane fx:id="panelNino" styleClass="root-pane-nino" visible="false">
 
         <top>

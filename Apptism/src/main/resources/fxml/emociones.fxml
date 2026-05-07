@@ -12,7 +12,6 @@
     <top>
         <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
             <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-            <!-- Icono clicable a la izquierda: navega al dashboard -->
             <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo"
                        onMouseClicked="#onVolver">
                 <image><Image url="@../images/apptism_icon.png"/></image>
