@@ -64,14 +64,12 @@ public class StageManager {
         primaryStage.setMinHeight(600);
 
         if (primaryStage.getScene() == null) {
-            // Primera carga: se crea la escena completa con estilos
             Scene scene = new Scene(root, 1280, 800);
             scene.getStylesheets().add(
                     getClass().getResource("/styles/apptism.css").toExternalForm()
             );
             primaryStage.setScene(scene);
         } else {
-            // Cambio de vista: se reutiliza la escena y se reaplican los estilos
             primaryStage.getScene().setRoot(root);
             cargarEstilos(primaryStage.getScene());
             primaryStage.setTitle(view.getTitle());

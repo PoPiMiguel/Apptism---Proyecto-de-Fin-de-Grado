@@ -17,8 +17,6 @@ import java.util.List;
 public class SolicitudCanjeService {
 
     private final SolicitudCanjeRepository solicitudRepo;
-    private final UsuarioRepository        usuarioRepo;
-    private final RecompensaRepository     recompensaRepo;
 
     /**
      * Devuelve todas las solicitudes de canje de las recompensas de un tutor,
@@ -32,7 +30,6 @@ public class SolicitudCanjeService {
     public List<SolicitudCanje> getSolicitudesTutor(Long tutorId) {
         List<SolicitudCanje> solicitudes =
                 solicitudRepo.findByRecompensaFamiliaIdOrderByFechaDesc(tutorId);
-        // Inicialización explícita de relaciones LAZY dentro de la transacción
         solicitudes.forEach(s -> {
             if (s.getNino() != null)       s.getNino().getNombre();
             if (s.getRecompensa() != null) {

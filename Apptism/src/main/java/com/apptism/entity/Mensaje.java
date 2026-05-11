@@ -13,11 +13,11 @@ public class Mensaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String pictogramaUrl;   // URL del pictograma enviado
-    private String textoPictograma; // Palabra que representa (ej: "feliz")
+    private String pictogramaUrl;
+    private String textoPictograma;
 
     @Enumerated(EnumType.STRING)
-    private TipoMensaje tipo; // EMOCION (solo niño→padre) o CHAT (bidireccional)
+    private TipoMensaje tipo;
 
     @Builder.Default
     private boolean leido = false;

@@ -124,14 +124,14 @@ public class ArasaacService {
         if (cache.containsKey(cacheKey)) return cache.get(cacheKey);
 
         String[][] emocionesQuery = {
-                {"alegre",      "😊 Alegre"},
-                {"triste",      "😢 Triste"},
-                {"enfadado",    "😠 Enfadado"},
-                {"miedo",       "😨 Miedo"},
-                {"tranquilo",   "😌 Tranquilo"},
-                {"sorprendido", "😲 Sorprendido"},
-                {"cansado",     "😴 Cansado"},
-                {"nervioso",    "😰 Nervioso"}
+                {"alegre",      "Alegre"},
+                {"triste",      "Triste"},
+                {"enfadado",    "Enfadado"},
+                {"miedo",       "Miedo"},
+                {"tranquilo",   "Tranquilo"},
+                {"sorprendido", "Sorprendido"},
+                {"cansado",     "Cansado"},
+                {"nervioso",    "Nervioso"}
         };
 
         List<PictogramaDTO> resultado = new ArrayList<>();
@@ -144,7 +144,6 @@ public class ArasaacService {
                 String nombreLimpio = query.substring(0, 1).toUpperCase() + query.substring(1);
                 resultado.add(new PictogramaDTO(primero.id(), nombreLimpio, primero.url()));
             } else {
-                // Fallback con emoji si la API no responde
                 resultado.add(new PictogramaDTO(-1, labelFallback, ""));
             }
         }

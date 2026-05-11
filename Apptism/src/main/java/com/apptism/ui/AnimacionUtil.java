@@ -21,7 +21,6 @@ import java.util.Random;
  */
 public class AnimacionUtil {
 
-    // Clase de utilidad: no se instancia.
     private AnimacionUtil() {}
 
     /**
@@ -66,7 +65,7 @@ public class AnimacionUtil {
     public static void mostrarPuntos(StackPane contenedor, int puntos) {
         String texto = puntos > 0
                 ? "Has ganado +" + puntos + " pts"
-                : "¡Muy bien! ¡Sigue así!";
+                : "Muy bien";
 
         Label lblPuntos = new Label(texto);
         lblPuntos.setStyle(
@@ -82,7 +81,6 @@ public class AnimacionUtil {
         Platform.runLater(() -> {
             contenedor.getChildren().add(lblPuntos);
 
-            // Animación de entrada: sube desde abajo mientras aparece
             TranslateTransition subir = new TranslateTransition(Duration.millis(450), lblPuntos);
             subir.setFromY(60);
             subir.setToY(-40);
@@ -93,7 +91,6 @@ public class AnimacionUtil {
 
             ParallelTransition entrada = new ParallelTransition(subir, aparecer);
 
-            // Animación de salida: desaparece tras 1,4 s de pausa
             FadeTransition desaparecer = new FadeTransition(Duration.millis(700), lblPuntos);
             desaparecer.setFromValue(1);
             desaparecer.setToValue(0);

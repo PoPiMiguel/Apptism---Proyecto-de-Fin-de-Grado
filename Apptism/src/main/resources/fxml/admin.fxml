@@ -87,7 +87,7 @@
                 </SplitPane>
             </Tab>
 
-            <Tab text="Vincular Alumno ↔ Tutor">
+            <Tab text="Vincular Alumno - Tutor">
                 <VBox spacing="20" styleClass="panel">
                     <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
 

@@ -50,7 +50,6 @@ public class UsuarioService {
         return usuarioRepository.findByEmailAndPassword(email, password);
     }
 
-    // ── Consultas básicas ──────────────────────────────────────────
 
     /** Devuelve todos los tutores del sistema (padres y profesores juntos). */
     public List<Usuario> getTodosLosTutores() {
@@ -81,7 +80,6 @@ public class UsuarioService {
         }
     }
 
-    // ── Carga lazy segura (dentro de @Transactional) ───────────────
 
     /**
      * Devuelve los niños asignados a un tutor dentro de una transacción de solo
@@ -119,7 +117,6 @@ public class UsuarioService {
         return tutoresDelNino;
     }
 
-    // ── Gestión de usuarios (panel de administración) ──────────────
 
     /** Devuelve todos los usuarios del sistema sin filtrar. */
     @Transactional(readOnly = true)

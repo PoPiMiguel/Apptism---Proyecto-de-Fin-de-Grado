@@ -55,11 +55,6 @@ public class RutinaService {
     }
 
     @Transactional
-    public Rutina crearRutina(String nombre, ZonaHoraria zona, Long ninoId) {
-        return crearRutina(nombre, zona, ninoId, ninoId);
-    }
-
-    @Transactional
     public Rutina crearRutina(String nombre, ZonaHoraria zona, Long ninoId, Long creadorId) {
         Usuario nino = usuarioRepository.findById(ninoId)
                 .orElseThrow(() -> new RuntimeException("Niño no encontrado"));

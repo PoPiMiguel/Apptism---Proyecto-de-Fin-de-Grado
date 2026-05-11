@@ -96,7 +96,6 @@
     <build>
         <plugins>
 
-            <!-- Plugin JavaFX (ejecucion en desarrollo) -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -106,7 +105,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot: genera el fat-JAR -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -117,14 +115,10 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                    <!--
-                        El fat-JAR generado por Spring Boot se llama
-                        apptism-desktop-1.0.0.jar y es el que jpackage empaqueta.
-                    -->
+
                 </configuration>
             </plugin>
 
-            <!-- Compilador con Lombok -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -139,14 +133,6 @@
                 </configuration>
             </plugin>
 
-            <!--
-                jpackage - genera apptism.exe con JVM embebida
-                Uso:    mvn package jpackage:jpackage
-                Requisitos:
-                  - JDK 17+ (jpackage incluido desde Java 14)
-                  - WiX Toolset instalado (para generar .msi/.exe)
-                    https://wixtoolset.org/
-            -->
             <plugin>
                 <groupId>org.panteleyev</groupId>
                 <artifactId>jpackage-maven-plugin</artifactId>
