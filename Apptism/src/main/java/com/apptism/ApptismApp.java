@@ -12,7 +12,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  *
  * Es la que arranca Spring Boot, abre la ventana y la cierra cuando
  * el usuario sale. No se lanza directamente desde el {@code main()};
- * primero pasa por {@link Main.LauncherFxBridge}, que comprueba que
+ * primero pasa por {@link Main}, que comprueba que
  * MySQL esté disponible antes de llegar aquí.
  */
 public class ApptismApp extends Application {

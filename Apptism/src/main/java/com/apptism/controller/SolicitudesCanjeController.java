@@ -48,8 +48,8 @@ public class SolicitudesCanjeController implements Initializable {
                     String recompensaDesc = s.getRecompensa() != null ? s.getRecompensa().getDescripcion()     : "?";
                     int    pts            = s.getRecompensa() != null ? s.getRecompensa().getPuntosNecesarios() : 0;
                     String fecha          = s.getFecha()      != null ? s.getFecha().toLocalDate().toString()  : "";
-                    return "🎁  " + ninoNombre + "  ->  " + recompensaDesc
-                            + "  (" + pts + " pts)  |  " + fecha;
+                    return "🎁 " + ninoNombre + " -> " + recompensaDesc
+                            + " (" + pts + " pts) | " + fecha;
                 }).toList()
         ));
 

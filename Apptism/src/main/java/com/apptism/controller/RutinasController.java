@@ -1,10 +1,15 @@
+// ═══════════════════════════════════════════════════════════════════
+// ARCHIVO: RutinasController.java
+// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
-import com.apptism.entity.Rutina;
 import com.apptism.entity.RolUsuario;
+import com.apptism.entity.Rutina;
 import com.apptism.entity.Usuario;
 import com.apptism.entity.ZonaHoraria;
+import com.apptism.service.ArasaacService;
+import com.apptism.service.ArasaacService.PictogramaDTO;
 import com.apptism.service.RutinaService;
 import com.apptism.ui.AnimacionUtil;
 import com.apptism.ui.StageManager;
@@ -12,11 +17,9 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -29,26 +32,30 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de rutinas.
  *
- * Vista tutor: crear rutinas para sus niños organizadas por zona horaria
- * (mañana, mediodía, noche) y eliminarlas.
- * Vista niño: ver sus rutinas como tarjetas visuales y marcarlas como completadas.
+ * Vista tutor: crear rutinas para sus niños con un pictograma de ARASAAC,
+ * organizadas por zona horaria (mañana, mediodía, noche), y eliminarlas.
+ * Vista niño: ver sus rutinas como tarjetas visuales (con pictograma) y
+ * marcarlas como completadas.
  */
 @Component
 public class RutinasController implements Initializable {
 
     @FXML private BorderPane panelTutor;
-    @FXML private TabPane tabZonas;
+    @FXML private TabPane    tabZonas;
     @FXML private ListView<String> listaManana;
     @FXML private ListView<String> listaMediodia;
     @FXML private ListView<String> listaNoche;
-    @FXML private TextField txtNombreRutina;
+    @FXML private TextField  txtNombreRutina;
+    @FXML private TextField  txtBuscarPicto;
+    @FXML private FlowPane   panelPictosRutina;
     @FXML private ComboBox<String> cmbZona;
-    @FXML private ComboBox<String> cmbNinoTutor;  // Selector de niño para tutor
+    @FXML private ComboBox<String> cmbNinoTutor;
 
     @FXML private StackPane rootStackNino;
-    @FXML private FlowPane flowRutinasNino;
+    @FXML private FlowPane  flowRutinasNino;
 
-    @Autowired private RutinaService rutinaService;
+    @Autowired private RutinaService  rutinaService;
+    @Autowired private ArasaacService arasaacService;
     @Lazy @Autowired private StageManager stageManager;
 
     private List<Rutina>  rutinasActualesNino;
@@ -58,25 +65,104 @@ public class RutinasController implements Initializable {
     private List<Rutina> rutinasMediodia;
     private List<Rutina> rutinasNoche;
 
+    /** Pictograma seleccionado actualmente en el formulario del tutor. */
+    private PictogramaDTO pictogramaSeleccionado = null;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         Usuario usuario = LoginController.usuarioActivo;
-        boolean esTutor = usuario.getRol() == RolUsuario.PADRE || usuario.getRol() == RolUsuario.PROFESOR;
+        boolean esTutor = usuario.getRol() == RolUsuario.PADRE
+                || usuario.getRol() == RolUsuario.PROFESOR;
 
         if (panelTutor != null)    panelTutor.setVisible(esTutor);
         if (rootStackNino != null) rootStackNino.setVisible(!esTutor);
 
         if (esTutor) {
-            cmbZona.setItems(FXCollections.observableArrayList("MANANA", "MEDIODIA", "NOCHE"));
-            cmbZona.setValue("MANANA");
+            cmbZona.setItems(FXCollections.observableArrayList("MAÑANA", "MEDIO DIA", "NOCHE"));
+            cmbZona.setValue("MAÑANA");
             cargarNinosEnComboTutor();
             cargarTodasLasRutinasTutor();
+
+            txtBuscarPicto.setOnAction(e -> buscarPictogramas());
         } else {
             cargarRutinasNino();
         }
     }
+    @FXML
+    private void buscarPictogramas() {
+        String palabra = txtBuscarPicto.getText().trim();
+        if (palabra.isBlank()) return;
 
+        panelPictosRutina.getChildren().clear();
+        Label cargando = new Label("Buscando...");
+        cargando.setStyle("-fx-text-fill:#888; -fx-font-size:13px;");
+        panelPictosRutina.getChildren().add(cargando);
+
+        new Thread(() -> {
+            List<PictogramaDTO> resultados = arasaacService.buscar(palabra);
+            Platform.runLater(() -> {
+                panelPictosRutina.getChildren().clear();
+                if (resultados.isEmpty()) {
+                    Label vacio = new Label("Sin resultados para \"" + palabra + "\"");
+                    vacio.setStyle("-fx-text-fill:#999; -fx-font-size:12px;");
+                    panelPictosRutina.getChildren().add(vacio);
+                } else {
+                    resultados.forEach(this::agregarPictoSeleccionable);
+                }
+            });
+        }).start();
+    }
+
+    /** Crea una tarjeta de pictograma seleccionable en el formulario del tutor. */
+    private void agregarPictoSeleccionable(PictogramaDTO picto) {
+        VBox tarjeta = new VBox(3);
+        tarjeta.setAlignment(Pos.CENTER);
+        tarjeta.setPadding(new Insets(5));
+        tarjeta.setPrefWidth(80);
+        tarjeta.setUserData(picto.id());
+        tarjeta.setStyle("-fx-background-color:#F7FFF7; -fx-background-radius:10px; -fx-cursor:hand;");
+
+        ImageView img = new ImageView();
+        img.setFitWidth(56);
+        img.setFitHeight(56);
+        img.setPreserveRatio(true);
+        new Thread(() -> {
+            try {
+                Image imagen = new Image(picto.url(), 56, 56, true, true, true);
+                Platform.runLater(() -> img.setImage(imagen));
+            } catch (Exception ignored) {}
+        }).start();
+
+        Label lbl = new Label(picto.nombre());
+        lbl.setStyle("-fx-font-size:10px;");
+        lbl.setWrapText(true);
+        lbl.setMaxWidth(74);
+
+        tarjeta.getChildren().addAll(img, lbl);
+        tarjeta.setOnMouseClicked(e -> seleccionarPictograma(picto, tarjeta));
+        tarjeta.setOnMouseEntered(e ->
+                tarjeta.setStyle("-fx-background-color:#DFFAEC; -fx-background-radius:10px; -fx-cursor:hand;"));
+        tarjeta.setOnMouseExited(e -> {
+            boolean esSel = pictogramaSeleccionado != null
+                    && pictogramaSeleccionado.id() == (int) tarjeta.getUserData();
+            tarjeta.setStyle(esSel
+                    ? "-fx-background-color:#B8EDD9; -fx-background-radius:10px; -fx-border-color:#4A6F5A; -fx-border-radius:10px; -fx-cursor:hand;"
+                    : "-fx-background-color:#F7FFF7; -fx-background-radius:10px; -fx-cursor:hand;");
+        });
+
+        panelPictosRutina.getChildren().add(tarjeta);
+    }
+
+    /** Marca el pictograma elegido y desmarca el anterior. */
+    private void seleccionarPictograma(PictogramaDTO picto, VBox tarjetaActual) {
+        panelPictosRutina.getChildren().forEach(n ->
+                n.setStyle("-fx-background-color:#F7FFF7; -fx-background-radius:10px; -fx-cursor:hand;"));
+        tarjetaActual.setStyle(
+                "-fx-background-color:#B8EDD9; -fx-background-radius:10px;" +
+                        "-fx-border-color:#4A6F5A; -fx-border-radius:10px; -fx-cursor:hand;");
+        pictogramaSeleccionado = picto;
+    }
 
     private void cargarNinosEnComboTutor() {
         ninosDisponibles = rutinaService.getNinosDelTutor(LoginController.usuarioActivo.getId());
@@ -90,27 +176,25 @@ public class RutinasController implements Initializable {
     }
 
     private void cargarTodasLasRutinasTutor() {
-        // Mostrar rutinas de todos los niños del tutor
         if (ninosDisponibles == null || ninosDisponibles.isEmpty()) {
             listaManana.setItems(FXCollections.observableArrayList());
             listaMediodia.setItems(FXCollections.observableArrayList());
             listaNoche.setItems(FXCollections.observableArrayList());
             return;
         }
-        // Usar primer niño seleccionado para mostrar
         int idx = cmbNinoTutor.getSelectionModel().getSelectedIndex();
-        Long ninoId = (idx >= 0) ? ninosDisponibles.get(idx).getId()
+        Long ninoId = (idx >= 0)
+                ? ninosDisponibles.get(idx).getId()
                 : ninosDisponibles.get(0).getId();
 
-        cargarRutinasPorZona(ninoId, ZonaHoraria.MANANA, listaManana);
+        cargarRutinasPorZona(ninoId, ZonaHoraria.MANANA,   listaManana);
         cargarRutinasPorZona(ninoId, ZonaHoraria.MEDIODIA, listaMediodia);
-        cargarRutinasPorZona(ninoId, ZonaHoraria.NOCHE, listaNoche);
+        cargarRutinasPorZona(ninoId, ZonaHoraria.NOCHE,    listaNoche);
     }
 
     private void cargarRutinasPorZona(Long ninoId, ZonaHoraria zona, ListView<String> lista) {
         List<Rutina> rutinas = rutinaService.getRutinasByZona(ninoId, zona);
 
-        // Guardar referencia local para poder eliminar por índice
         switch (zona) {
             case MANANA   -> rutinasManana   = rutinas;
             case MEDIODIA -> rutinasMediodia = rutinas;
@@ -119,7 +203,9 @@ public class RutinasController implements Initializable {
 
         lista.setItems(FXCollections.observableArrayList(
                 rutinas.stream()
-                        .map(r -> (r.isCompletada() ? "[OK] " : "[ ] ") + r.getNombre())
+                        .map(r -> (r.isCompletada() ? "[COMPL] " : "[NCOMP] ") +
+                                r.getNombre() +
+                                (r.getPictogramaId() != null ? "CON PIC" : "SIN PIC"))
                         .toList()
         ));
     }
@@ -169,16 +255,23 @@ public class RutinasController implements Initializable {
             return;
         }
 
-        Long ninoId = ninosDisponibles.get(idxNino).getId();
+        Long ninoId  = ninosDisponibles.get(idxNino).getId();
+        Integer pictoId  = pictogramaSeleccionado != null ? pictogramaSeleccionado.id() : null;
+        String  pictoUrl = pictogramaSeleccionado != null ? pictogramaSeleccionado.url() : null;
+
         rutinaService.crearRutina(nombre, ZonaHoraria.valueOf(cmbZona.getValue()),
-                ninoId, LoginController.usuarioActivo.getId());
+                ninoId, LoginController.usuarioActivo.getId(), pictoId, pictoUrl);
+
         txtNombreRutina.clear();
+        txtBuscarPicto.clear();
+        panelPictosRutina.getChildren().clear();
+        pictogramaSeleccionado = null;
         cargarTodasLasRutinasTutor();
     }
 
     private void cargarRutinasNino() {
-        Long ninoId = LoginController.usuarioActivo.getId();
-        rutinasActualesNino = rutinaService.todasLasRutinas(ninoId);
+        rutinasActualesNino = rutinaService.todasLasRutinas(
+                LoginController.usuarioActivo.getId());
         renderizarTarjetasNino();
     }
 
@@ -203,7 +296,7 @@ public class RutinasController implements Initializable {
         tarjeta.setAlignment(Pos.CENTER);
         tarjeta.setPadding(new Insets(18));
         tarjeta.setPrefWidth(200);
-        tarjeta.setPrefHeight(220);
+        tarjeta.setPrefHeight(240);
         String colorFondo = rutina.isCompletada() ? "#E8FAF4" : "white";
         tarjeta.setStyle(
                 "-fx-background-color:" + colorFondo + ";" +
@@ -211,9 +304,25 @@ public class RutinasController implements Initializable {
                         "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.10),10,0,0,3);"
         );
 
+        // Pictograma de ARASAAC (si tiene)
+        if (rutina.getPictogramaUrl() != null && !rutina.getPictogramaUrl().isBlank()) {
+            ImageView img = new ImageView();
+            img.setFitWidth(90);
+            img.setFitHeight(90);
+            img.setPreserveRatio(true);
+            new Thread(() -> {
+                try {
+                    Image imagen = new Image(rutina.getPictogramaUrl(), 90, 90, true, true, true);
+                    Platform.runLater(() -> img.setImage(imagen));
+                } catch (Exception ignored) {}
+            }).start();
+            tarjeta.getChildren().add(img);
+        }
+
         Label lblNombre = new Label(rutina.getNombre());
         lblNombre.setStyle("-fx-font-size:15px; -fx-font-weight:bold; -fx-text-fill:#4A6F5A;");
-        lblNombre.setMaxWidth(180); lblNombre.setWrapText(true);
+        lblNombre.setMaxWidth(180);
+        lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
         Label lblZona = new Label(emojiZonaTexto(rutina.getZonaHoraria()));
@@ -221,13 +330,17 @@ public class RutinasController implements Initializable {
         tarjeta.getChildren().add(lblZona);
 
         if (!rutina.isCompletada()) {
-            Button btn = new Button("¡Hecho!");
+            Button btn = new Button("Hecho");
             btn.setStyle(
                     "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
-                            "-fx-font-size:14px; -fx-font-weight:bold;" +
-                            "-fx-background-radius:16px; -fx-padding:8px 16px; -fx-cursor:hand;"
+                            "-fx-font-size:15px; -fx-font-weight:bold;" +
+                            "-fx-background-radius:16px; -fx-padding:9px 18px; -fx-cursor:hand;"
             );
-            btn.setOnAction(e -> completarRutinaNino(rutina, tarjeta));
+            btn.setOnAction(e -> {
+                rutinaService.marcarCompletada(rutina.getId());
+                rutina.setCompletada(true);
+                renderizarTarjetasNino();
+            });
             tarjeta.getChildren().add(btn);
         } else {
             Label lbl = new Label("Completada");
@@ -237,13 +350,6 @@ public class RutinasController implements Initializable {
         return tarjeta;
     }
 
-    private void completarRutinaNino(Rutina rutina, VBox tarjeta) {
-        rutinaService.marcarCompletada(rutina.getId());
-        rutina.setCompletada(true);
-        if (rootStackNino != null) AnimacionUtil.mostrarPuntos(rootStackNino, 0);
-        Platform.runLater(this::renderizarTarjetasNino);
-    }
-
     private String emojiZonaTexto(ZonaHoraria zona) {
         return switch (zona) {
             case MANANA   -> "Mañana";
@@ -251,16 +357,9 @@ public class RutinasController implements Initializable {
             case NOCHE    -> "Noche";
         };
     }
-    private String emojiZonaEmoji(ZonaHoraria zona) {
-        return switch (zona) {
-            case MANANA   -> "M";
-            case MEDIODIA -> "D";
-            case NOCHE    -> "N";
-        };
-    }
 
     private void alerta(String msg) {
-        new Alert(Alert.AlertType.WARNING, msg).showAndWait();
+        new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
     }
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }

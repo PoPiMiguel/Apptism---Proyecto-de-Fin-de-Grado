@@ -91,6 +91,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -139,32 +145,26 @@
                 <version>1.6.5</version>
                 <configuration>
 
-                    <!-- Informacion general -->
                     <name>Apptism</name>
                     <appVersion>1.0.0</appVersion>
                     <vendor>Apptism</vendor>
                     <copyright>2024 Apptism</copyright>
                     <description>Aplicacion de apoyo para personas con TEA</description>
 
-                    <!-- Tipo de instalador: exe en Windows -->
                     <type>EXE</type>
 
-                    <!-- Entrada: fat-JAR generado por Spring Boot -->
                     <input>${project.build.directory}</input>
                     <mainJar>${project.artifactId}-${project.version}.jar</mainJar>
                     <mainClass>com.apptism.Main</mainClass>
 
-                    <!-- Salida -->
                     <destination>${project.build.directory}/installer</destination>
 
-                    <!-- JVM y modulos -->
                     <javaOptions>
                         <option>--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</option>
                         <option>-Dfile.encoding=UTF-8</option>
                         <option>-Dspring.profiles.active=prod</option>
                     </javaOptions>
 
-                    <!-- Opciones del instalador Windows -->
                     <winPerUserInstall>false</winPerUserInstall>
                     <winShortcut>true</winShortcut>
                     <winMenu>true</winMenu>

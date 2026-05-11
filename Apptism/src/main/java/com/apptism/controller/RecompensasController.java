@@ -11,8 +11,7 @@ import com.apptism.ui.StageManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,8 @@ import java.util.ResourceBundle;
  *
  * Vista tutor: crear y listar recompensas disponibles.
  * Vista niño: ver las recompensas de sus tutores y canjearlas si tiene puntos
- * suficientes. Al canjear, los puntos se descuentan y queda registrado en el
+ * suficientes. Los puntos se muestran como estrellas/coronas/diamantes.
+ * Al canjear, los puntos se descuentan y queda registrado en el
  * historial de canjes que ve el tutor.
  */
 @Component
@@ -93,7 +93,6 @@ public class RecompensasController implements Initializable {
         cargarRecompensasTutor();
     }
 
-
     private void cargarRecompensasNino() {
         Usuario nino = LoginController.usuarioActivo;
         List<Usuario> tutoresDelNino = usuarioService.getTutoresDeNino(nino.getId());
@@ -147,10 +146,10 @@ public class RecompensasController implements Initializable {
         lblNombre.setWrapText(true);
         tarjeta.getChildren().add(lblNombre);
 
-        Label lblPts = new Label(recompensa.getPuntosNecesarios() + " pts");
-        lblPts.setStyle("-fx-font-size:14px; -fx-text-fill:"
+        Label lblEstrellas = new Label(TareasController.puntosAEstrellas(recompensa.getPuntosNecesarios()));
+        lblEstrellas.setStyle("-fx-font-size:16px; -fx-text-fill:"
                 + (puedeGanar ? "#4A6F5A" : "#9BB0A0") + "; -fx-font-weight:bold;");
-        tarjeta.getChildren().add(lblPts);
+        tarjeta.getChildren().add(lblEstrellas);
 
         if (puedeGanar) {
             Button btn = new Button("¡Canjear!");
@@ -159,8 +158,8 @@ public class RecompensasController implements Initializable {
             tarjeta.getChildren().add(btn);
         } else {
             int faltanPts = recompensa.getPuntosNecesarios() - puntosDisponibles;
-            Label lblFalta = new Label("Te faltan " + faltanPts + " pts");
-            lblFalta.setStyle("-fx-text-fill:#9BB0A0; -fx-font-size:12px;");
+            Label lblFalta = new Label("Faltan " + TareasController.puntosAEstrellas(faltanPts));
+            lblFalta.setStyle("-fx-text-fill:#9BB0A0; -fx-font-size:13px;");
             tarjeta.getChildren().add(lblFalta);
         }
         return tarjeta;
@@ -177,14 +176,15 @@ public class RecompensasController implements Initializable {
             actualizarPuntosNino();
             cargarRecompensasNino();
         } else {
-            new Alert(Alert.AlertType.WARNING, "No tienes suficientes puntos.").showAndWait();
+            new Alert(Alert.AlertType.WARNING, "No tienes suficientes estrellas.").showAndWait();
         }
     }
 
     private void actualizarPuntosNino() {
         if (lblPuntosNino != null)
             lblPuntosNino.setText(
-                    LoginController.usuarioActivo.getPuntosAcumulados() + " puntos");
+                    TareasController.puntosAEstrellas(
+                            LoginController.usuarioActivo.getPuntosAcumulados()));
     }
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }

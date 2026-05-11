@@ -18,8 +18,9 @@ public class Tarea {
     @Column(nullable = false)
     private String titulo;
 
-    @Enumerated(EnumType.STRING)
-    private CategoriaTarea categoria;
+    private Integer pictogramaId;
+
+    private String pictogramaUrl;
 
     @Builder.Default
     private Integer puntosPorCompletar = 10;

@@ -3,7 +3,6 @@
 // ═══════════════════════════════════════════════════════════════════
 package com.apptism.service;
 
-import com.apptism.entity.CategoriaTarea;
 import com.apptism.entity.Tarea;
 import com.apptism.entity.Usuario;
 import com.apptism.repository.TareaRepository;
@@ -39,17 +38,19 @@ public class TareaService {
 
     /**
      * Crea una tarea nueva y la asigna a un niño concreto.
+     * El pictograma (id y url) lo selecciona el tutor desde el buscador de ARASAAC.
      *
-     * @param titulo       título de la tarea
-     * @param categoriaStr nombre de la categoría (tiene que coincidir con {@link CategoriaTarea})
-     * @param puntos       puntos que gana el niño al completarla
-     * @param ninoId       identificador del niño al que se asigna
-     * @param creadorId    identificador del tutor que la crea
+     * @param titulo          título de la tarea
+     * @param pictogramaId    ID del pictograma ARASAAC seleccionado (puede ser null)
+     * @param pictogramaUrl   URL de la imagen del pictograma (puede ser null)
+     * @param puntos          puntos que gana el niño al completarla
+     * @param ninoId          identificador del niño al que se asigna
+     * @param creadorId       identificador del tutor que la crea
      * @return la tarea guardada en base de datos
      */
     @Transactional
-    public Tarea crearTarea(String titulo, String categoriaStr, int puntos,
-                            Long ninoId, Long creadorId) {
+    public Tarea crearTarea(String titulo, Integer pictogramaId, String pictogramaUrl,
+                            int puntos, Long ninoId, Long creadorId) {
         Usuario nino = usuarioRepository.findById(ninoId)
                 .orElseThrow(() -> new RuntimeException("Niño no encontrado"));
         Usuario creador = usuarioRepository.findById(creadorId)
@@ -57,7 +58,8 @@ public class TareaService {
 
         Tarea tarea = Tarea.builder()
                 .titulo(titulo)
-                .categoria(CategoriaTarea.valueOf(categoriaStr))
+                .pictogramaId(pictogramaId)
+                .pictogramaUrl(pictogramaUrl)
                 .puntosPorCompletar(puntos)
                 .nino(nino)
                 .creador(creador)
@@ -73,29 +75,33 @@ public class TareaService {
      * para evitar que se acumulen puntos dos veces.
      *
      * @param tareaId el identificador de la tarea a completar
-     * @return el nuevo saldo de puntos del niño
+     * @return los puntos actuales del niño tras la operación
      */
     @Transactional
     public int completarTarea(Long tareaId) {
         Tarea tarea = tareaRepository.findById(tareaId)
                 .orElseThrow(() -> new RuntimeException("Tarea no encontrada"));
 
-        if (tarea.isCompletada()) return tarea.getNino().getPuntosAcumulados();
+        if (tarea.isCompletada()) {
+            return tarea.getNino().getPuntosAcumulados();
+        }
 
         tarea.setCompletada(true);
         tareaRepository.save(tarea);
 
-        Usuario nino = tarea.getNino();
-        nino.setPuntosAcumulados(nino.getPuntosAcumulados() + tarea.getPuntosPorCompletar());
+        Usuario nino = usuarioRepository.findById(tarea.getNino().getId())
+                .orElseThrow(() -> new RuntimeException("Niño no encontrado"));
+        int nuevosPuntos = nino.getPuntosAcumulados() + tarea.getPuntosPorCompletar();
+        nino.setPuntosAcumulados(nuevosPuntos);
         usuarioRepository.save(nino);
 
-        return nino.getPuntosAcumulados();
+        return nuevosPuntos;
     }
 
     /**
      * Elimina una tarea del sistema.
      *
-     * @param tareaId el identificador de la tarea a borrar
+     * @param tareaId el identificador de la tarea a eliminar
      */
     @Transactional
     public void eliminarTarea(Long tareaId) {
@@ -103,24 +109,19 @@ public class TareaService {
     }
 
     /**
-     * Devuelve todas las tareas de los niños asignados a un tutor, incluidas las
-     * que el propio tutor creó directamente. Los duplicados se eliminan.
-     *
-     * La colección de niños es LAZY, así que se ejecuta dentro de una transacción.
+     * Devuelve todas las tareas de los niños asignados a un tutor.
      *
      * @param tutorId el identificador del tutor
-     * @return lista deduplicada de tareas de todos sus niños
+     * @return lista de tareas de todos sus niños
      */
     @Transactional(readOnly = true)
     public List<Tarea> getTareasDeNinosDelTutor(Long tutorId) {
         Usuario tutor = usuarioRepository.findById(tutorId)
                 .orElseThrow(() -> new RuntimeException("Tutor no encontrado"));
-        List<Usuario> ninos = new ArrayList<>(tutor.getNinos());
         List<Tarea> todas = new ArrayList<>();
-        for (Usuario nino : ninos) {
+        for (Usuario nino : tutor.getNinos()) {
             todas.addAll(tareaRepository.findByNinoId(nino.getId()));
         }
-        todas.addAll(tareaRepository.findByCreadorId(tutorId));
-        return todas.stream().distinct().toList();
+        return todas;
     }
 }

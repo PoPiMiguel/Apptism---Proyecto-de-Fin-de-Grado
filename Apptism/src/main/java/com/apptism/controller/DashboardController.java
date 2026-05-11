@@ -24,7 +24,8 @@ import java.util.ResourceBundle;
  * Muestra una interfaz distinta según el rol del usuario:
  * - Tutor: acceso a rutinas, tareas, recompensas, chat, registro emocional
  *   y canjes, con un badge que muestra las solicitudes pendientes.
- * - Niño: acceso simplificado a sus módulos junto con sus puntos acumulados.
+ * - Niño: acceso simplificado a sus módulos junto con sus puntos acumulados
+ *   representados como estrellas, coronas y diamantes.
  */
 @Component
 public class DashboardController implements Initializable {
@@ -40,10 +41,6 @@ public class DashboardController implements Initializable {
     @Autowired private SolicitudCanjeService solicitudCanjeService;
     @Autowired private StageManager stageManager;
 
-    /**
-     * Prepara la pantalla según el rol del usuario. Muestra el panel
-     * de tutor o el de niño y personaliza el saludo y los datos.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Usuario usuario = LoginController.usuarioActivo;
@@ -64,10 +61,9 @@ public class DashboardController implements Initializable {
             panelTutor.setVisible(false);
             panelNino.setVisible(true);
             lblBienvenidaNino.setText("¡Hola, " + usuario.getNombre() + "!");
-            lblPuntosNino.setText(usuario.getPuntosAcumulados() + " puntos");
+            lblPuntosNino.setText(TareasController.puntosAEstrellas(usuario.getPuntosAcumulados()));
         }
     }
-
 
     /** Abre la pantalla de rutinas. */
     @FXML private void onIrRutinas()      { stageManager.switchScene(FxmlView.RUTINAS); }
@@ -81,25 +77,17 @@ public class DashboardController implements Initializable {
     /** Abre la pantalla de recompensas. */
     @FXML private void onIrRecompensas()  { stageManager.switchScene(FxmlView.RECOMPENSAS); }
 
-    /** Abre el registro emocional (solo tutores). */
-    @FXML private void onIrRegistroEmocional() {
-        stageManager.switchScene(FxmlView.REGISTRO_EMOCIONAL);
-    }
+    /** Abre la pantalla de emociones (niño) o registro emocional (tutor). */
+    @FXML private void onIrEmociones()    { stageManager.switchScene(FxmlView.EMOCIONES); }
 
-    /** Abre el historial de canjes (solo tutores). */
-    @FXML private void onIrSolicitudes() {
-        stageManager.switchScene(FxmlView.SOLICITUDES_CANJE);
-    }
+    /** Abre la pantalla de registro emocional (tutor). */
+    @FXML private void onIrRegistroEmocional() { stageManager.switchScene(FxmlView.REGISTRO_EMOCIONAL); }
 
-    /** Abre la pantalla de emociones (solo niños). */
-    @FXML private void onIrEmociones() { stageManager.switchScene(FxmlView.EMOCIONES); }
+    /** Abre la pantalla de solicitudes de canje. */
+    @FXML private void onIrSolicitudes()  { stageManager.switchScene(FxmlView.SOLICITUDES_CANJE); }
 
-    /**
-     * Cierra la sesión del usuario, limpia el usuario activo
-     * y vuelve a la pantalla de login.
-     */
-    @FXML
-    private void onCerrarSesion() {
+    /** Cierra la sesión y vuelve al login. */
+    @FXML private void onCerrarSesion() {
         LoginController.usuarioActivo = null;
         stageManager.switchScene(FxmlView.LOGIN);
     }

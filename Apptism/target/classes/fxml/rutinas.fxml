@@ -36,17 +36,33 @@
                             styleClass="btn-eliminar" maxWidth="Infinity"/>
                 </VBox>
 
-                <VBox spacing="15" styleClass="panel" VBox.vgrow="ALWAYS">
-                    <Label text="Nueva rutina" styleClass="subtitulo"/>
-                    <Label text="Nombre:"/>
-                    <TextField fx:id="txtNombreRutina" promptText="Ej: Lavarse los dientes" styleClass="input-field"/>
-                    <Label text="Zona horaria:"/>
-                    <ComboBox fx:id="cmbZona" maxWidth="Infinity" visibleRowCount="3"/>
-                    <Label text="Asignar a niño:" styleClass="form-label"/>
-                    <ComboBox fx:id="cmbNinoTutor" promptText="Selecciona un niño"
-                              maxWidth="Infinity" visibleRowCount="4"/>
-                    <Button text="Crear rutina" onAction="#onCrearRutina" styleClass="btn-crear" maxWidth="Infinity"/>
-                </VBox>
+                <ScrollPane fitToWidth="true" styleClass="scroll-transparente">
+                    <VBox spacing="15" styleClass="panel" VBox.vgrow="ALWAYS">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                        <Label text="Nueva rutina" styleClass="subtitulo"/>
+                        <Label text="Nombre:"/>
+                        <TextField fx:id="txtNombreRutina" promptText="Ej: Lavarse los dientes"
+                                   styleClass="input-field"/>
+                        <Label text="Zona horaria:"/>
+                        <ComboBox fx:id="cmbZona" maxWidth="Infinity" visibleRowCount="3"/>
+                        <Label text="Asignar a niño:" styleClass="form-label"/>
+                        <ComboBox fx:id="cmbNinoTutor" promptText="Selecciona un niño"
+                                  maxWidth="Infinity" visibleRowCount="4"/>
+                        <Label text="Pictograma (busca por palabra clave y pulsa Enter):" styleClass="form-label"/>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <TextField fx:id="txtBuscarPicto"
+                                       promptText="Ej: lavarse, comer, dormir..."
+                                       styleClass="input-field"
+                                       onAction="#buscarPictogramas"
+                                       HBox.hgrow="ALWAYS"/>
+                            <Button text="Buscar" onAction="#buscarPictogramas" styleClass="btn-crear"/>
+                        </HBox>
+                        <FlowPane fx:id="panelPictosRutina" hgap="8" vgap="8"
+                                  prefWrapLength="360" minHeight="80"/>
+                        <Button text="Crear rutina" onAction="#onCrearRutina"
+                                styleClass="btn-crear" maxWidth="Infinity"/>
+                    </VBox>
+                </ScrollPane>
             </SplitPane>
         </center>
     </BorderPane>

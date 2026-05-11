@@ -30,6 +30,12 @@ public class Rutina {
 
     private Integer orden;
 
+    /** ID del pictograma de ARASAAC asociado a esta rutina. */
+    private Integer pictogramaId;
+
+    /** URL de la imagen del pictograma de ARASAAC. */
+    private String pictogramaUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nino_id", nullable = false)
     private Usuario nino;
