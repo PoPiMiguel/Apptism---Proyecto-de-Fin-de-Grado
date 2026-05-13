@@ -17,7 +17,6 @@ import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,12 +24,15 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de recompensas.
  *
- * Vista tutor: crear y listar recompensas disponibles.
- * Vista niño: ver las recompensas de sus tutores y canjearlas si tiene puntos
- * suficientes. Los puntos se muestran como estrellas/coronas/diamantes.
- * Al canjear, los puntos se descuentan y queda registrado en el
- * historial de canjes que ve el tutor.
+ * <p>Muestra una interfaz diferente según el rol del usuario activo:</p>
+ * <ul>
+ *   <li><b>Tutor</b>: puede crear recompensas y ver las que ha creado.</li>
+ *   <li><b>Niño</b>: ve las recompensas disponibles de sus tutores y puede
+ *       canjearlas si tiene puntos suficientes. Los puntos se descuentan
+ *       automáticamente y el canje queda registrado en el historial del tutor.</li>
+ * </ul>
  */
+
 @Component
 public class RecompensasController implements Initializable {
 
@@ -48,7 +50,13 @@ public class RecompensasController implements Initializable {
     @Autowired private UsuarioService    usuarioService;
     @Lazy @Autowired private StageManager stageManager;
 
+    /** Recompensas cargadas actualmente para la vista del tutor. */
+
     private List<Recompensa> recompensasActualesTutor;
+
+    /**
+     * Inicializa la pantalla según el rol del usuario activo.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -70,6 +78,10 @@ public class RecompensasController implements Initializable {
         }
     }
 
+    /**
+     * Carga las recompensas activas del tutor y las muestra en la lista.
+     */
+
     private void cargarRecompensasTutor() {
         recompensasActualesTutor = recompensaService.getRecompensasDisponibles(
                 LoginController.usuarioActivo.getId());
@@ -79,6 +91,11 @@ public class RecompensasController implements Initializable {
                         .toList()
         ));
     }
+
+    /**
+     * Crea una recompensa nueva con los datos del formulario.
+     * Limpia el campo y recarga la lista al terminar.
+     */
 
     @FXML
     private void onCrearRecompensa() {
@@ -93,6 +110,10 @@ public class RecompensasController implements Initializable {
         cargarRecompensasTutor();
     }
 
+    /**
+     * Carga las recompensas disponibles de todos los tutores asignados al niño.
+     */
+
     private void cargarRecompensasNino() {
         Usuario nino = LoginController.usuarioActivo;
         List<Usuario> tutoresDelNino = usuarioService.getTutoresDeNino(nino.getId());
@@ -104,6 +125,14 @@ public class RecompensasController implements Initializable {
 
         renderizarTarjetasNino(recompensasDelNino, nino.getPuntosAcumulados());
     }
+
+    /**
+     * Limpia el panel y dibuja las tarjetas de recompensas disponibles para el niño.
+     * Las tarjetas muestran si el niño puede o no canjear cada recompensa.
+     *
+     * @param recompensas      lista de recompensas a mostrar
+     * @param puntosDisponibles puntos actuales del niño
+     */
 
     private void renderizarTarjetasNino(List<Recompensa> recompensas, int puntosDisponibles) {
         if (flowRecompensasNino == null) return;
@@ -120,6 +149,16 @@ public class RecompensasController implements Initializable {
             flowRecompensasNino.getChildren().add(crearTarjetaRecompensaNino(r, puntosDisponibles));
         }
     }
+
+    /**
+     * Construye la tarjeta visual de una recompensa para la vista del niño.
+     * Si el niño tiene puntos suficientes se muestra el botón de canje;
+     * si no, se indica cuántos puntos le faltan.
+     *
+     * @param recompensa        la recompensa a representar
+     * @param puntosDisponibles puntos actuales del niño
+     * @return nodo VBox listo para añadir al panel
+     */
 
     private VBox crearTarjetaRecompensaNino(Recompensa recompensa, int puntosDisponibles) {
         boolean puedeGanar = puntosDisponibles >= recompensa.getPuntosNecesarios();
@@ -165,6 +204,15 @@ public class RecompensasController implements Initializable {
         return tarjeta;
     }
 
+    /**
+     * Procesa el canje de una recompensa por el niño activo.
+     * Si el canje es exitoso, actualiza los puntos en sesión, lanza la animación
+     * y recarga las tarjetas. Si no hay puntos suficientes, muestra un aviso.
+     *
+     * @param recompensa la recompensa que el niño quiere canjear
+     * @param tarjeta    la tarjeta visual asociada
+     */
+
     private void canjearRecompensaNino(Recompensa recompensa, VBox tarjeta) {
         boolean exito = recompensaService.canjearRecompensa(
                 LoginController.usuarioActivo.getId(), recompensa.getId());
@@ -180,12 +228,18 @@ public class RecompensasController implements Initializable {
         }
     }
 
+    /**
+     * Actualiza la etiqueta de puntos del niño con la representación visual actual.
+     */
+
     private void actualizarPuntosNino() {
         if (lblPuntosNino != null)
             lblPuntosNino.setText(
                     TareasController.puntosAEstrellas(
                             LoginController.usuarioActivo.getPuntosAcumulados()));
     }
+
+    /** Vuelve al dashboard. */
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }
 }

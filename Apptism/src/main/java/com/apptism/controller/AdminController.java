@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -20,10 +19,13 @@ import java.util.stream.Collectors;
 /**
  * Controlador del panel de administración.
  *
- * Solo lo ven los usuarios con rol ADMIN. Tiene dos pestañas:
- * - Gestión de usuarios: crear, eliminar y filtrar por rol.
- * - Vinculación tutor-niño: asignar niños a tutores y ver los vínculos existentes.
+ * <p>Solo accesible para usuarios con rol {@code ADMIN}. Tiene dos pestañas:</p>
+ * <ul>
+ *   <li><b>Gestión de usuarios</b>: crear, eliminar y filtrar por rol.</li>
+ *   <li><b>Vinculación tutor–niño</b>: asignar niños a tutores y ver los vínculos existentes.</li>
+ * </ul>
  */
+
 @Component
 public class AdminController implements Initializable {
 
@@ -46,16 +48,20 @@ public class AdminController implements Initializable {
     @Autowired private StageManager   stageManager;
 
     /** Lista completa de usuarios (sin ADMIN) para la pestaña de gestión. */
+
     private List<Usuario> todosUsuarios;
-    /** Lista filtrada que se muestra actualmente en la lista de usuarios. */
+
+    /** Lista que se muestra actualmente tras aplicar el filtro de rol. */
+
     private List<Usuario> usuariosMostrados;
     private List<Usuario> todosNinos;
     private List<Usuario> todosTutores;
 
     /**
-     * Inicializa el panel: selecciona el rol "Niño" por defecto y carga
+     * Inicializa el panel: selecciona el rol «Niño» por defecto y carga
      * los datos iniciales de las dos pestañas.
      */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         rbNino.setSelected(true);
@@ -68,6 +74,7 @@ public class AdminController implements Initializable {
      * Carga todos los usuarios del sistema (excluyendo administradores)
      * y los muestra en la lista de la pestaña de gestión.
      */
+
     private void cargarTodosLosUsuarios() {
         todosUsuarios = usuarioService.getTodosLosUsuarios()
                 .stream()
@@ -82,12 +89,12 @@ public class AdminController implements Initializable {
      *
      * @param usuarios lista de usuarios a mostrar
      */
+
     private void renderizarLista(List<Usuario> usuarios) {
         listaUsuarios.setItems(FXCollections.observableArrayList(
                 usuarios.stream().map(u ->
                         labelRol(u.getRol()) + "  " + u.getNombre()
                                 + "   |  " + u.getEmail()
-                                + "   |  " + labelRol(u.getRol())
                 ).toList()
         ));
     }
@@ -96,6 +103,7 @@ public class AdminController implements Initializable {
      * Crea un nuevo usuario con los datos del formulario y el rol seleccionado.
      * Muestra un mensaje de confirmación o de error según el resultado.
      */
+
     @FXML
     private void onCrearUsuario() {
         String nombre = txtNombre.getText().trim();
@@ -129,8 +137,9 @@ public class AdminController implements Initializable {
     }
 
     /**
-     * Elimina el usuario seleccionado en la lista tras una confirmación del administrador.
+     * Elimina el usuario seleccionado en la lista tras pedir confirmación al administrador.
      */
+
     @FXML
     private void onEliminarUsuario() {
         int idx = listaUsuarios.getSelectionModel().getSelectedIndex();
@@ -149,14 +158,25 @@ public class AdminController implements Initializable {
     }
 
     /** Recarga la lista de usuarios desde la base de datos. */
+
     @FXML private void onRefrescar() {
         cargarTodosLosUsuarios();
         mostrarMensaje("Lista actualizada.", true);
     }
+    /** Muestra todos los usuarios sin filtrar. */
 
     @FXML private void onVerTodos()      { usuariosMostrados = todosUsuarios;                    renderizarLista(usuariosMostrados); }
+
+    /** Filtra la lista para mostrar solo los niños. */
+
     @FXML private void onVerNinos()      { usuariosMostrados = filtrarPorRol(RolUsuario.NINO);     renderizarLista(usuariosMostrados); }
+
+    /** Filtra la lista para mostrar solo los padres. */
+
     @FXML private void onVerPadres()     { usuariosMostrados = filtrarPorRol(RolUsuario.PADRE);    renderizarLista(usuariosMostrados); }
+
+    /** Filtra la lista para mostrar solo los profesores. */
+
     @FXML private void onVerProfesores() { usuariosMostrados = filtrarPorRol(RolUsuario.PROFESOR); renderizarLista(usuariosMostrados); }
 
     /**
@@ -165,6 +185,7 @@ public class AdminController implements Initializable {
      * @param rol rol por el que filtrar
      * @return lista de usuarios con ese rol
      */
+
     private List<Usuario> filtrarPorRol(RolUsuario rol) {
         return todosUsuarios.stream().filter(u -> u.getRol() == rol).toList();
     }
@@ -175,6 +196,7 @@ public class AdminController implements Initializable {
      * @param texto  mensaje a mostrar
      * @param exito  {@code true} para estilo de éxito (verde); {@code false} para error (rojo)
      */
+
     private void mostrarMensaje(String texto, boolean exito) {
         lblMensaje.setText(texto);
         lblMensaje.setStyle("-fx-font-size:13px; -fx-font-weight:bold; -fx-text-fill:"
@@ -184,6 +206,7 @@ public class AdminController implements Initializable {
     /**
      * Carga los combos de tutores y niños disponibles para establecer vínculos.
      */
+
     private void cargarCombosVinculo() {
         todosTutores = usuarioService.getTodosLosTutores();
         todosNinos   = usuarioService.getTodosLosNinos();
@@ -207,6 +230,7 @@ public class AdminController implements Initializable {
      * Establece el vínculo entre el tutor y el niño seleccionados en los combos.
      * Muestra el resultado de la operación en el área de feedback.
      */
+
     @FXML
     private void onVincular() {
         int idxTutor = cmbTutor.getSelectionModel().getSelectedIndex();
@@ -235,6 +259,7 @@ public class AdminController implements Initializable {
      * Actualiza la lista de vínculos existentes mostrando las relaciones
      * tutor → niño de todos los tutores del sistema.
      */
+
     private void actualizarTablaVinculos() {
         List<String> filas = new java.util.ArrayList<>();
         for (Usuario tutor : usuarioService.getTodosLosTutores()) {
@@ -248,10 +273,10 @@ public class AdminController implements Initializable {
     }
 
     /**
-     * Devuelve una etiqueta legible para el rol de un usuario.
+     * Devuelve una etiqueta legible en español para el rol de un usuario.
      *
      * @param rol rol del usuario
-     * @return cadena de texto descriptiva del rol
+     * @return texto descriptivo del rol
      */
     private String labelRol(RolUsuario rol) {
         return switch (rol) {
@@ -262,7 +287,10 @@ public class AdminController implements Initializable {
         };
     }
 
-    /** Cierra la sesión del administrador y vuelve a la pantalla de login. */
+    /**
+     * Cierra la sesión del administrador y vuelve a la pantalla de login.
+     */
+
     @FXML
     private void onCerrarSesion() {
         LoginController.usuarioActivo = null;

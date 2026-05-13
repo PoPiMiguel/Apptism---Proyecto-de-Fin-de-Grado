@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: RecompensaService.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.service;
 
 import com.apptism.entity.Recompensa;
@@ -12,17 +9,17 @@ import com.apptism.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 /**
- * Servicio de negocio para la gestión de recompensas y solicitudes de canje.
+ * Servicio que gestiona las recompensas y los canjes.
  *
  * <p>Las recompensas son creadas por los tutores y pueden ser canjeadas por
- * los niños usando los puntos acumulados al completar tareas. Al canjear una
- * recompensa se genera automáticamente una {@link SolicitudCanje} para que
- * el tutor pueda aprobarla o rechazarla.
+ * los niños usando los puntos acumulados al completar tareas. Al canjear
+ * se genera automáticamente una {@link SolicitudCanje} para que el tutor
+ * tenga constancia del canje en su historial.</p>
  */
+
 @Service
 @RequiredArgsConstructor
 public class RecompensaService {
@@ -34,9 +31,10 @@ public class RecompensaService {
     /**
      * Devuelve las recompensas activas creadas por un tutor.
      *
-     * @param familiaId el identificador del tutor (llamado "familia" en el modelo)
-     * @return lista de recompensas activas del tutor
+     * @param familiaId identificador del tutor
+     * @return lista de recompensas con {@code activa = true}
      */
+
     public List<Recompensa> getRecompensasDisponibles(Long familiaId) {
         return recompensaRepository.findByFamiliaIdAndActivaTrue(familiaId);
     }
@@ -44,11 +42,12 @@ public class RecompensaService {
     /**
      * Crea una recompensa nueva asociada al tutor indicado.
      *
-     * @param descripcion descripción de la recompensa
-     * @param puntos      cuántos puntos cuesta canjearla
-     * @param familiaId   el identificador del tutor que la crea
+     * @param descripcion texto descriptivo de la recompensa
+     * @param puntos      puntos necesarios para canjearla
+     * @param familiaId   identificador del tutor que la crea
      * @return la recompensa guardada en base de datos
      */
+
     @Transactional
     public Recompensa crearRecompensa(String descripcion, int puntos, Long familiaId) {
         Usuario familia = usuarioRepository.findById(familiaId)
@@ -67,13 +66,16 @@ public class RecompensaService {
     /**
      * Procesa el canje de una recompensa por parte de un niño.
      *
-     * Comprueba que tenga puntos suficientes. Si los tiene, descuenta los puntos
-     * y crea una solicitud de canje en estado PENDIENTE. Si no los tiene, no hace nada.
+     * <p>Comprueba que el niño tenga puntos suficientes. Si los tiene,
+     * descuenta los puntos y genera una {@link SolicitudCanje} en estado
+     * {@code PENDIENTE}. Si no, no realiza ninguna acción.</p>
      *
-     * @param ninoId       el identificador del niño que quiere canjear
-     * @param recompensaId el identificador de la recompensa que quiere canjear
-     * @return {@code true} si el canje se hizo bien; {@code false} si no tenía suficientes puntos
+     * @param ninoId       identificador del niño que quiere canjear
+     * @param recompensaId identificador de la recompensa a canjear
+     * @return {@code true} si el canje se realizó correctamente;
+     *         {@code false} si el niño no tenía puntos suficientes
      */
+
     @Transactional
     public boolean canjearRecompensa(Long ninoId, Long recompensaId) {
         Usuario nino = usuarioRepository.findById(ninoId)

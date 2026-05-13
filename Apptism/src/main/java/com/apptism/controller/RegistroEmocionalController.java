@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: RegistroEmocionalController.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
@@ -21,7 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,11 +27,12 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de registro emocional (exclusivo para tutores).
  *
- * Muestra los pictogramas de emoción que han enviado los niños del tutor,
+ * <p>Muestra los pictogramas de emoción que han enviado los niños del tutor
  * y un gráfico de barras con la frecuencia de cada emoción por día durante
  * la última semana. El tutor puede cambiar de niño con el desplegable y
- * tanto el panel de pictogramas como el gráfico se actualizan solos.
+ * tanto el panel de pictogramas como el gráfico se actualizan automáticamente.</p>
  */
+
 @Component
 public class RegistroEmocionalController implements Initializable {
 
@@ -50,9 +47,14 @@ public class RegistroEmocionalController implements Initializable {
     @Autowired private UsuarioService  usuarioService;
     @Autowired private StageManager    stageManager;
 
+    /** Niños vinculados al tutor activo, disponibles en el desplegable. */
+
     private List<Usuario> ninos;
 
-    /** Prepara el gráfico y carga los niños vinculados al tutor. */
+    /**
+     * Configura el gráfico y carga los niños vinculados al tutor en el desplegable.
+     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarGrafico();
@@ -61,8 +63,9 @@ public class RegistroEmocionalController implements Initializable {
 
     /**
      * Carga los niños del tutor en el desplegable. Si no tiene ninguno asignado,
-     * muestra un aviso. Configura el listener para recargar al cambiar de niño.
+     * muestra un aviso. Configura el listener para recargar el historial al cambiar de niño.
      */
+
     private void cargarNinos() {
         ninos = usuarioService.getNinosDetutor(LoginController.usuarioActivo.getId());
         if (ninos.isEmpty()) {
@@ -81,7 +84,10 @@ public class RegistroEmocionalController implements Initializable {
         cmbNino.getSelectionModel().selectFirst();
     }
 
-    /** Configura las etiquetas de los ejes y el título del gráfico. */
+    /**
+     * Configura las etiquetas de los ejes y el título del gráfico de barras.
+     */
+
     private void configurarGrafico() {
         if (ejeX != null) ejeX.setLabel("Día de la semana");
         if (ejeY != null) ejeY.setLabel("Nº de emociones");
@@ -92,11 +98,12 @@ public class RegistroEmocionalController implements Initializable {
     }
 
     /**
-     * Carga y muestra las emociones enviadas por un niño concreto.
-     * Filtra los mensajes del tutor por emisor y actualiza también el gráfico.
+     * Carga y muestra las emociones enviadas por un niño concreto al tutor activo.
+     * Filtra los mensajes por emisor y actualiza también el gráfico de barras.
      *
-     * @param nino el niño cuyo historial queremos ver
+     * @param nino el niño cuyo historial emocional se quiere visualizar
      */
+
     private void cargarEmociones(Usuario nino) {
         if (panelMensajes != null) panelMensajes.getChildren().clear();
         if (graficoEmociones != null) graficoEmociones.getData().clear();
@@ -145,11 +152,12 @@ public class RegistroEmocionalController implements Initializable {
     }
 
     /**
-     * Actualiza el gráfico de barras agrupando los mensajes por emoción y por
-     * día de la semana, considerando solo los últimos 7 días.
+     * Actualiza el gráfico de barras agrupando los mensajes por tipo de emoción
+     * y por día de la semana, considerando solo los últimos 7 días.
      *
-     * @param mensajes la lista de mensajes emocionales a representar
+     * @param mensajes lista de mensajes emocionales a representar en el gráfico
      */
+
     private void actualizarGrafico(List<Mensaje> mensajes) {
         if (graficoEmociones == null) return;
         String[] dias = {"Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"};
@@ -176,5 +184,6 @@ public class RegistroEmocionalController implements Initializable {
     }
 
     /** Vuelve al dashboard. */
+
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }
 }

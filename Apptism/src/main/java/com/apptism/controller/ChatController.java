@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: ChatController.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
@@ -29,33 +26,40 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de chat con pictogramas.
  *
- * Permite que niños y tutores se comuniquen usando pictogramas de ARASAAC.
- * Al abrirse, carga los contactos disponibles y una selección de pictogramas
- * por defecto (emociones básicas + categorías frecuentes) sin necesidad de buscar.
+ * <p>Permite que niños y tutores se comuniquen usando pictogramas de ARASAAC.
+ * Al abrirse, carga los contactos vinculados al usuario activo y una selección
+ * de pictogramas por defecto (emociones básicas y categorías frecuentes) sin
+ * necesidad de buscar.</p>
  *
- * El panel de mensajes se desplaza automáticamente al final cada vez que
- * llega un mensaje nuevo, usando un listener sobre la altura del panel.
+ * <p>El panel de mensajes se desplaza automáticamente al final cada vez que
+ * se añade un mensaje nuevo, usando un listener sobre la altura del panel.</p>
  */
+
 @Component
 public class ChatController implements Initializable {
 
     /** Panel vertical donde se apilan las burbujas de mensajes. */
+
     @FXML
     private VBox panelMensajes;
 
-    /** El scroll que envuelve el panel de mensajes; lo usamos para bajar al final. */
+    /** Scroll que envuelve el panel de mensajes, usado para bajar al último mensaje. */
+
     @FXML
     private ScrollPane scrollMensajes;
 
-    /** Panel donde se muestran los pictogramas seleccionables. */
+    /** Panel donde se muestran los pictogramas disponibles para enviar. */
+
     @FXML
     private FlowPane panelPictos;
 
     /** Campo para buscar pictogramas por palabra clave. */
+
     @FXML
     private TextField txtBuscar;
 
-    /** Selector del contacto con el que estamos hablando. */
+    /** Selector del contacto con el que se está hablando. */
+
     @FXML
     private ComboBox<String> cmbInterlocutor;
 
@@ -69,15 +73,18 @@ public class ChatController implements Initializable {
     private StageManager stageManager;
 
     /** Lista de contactos disponibles para el usuario activo. */
+
     private List<Usuario> contactos;
 
-    /** El contacto que tenemos seleccionado en el desplegable ahora mismo. */
+    /** Contacto seleccionado actualmente en el desplegable. */
+
     private Usuario interlocutorActual;
 
     /**
-     * Prepara la pantalla: carga los contactos, los pictogramas por defecto
-     * y configura el scroll automático para que siempre se vea el último mensaje.
+     * Prepara la pantalla: carga los contactos vinculados, los pictogramas por
+     * defecto y configura el scroll automático al último mensaje.
      */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarContactos();
@@ -87,9 +94,10 @@ public class ChatController implements Initializable {
     }
 
     /**
-     * Carga los contactos en el desplegable y configura el listener para
-     * recargar la conversación cuando el usuario cambia de contacto.
+     * Carga los contactos vinculados al usuario activo en el desplegable
+     * y configura el listener para recargar la conversación al cambiar de contacto.
      */
+
     private void cargarContactos() {
         Usuario yo = LoginController.usuarioActivo;
         contactos = usuarioService.getContactos(yo);
@@ -105,8 +113,9 @@ public class ChatController implements Initializable {
     }
 
     /**
-     * Limpia el panel y carga el historial de mensajes con el contacto seleccionado.
+     * Limpia el panel de mensajes y carga el historial de chat con el contacto seleccionado.
      */
+
     private void cargarConversacion() {
         panelMensajes.getChildren().clear();
         if (interlocutorActual == null) return;
@@ -117,11 +126,14 @@ public class ChatController implements Initializable {
 
     /**
      * Construye la burbuja visual de un mensaje y la añade al panel.
-     * Los mensajes propios van a la derecha con fondo verde; los del otro, a la
-     * izquierda con fondo blanco. Las imágenes se cargan en un hilo secundario.
+     *
+     * <p>Los mensajes propios se alinean a la derecha con fondo verde;
+     * los del interlocutor, a la izquierda con fondo blanco.
+     * Las imágenes se cargan en un hilo secundario.</p>
      *
      * @param m el mensaje a mostrar
      */
+
     private void agregarBurbujaMensaje(Mensaje m) {
         boolean esMio = m.getEmisor().getId()
                 .equals(LoginController.usuarioActivo.getId());
@@ -164,8 +176,9 @@ public class ChatController implements Initializable {
     /**
      * Carga los pictogramas por defecto: primero las emociones básicas de forma
      * inmediata, y luego en segundo plano categorías frecuentes (casa, comer, jugar),
-     * evitando duplicados.
+     * evitando duplicados por identificador.
      */
+
     private void cargarPictogramasPorDefecto() {
         panelPictos.getChildren().clear();
         arasaacService.getEmocionesBásicas().forEach(this::agregarPictoSeleccionable);
@@ -192,9 +205,10 @@ public class ChatController implements Initializable {
     }
 
     /**
-     * Busca pictogramas por la palabra del campo y actualiza el panel.
+     * Busca pictogramas por la palabra del campo de búsqueda y actualiza el panel.
      * Si el campo está vacío, recarga los pictogramas por defecto.
      */
+
     @FXML
     private void onBuscar() {
         String palabra = txtBuscar.getText().trim();
@@ -220,11 +234,12 @@ public class ChatController implements Initializable {
     }
 
     /**
-     * Crea una tarjeta visual para un pictograma y la añade al panel.
-     * La imagen se carga en un hilo secundario. Al hacer clic envía el pictograma.
+     * Crea una tarjeta visual de pictograma y la añade al panel de selección.
+     * La imagen se carga en un hilo secundario. Al hacer clic se envía el pictograma.
      *
-     * @param picto los datos del pictograma
+     * @param picto datos del pictograma a mostrar
      */
+
     private void agregarPictoSeleccionable(PictogramaDTO picto) {
         VBox tarjeta = new VBox(4);
         tarjeta.setAlignment(Pos.CENTER);
@@ -261,10 +276,13 @@ public class ChatController implements Initializable {
     }
 
     /**
-     * Envía el pictograma al contacto activo y muestra la burbuja en la conversación.
+     * Envía el pictograma al contacto activo, lo guarda en base de datos y
+     * muestra la burbuja en la conversación. Si no hay contacto seleccionado,
+     * muestra un aviso.
      *
-     * @param picto el pictograma que el usuario ha pulsado
+     * @param picto el pictograma que el usuario ha seleccionado para enviar
      */
+
     private void enviarPicto(PictogramaDTO picto) {
         if (interlocutorActual == null) {
             new Alert(Alert.AlertType.WARNING, "Selecciona un contacto primero.").showAndWait();
@@ -281,6 +299,7 @@ public class ChatController implements Initializable {
     }
 
     /** Vuelve al dashboard. */
+
     @FXML
     private void onVolver() {
         stageManager.switchScene(FxmlView.DASHBOARD);

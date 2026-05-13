@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: MensajeService.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.service;
 
 import com.apptism.entity.Mensaje;
@@ -11,16 +8,19 @@ import com.apptism.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 /**
  * Servicio que gestiona los mensajes con pictogramas entre niños y tutores.
  *
- * Hay dos tipos de mensaje según {@link TipoMensaje}:
- * - CHAT: comunicación general entre niño y tutor.
- * - EMOCION: el niño envía cómo se siente, visible en el registro emocional del tutor.
+ * <p>Hay dos tipos de mensaje según {@link TipoMensaje}:</p>
+ * <ul>
+ *   <li>{@link TipoMensaje#CHAT} – conversación general bidireccional.</li>
+ *   <li>{@link TipoMensaje#EMOCION} – el niño envía cómo se siente,
+ *       visible en el registro emocional del tutor.</li>
+ * </ul>
  */
+
 @Service
 @RequiredArgsConstructor
 public class MensajeService {
@@ -29,15 +29,16 @@ public class MensajeService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Guarda un mensaje nuevo con su pictograma.
+     * Guarda un mensaje nuevo con su pictograma en la base de datos.
      *
-     * @param emisorId   el identificador de quien envía
-     * @param receptorId el identificador de quien recibe
+     * @param emisorId   identificador del usuario que envía
+     * @param receptorId identificador del usuario que recibe
      * @param pictoUrl   URL de la imagen del pictograma
-     * @param texto      nombre o descripción del pictograma
-     * @param tipo       CHAT o EMOCION
-     * @return el mensaje guardado en base de datos
+     * @param texto      nombre o etiqueta del pictograma
+     * @param tipo       {@link TipoMensaje#CHAT} o {@link TipoMensaje#EMOCION}
+     * @return el mensaje guardado
      */
+
     @Transactional
     public Mensaje enviarMensaje(Long emisorId, Long receptorId,
                                  String pictoUrl, String texto, TipoMensaje tipo) {
@@ -57,13 +58,14 @@ public class MensajeService {
     }
 
     /**
-     * Devuelve el historial de chat entre dos usuarios, con los mensajes
-     * de ambas direcciones ordenados cronológicamente.
+     * Devuelve el historial de mensajes de tipo {@link TipoMensaje#CHAT} entre
+     * dos usuarios, con los mensajes de ambas direcciones ordenados cronológicamente.
      *
-     * @param userId1 el identificador del primer participante
-     * @param userId2 el identificador del segundo participante
+     * @param userId1 identificador del primer participante
+     * @param userId2 identificador del segundo participante
      * @return lista de mensajes ordenados por fecha ascendente
      */
+
     public List<Mensaje> getConversacion(Long userId1, Long userId2) {
         return mensajeRepository
                 .findByEmisorIdAndReceptorIdOrEmisorIdAndReceptorIdOrderByFechaAsc(
@@ -74,9 +76,10 @@ public class MensajeService {
      * Devuelve los mensajes emocionales recibidos por un tutor,
      * del más reciente al más antiguo.
      *
-     * @param tutorId el identificador del tutor
-     * @return lista de mensajes de tipo EMOCION recibidos
+     * @param tutorId identificador del tutor receptor
+     * @return lista de mensajes de tipo {@link TipoMensaje#EMOCION} recibidos
      */
+
     public List<Mensaje> getEmocionesRecibidas(Long tutorId) {
         return mensajeRepository.findByReceptorIdAndTipoOrderByFechaDesc(
                 tutorId, TipoMensaje.EMOCION);

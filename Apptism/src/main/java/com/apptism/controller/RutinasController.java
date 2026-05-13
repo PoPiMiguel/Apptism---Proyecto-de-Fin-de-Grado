@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: RutinasController.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
@@ -11,7 +8,6 @@ import com.apptism.entity.ZonaHoraria;
 import com.apptism.service.ArasaacService;
 import com.apptism.service.ArasaacService.PictogramaDTO;
 import com.apptism.service.RutinaService;
-import com.apptism.ui.AnimacionUtil;
 import com.apptism.ui.StageManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -32,11 +28,16 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de rutinas.
  *
- * Vista tutor: crear rutinas para sus niños con un pictograma de ARASAAC,
- * organizadas por zona horaria (mañana, mediodía, noche), y eliminarlas.
- * Vista niño: ver sus rutinas como tarjetas visuales (con pictograma) y
- * marcarlas como completadas.
+ * <p>Muestra una interfaz diferente según el rol del usuario activo:</p>
+ * <ul>
+ *   <li><b>Tutor</b>: puede crear rutinas para sus niños asignados, seleccionar
+ *       un pictograma de ARASAAC, organizarlas por franja horaria (mañana,
+ *       mediodía, noche) y eliminarlas.</li>
+ *   <li><b>Niño</b>: ve sus rutinas como tarjetas visuales con pictograma
+ *       y puede marcarlas como completadas.</li>
+ * </ul>
  */
+
 @Component
 public class RutinasController implements Initializable {
 
@@ -58,15 +59,35 @@ public class RutinasController implements Initializable {
     @Autowired private ArasaacService arasaacService;
     @Lazy @Autowired private StageManager stageManager;
 
+    /** Rutinas cargadas actualmente para la vista del niño. */
+
     private List<Rutina>  rutinasActualesNino;
+
+    /** Niños disponibles para el combo del tutor. */
+
     private List<Usuario> ninosDisponibles;
 
+    /** Rutinas de la franja de mañana (vista tutor). */
+
     private List<Rutina> rutinasManana;
+
+    /** Rutinas de la franja de mediodía (vista tutor). */
+
     private List<Rutina> rutinasMediodia;
+
+    /** Rutinas de la franja de noche (vista tutor). */
+
     private List<Rutina> rutinasNoche;
 
     /** Pictograma seleccionado actualmente en el formulario del tutor. */
+
     private PictogramaDTO pictogramaSeleccionado = null;
+
+    /**
+     * Inicializa la pantalla según el rol del usuario activo.
+     * Si es tutor carga el formulario de creación y las listas por zona;
+     * si es niño, carga sus tarjetas de rutinas.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -79,8 +100,8 @@ public class RutinasController implements Initializable {
         if (rootStackNino != null) rootStackNino.setVisible(!esTutor);
 
         if (esTutor) {
-            cmbZona.setItems(FXCollections.observableArrayList("MAÑANA", "MEDIO DIA", "NOCHE"));
-            cmbZona.setValue("MAÑANA");
+            cmbZona.setItems(FXCollections.observableArrayList("MANANA", "MEDIODIA", "NOCHE"));
+            cmbZona.setValue("MANANA");
             cargarNinosEnComboTutor();
             cargarTodasLasRutinasTutor();
 
@@ -89,6 +110,13 @@ public class RutinasController implements Initializable {
             cargarRutinasNino();
         }
     }
+
+    /**
+     * Busca pictogramas en ARASAAC con la palabra del campo de búsqueda
+     * y los muestra en el panel de selección. La búsqueda se realiza en
+     * un hilo secundario para no bloquear la interfaz.
+     */
+
     @FXML
     private void buscarPictogramas() {
         String palabra = txtBuscarPicto.getText().trim();
@@ -114,7 +142,13 @@ public class RutinasController implements Initializable {
         }).start();
     }
 
-    /** Crea una tarjeta de pictograma seleccionable en el formulario del tutor. */
+    /**
+     * Crea una tarjeta de pictograma seleccionable en el panel del formulario del tutor.
+     * La imagen se carga en un hilo secundario. Al hacer clic se selecciona el pictograma.
+     *
+     * @param picto datos del pictograma a mostrar
+     */
+
     private void agregarPictoSeleccionable(PictogramaDTO picto) {
         VBox tarjeta = new VBox(3);
         tarjeta.setAlignment(Pos.CENTER);
@@ -154,7 +188,13 @@ public class RutinasController implements Initializable {
         panelPictosRutina.getChildren().add(tarjeta);
     }
 
-    /** Marca el pictograma elegido y desmarca el anterior. */
+    /**
+     * Marca el pictograma elegido visualmente y desmarca el anterior.
+     *
+     * @param picto       datos del pictograma seleccionado
+     * @param tarjetaActual tarjeta sobre la que se ha hecho clic
+     */
+
     private void seleccionarPictograma(PictogramaDTO picto, VBox tarjetaActual) {
         panelPictosRutina.getChildren().forEach(n ->
                 n.setStyle("-fx-background-color:#F7FFF7; -fx-background-radius:10px; -fx-cursor:hand;"));
@@ -163,6 +203,11 @@ public class RutinasController implements Initializable {
                         "-fx-border-color:#4A6F5A; -fx-border-radius:10px; -fx-cursor:hand;");
         pictogramaSeleccionado = picto;
     }
+
+    /**
+     * Carga los niños asignados al tutor en el combo de selección.
+     * Si no tiene ninguno, muestra un texto informativo en el combo.
+     */
 
     private void cargarNinosEnComboTutor() {
         ninosDisponibles = rutinaService.getNinosDelTutor(LoginController.usuarioActivo.getId());
@@ -174,6 +219,10 @@ public class RutinasController implements Initializable {
             cmbNinoTutor.getSelectionModel().selectFirst();
         }
     }
+
+    /**
+     * Carga las rutinas del niño seleccionado en el combo, separadas por franja horaria.
+     */
 
     private void cargarTodasLasRutinasTutor() {
         if (ninosDisponibles == null || ninosDisponibles.isEmpty()) {
@@ -192,6 +241,15 @@ public class RutinasController implements Initializable {
         cargarRutinasPorZona(ninoId, ZonaHoraria.NOCHE,    listaNoche);
     }
 
+    /**
+     * Carga las rutinas de una franja horaria concreta en la lista correspondiente
+     * y actualiza la caché interna de esa zona.
+     *
+     * @param ninoId identificador del niño
+     * @param zona   franja horaria a cargar
+     * @param lista  componente ListView donde se mostrarán
+     */
+
     private void cargarRutinasPorZona(Long ninoId, ZonaHoraria zona, ListView<String> lista) {
         List<Rutina> rutinas = rutinaService.getRutinasByZona(ninoId, zona);
 
@@ -203,12 +261,16 @@ public class RutinasController implements Initializable {
 
         lista.setItems(FXCollections.observableArrayList(
                 rutinas.stream()
-                        .map(r -> (r.isCompletada() ? "[COMPL] " : "[NCOMP] ") +
+                        .map(r -> (r.isCompletada() ? "[COMPL] " : "[NCOMPL] ") +
                                 r.getNombre() +
-                                (r.getPictogramaId() != null ? "CON PIC" : "SIN PIC"))
+                                (r.getPictogramaId() != null ? " CON PIC" : " SIN PIC"))
                         .toList()
         ));
     }
+
+    /**
+     * Elimina la rutina seleccionada en la pestaña activa, tras pedir confirmación.
+     */
 
     @FXML
     private void onEliminarRutina() {
@@ -240,6 +302,11 @@ public class RutinasController implements Initializable {
         });
     }
 
+    /**
+     * Crea una rutina nueva con los datos del formulario y la asigna al niño seleccionado.
+     * Limpia el formulario y recarga las listas al terminar.
+     */
+
     @FXML
     private void onCrearRutina() {
         String nombre = txtNombreRutina.getText().trim();
@@ -269,11 +336,20 @@ public class RutinasController implements Initializable {
         cargarTodasLasRutinasTutor();
     }
 
+    /**
+     * Carga todas las rutinas del niño activo y las renderiza como tarjetas.
+     */
+
     private void cargarRutinasNino() {
         rutinasActualesNino = rutinaService.todasLasRutinas(
                 LoginController.usuarioActivo.getId());
         renderizarTarjetasNino();
     }
+
+    /**
+     * Limpia el panel y vuelve a dibujar todas las tarjetas de rutinas del niño.
+     * Si no hay rutinas, muestra un mensaje informativo.
+     */
 
     private void renderizarTarjetasNino() {
         if (flowRutinasNino == null) return;
@@ -291,6 +367,15 @@ public class RutinasController implements Initializable {
         }
     }
 
+    /**
+     * Construye la tarjeta visual de una rutina para la vista del niño.
+     * Incluye el pictograma (si lo tiene), el nombre, la franja horaria
+     * y un botón para marcarla como completada (si aún no lo está).
+     *
+     * @param rutina la rutina a representar
+     * @return nodo VBox listo para añadir al panel
+     */
+
     private VBox crearTarjetaRutinaNino(Rutina rutina) {
         VBox tarjeta = new VBox(12);
         tarjeta.setAlignment(Pos.CENTER);
@@ -304,7 +389,6 @@ public class RutinasController implements Initializable {
                         "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.10),10,0,0,3);"
         );
 
-        // Pictograma de ARASAAC (si tiene)
         if (rutina.getPictogramaUrl() != null && !rutina.getPictogramaUrl().isBlank()) {
             ImageView img = new ImageView();
             img.setFitWidth(90);
@@ -350,6 +434,13 @@ public class RutinasController implements Initializable {
         return tarjeta;
     }
 
+    /**
+     * Devuelve el nombre legible en español de una franja horaria.
+     *
+     * @param zona franja horaria
+     * @return texto descriptivo de la zona
+     */
+
     private String emojiZonaTexto(ZonaHoraria zona) {
         return switch (zona) {
             case MANANA   -> "Mañana";
@@ -358,9 +449,17 @@ public class RutinasController implements Initializable {
         };
     }
 
+    /**
+     * Muestra un diálogo de información con el mensaje indicado.
+     *
+     * @param msg mensaje a mostrar
+     */
+
     private void alerta(String msg) {
         new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
     }
+
+    /** Vuelve al dashboard. */
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }
 }

@@ -12,26 +12,33 @@ import java.util.Random;
 /**
  * Utilidad estática con las animaciones de refuerzo positivo de la aplicación.
  *
- * Los efectos visuales de celebración se activan cuando el niño completa una
- * tarea, una rutina o canjea una recompensa. Están pensados siguiendo los
- * principios ABA (Applied Behaviour Analysis) para personas con TEA.
+ * <p>Los efectos visuales de celebración se activan cuando el niño completa
+ * una tarea o canjea una recompensa. Están diseñados siguiendo principios
+ * de accesibilidad para personas con TEA: breves, claros y no intrusivos.</p>
  *
- * Todos los métodos son estáticos. Los que se llaman desde hilos secundarios
- * envuelven sus cambios de interfaz en {@link Platform#runLater}.
+ * <p>Todos los métodos son estáticos. Los que modifican la interfaz desde
+ * hilos secundarios envuelven sus cambios en {@link Platform#runLater}.</p>
  */
+
 public class AnimacionUtil {
+
+    /** Clase de utilidad: no se instancia. */
 
     private AnimacionUtil() {}
 
     /**
-     * Reproduce una animación de éxito sobre el elemento indicado.
+     * Reproduce una animación de éxito sobre el nodo indicado.
      *
-     * Consta de tres fases seguidas: primero escala el elemento un 25% hacia arriba
-     * (180 ms), luego lo rota de un lado a otro como celebración (120 ms, 6 ciclos),
-     * y por último vuelve a su tamaño original (220 ms).
+     * <p>Consta de tres fases encadenadas:</p>
+     * <ol>
+     *   <li>Escala el nodo un 25% hacia arriba (180 ms).</li>
+     *   <li>Lo rota de un lado a otro como celebración (120 ms, 6 ciclos).</li>
+     *   <li>Lo devuelve a su tamaño original (220 ms).</li>
+     * </ol>
      *
      * @param nodo el elemento de JavaFX sobre el que se aplica la animación
      */
+
     public static void animarExito(Node nodo) {
         ScaleTransition escalar = new ScaleTransition(Duration.millis(180), nodo);
         escalar.setToX(1.25);
@@ -52,16 +59,17 @@ public class AnimacionUtil {
     /**
      * Muestra un mensaje flotante con los puntos conseguidos sobre el contenedor.
      *
-     * El mensaje sube desde abajo mientras aparece, se queda un momento visible
-     * y luego se desvanece. Si los puntos son mayores que cero se acompaña de
-     * emojis de celebración; si no, muestra un mensaje de ánimo genérico.
+     * <p>El mensaje sube desde abajo mientras aparece, permanece visible un
+     * momento y luego se desvanece. Si los puntos son mayores que cero se
+     * muestra la cantidad ganada; si no, aparece un mensaje de ánimo genérico.</p>
      *
-     * Es seguro llamarlo desde un hilo secundario porque todo lo que toca
-     * la interfaz lo mete en {@link Platform#runLater}.
+     * <p>Es seguro llamarlo desde un hilo secundario: todos los cambios de
+     * interfaz se ejecutan dentro de {@link Platform#runLater}.</p>
      *
-     * @param contenedor el {@link StackPane} donde se superpone el mensaje flotante
-     * @param puntos los puntos a mostrar; si es 0 sale un mensaje de ánimo
+     * @param contenedor el {@link StackPane} sobre el que se superpone el mensaje flotante
+     * @param puntos     puntos a mostrar; si es 0 se muestra un mensaje de ánimo
      */
+
     public static void mostrarPuntos(StackPane contenedor, int puntos) {
         String texto = puntos > 0
                 ? "Has ganado +" + puntos + " pts"

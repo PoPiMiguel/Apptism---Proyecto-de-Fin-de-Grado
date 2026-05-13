@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: DashboardController.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
@@ -21,12 +18,15 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de inicio (dashboard).
  *
- * Muestra una interfaz distinta según el rol del usuario:
- * - Tutor: acceso a rutinas, tareas, recompensas, chat, registro emocional
- *   y canjes, con un badge que muestra las solicitudes pendientes.
- * - Niño: acceso simplificado a sus módulos junto con sus puntos acumulados
- *   representados como estrellas, coronas y diamantes.
+ * <p>Muestra una interfaz diferente según el rol del usuario:</p>
+ * <ul>
+ *   <li><b>Tutor</b>: acceso a rutinas, tareas, recompensas, chat, registro
+ *       emocional y canjes, con un badge que indica las solicitudes pendientes.</li>
+ *   <li><b>Niño</b>: acceso simplificado a sus módulos y sus puntos acumulados
+ *       representados visualmente como estrellas, coronas y diamantes.</li>
+ * </ul>
  */
+
 @Component
 public class DashboardController implements Initializable {
 
@@ -40,6 +40,11 @@ public class DashboardController implements Initializable {
 
     @Autowired private SolicitudCanjeService solicitudCanjeService;
     @Autowired private StageManager stageManager;
+
+    /**
+     * Inicializa el dashboard mostrando el panel correspondiente al rol del usuario activo.
+     * Si no hay usuario en sesión, no hace nada.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,28 +70,38 @@ public class DashboardController implements Initializable {
         }
     }
 
-    /** Abre la pantalla de rutinas. */
+    /** Navega a la pantalla de rutinas. */
+
     @FXML private void onIrRutinas()      { stageManager.switchScene(FxmlView.RUTINAS); }
 
-    /** Abre la pantalla de tareas. */
+    /** Navega a la pantalla de tareas. */
+
     @FXML private void onIrTareas()       { stageManager.switchScene(FxmlView.TAREAS); }
 
-    /** Abre la pantalla de chat. */
+    /** Navega a la pantalla de chat. */
+
     @FXML private void onIrChat()         { stageManager.switchScene(FxmlView.CHAT); }
 
-    /** Abre la pantalla de recompensas. */
+    /** Navega a la pantalla de recompensas. */
+
     @FXML private void onIrRecompensas()  { stageManager.switchScene(FxmlView.RECOMPENSAS); }
 
-    /** Abre la pantalla de emociones (niño) o registro emocional (tutor). */
+    /** Navega a la pantalla de emociones (niño). */
+
     @FXML private void onIrEmociones()    { stageManager.switchScene(FxmlView.EMOCIONES); }
 
-    /** Abre la pantalla de registro emocional (tutor). */
+    /** Navega a la pantalla de registro emocional (tutor). */
+
     @FXML private void onIrRegistroEmocional() { stageManager.switchScene(FxmlView.REGISTRO_EMOCIONAL); }
 
-    /** Abre la pantalla de solicitudes de canje. */
+    /** Navega a la pantalla de solicitudes de canje. */
+
     @FXML private void onIrSolicitudes()  { stageManager.switchScene(FxmlView.SOLICITUDES_CANJE); }
 
-    /** Cierra la sesión y vuelve al login. */
+    /**
+     * Cierra la sesión del usuario activo y vuelve a la pantalla de login.
+     */
+
     @FXML private void onCerrarSesion() {
         LoginController.usuarioActivo = null;
         stageManager.switchScene(FxmlView.LOGIN);

@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: TareaService.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.service;
 
 import com.apptism.entity.Tarea;
@@ -10,15 +7,15 @@ import com.apptism.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servicio que gestiona el ciclo de vida de las tareas: el tutor las crea,
- * el niño las completa (y acumula puntos), y el tutor puede eliminarlas.
- * También tiene consultas filtradas por niño, creador y estado.
+ * Servicio que gestiona el ciclo de vida de las tareas: el tutor las crea
+ * y las asigna a un niño, el niño las completa acumulando puntos,
+ * y el tutor puede eliminarlas.
  */
+
 @Service
 @RequiredArgsConstructor
 public class TareaService {
@@ -27,27 +24,28 @@ public class TareaService {
     private final UsuarioRepository usuarioRepository;
 
     /**
-     * Devuelve todas las tareas asignadas a un niño, estén completadas o no.
+     * Devuelve todas las tareas asignadas a un niño, completadas o no.
      *
-     * @param ninoId el identificador del niño
+     * @param ninoId identificador del niño
      * @return lista de sus tareas
      */
+
     public List<Tarea> getTareasByNino(Long ninoId) {
         return tareaRepository.findByNinoId(ninoId);
     }
 
     /**
      * Crea una tarea nueva y la asigna a un niño concreto.
-     * El pictograma (id y url) lo selecciona el tutor desde el buscador de ARASAAC.
      *
-     * @param titulo          título de la tarea
-     * @param pictogramaId    ID del pictograma ARASAAC seleccionado (puede ser null)
-     * @param pictogramaUrl   URL de la imagen del pictograma (puede ser null)
-     * @param puntos          puntos que gana el niño al completarla
-     * @param ninoId          identificador del niño al que se asigna
-     * @param creadorId       identificador del tutor que la crea
+     * @param titulo        título de la tarea
+     * @param pictogramaId  ID del pictograma ARASAAC seleccionado; puede ser {@code null}
+     * @param pictogramaUrl URL de la imagen del pictograma; puede ser {@code null}
+     * @param puntos        puntos que gana el niño al completarla
+     * @param ninoId        identificador del niño al que se asigna
+     * @param creadorId     identificador del tutor que la crea
      * @return la tarea guardada en base de datos
      */
+
     @Transactional
     public Tarea crearTarea(String titulo, Integer pictogramaId, String pictogramaUrl,
                             int puntos, Long ninoId, Long creadorId) {
@@ -70,13 +68,15 @@ public class TareaService {
     }
 
     /**
-     * Marca una tarea como completada y le suma los puntos al niño.
-     * Si la tarea ya estaba completada, devuelve el saldo actual sin tocar nada
-     * para evitar que se acumulen puntos dos veces.
+     * Marca una tarea como completada y suma los puntos al niño.
      *
-     * @param tareaId el identificador de la tarea a completar
-     * @return los puntos actuales del niño tras la operación
+     * <p>Si la tarea ya estaba completada devuelve el saldo actual sin modificar
+     * nada, para evitar que se acumulen puntos dos veces.</p>
+     *
+     * @param tareaId identificador de la tarea a completar
+     * @return los puntos acumulados del niño tras la operación
      */
+
     @Transactional
     public int completarTarea(Long tareaId) {
         Tarea tarea = tareaRepository.findById(tareaId)
@@ -101,8 +101,9 @@ public class TareaService {
     /**
      * Elimina una tarea del sistema.
      *
-     * @param tareaId el identificador de la tarea a eliminar
+     * @param tareaId identificador de la tarea a eliminar
      */
+
     @Transactional
     public void eliminarTarea(Long tareaId) {
         tareaRepository.deleteById(tareaId);
@@ -111,9 +112,10 @@ public class TareaService {
     /**
      * Devuelve todas las tareas de los niños asignados a un tutor.
      *
-     * @param tutorId el identificador del tutor
-     * @return lista de tareas de todos sus niños
+     * @param tutorId identificador del tutor
+     * @return lista de tareas de todos sus niños asignados
      */
+
     @Transactional(readOnly = true)
     public List<Tarea> getTareasDeNinosDelTutor(Long tutorId) {
         Usuario tutor = usuarioRepository.findById(tutorId)

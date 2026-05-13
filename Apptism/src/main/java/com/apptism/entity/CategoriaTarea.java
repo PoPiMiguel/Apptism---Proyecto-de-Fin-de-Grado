@@ -1,2 +1,0 @@
-package com.apptism.entity;
-public enum CategoriaTarea { MATEMATICAS, LENGUA, HISTORIA, GEOGRAFIA, PLASTICA, CIENCIAS, MUSICA, INGLES, EDUCACION_FISICA}

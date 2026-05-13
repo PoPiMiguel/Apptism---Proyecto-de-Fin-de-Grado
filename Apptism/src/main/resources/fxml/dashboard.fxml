@@ -60,7 +60,6 @@
         <top>
             <HBox styleClass="header-nino" alignment="CENTER_LEFT" spacing="20">
                 <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
-                <!-- Icono de la app: en el dashboard no navega (ya estamos en home) -->
                 <ImageView fitHeight="56" preserveRatio="true" styleClass="app-logo">
                         <image><Image url="@../images/apptism_icon.png"/></image>
                     </ImageView>

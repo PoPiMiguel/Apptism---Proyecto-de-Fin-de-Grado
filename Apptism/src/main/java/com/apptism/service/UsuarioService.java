@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: UsuarioService.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.service;
 
 import com.apptism.entity.RolUsuario;
@@ -21,13 +18,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Servicio que gestiona todo lo relacionado con los usuarios: login,
- * consultas por rol, creación, vinculación entre tutores y niños, y borrado.
+ * Servicio que gestiona todo lo relacionado con los usuarios: inicio de sesión,
+ * consultas por rol, creación, vinculación entre tutores y niños, y eliminación.
  *
- * Los métodos que acceden a colecciones con carga diferida (LAZY) llevan
+ * <p>Los métodos que acceden a colecciones con carga diferida (LAZY) llevan
  * {@code @Transactional} para evitar errores de inicialización fuera del
- * contexto de persistencia.
+ * contexto de persistencia.</p>
  */
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
@@ -42,16 +40,21 @@ public class UsuarioService {
     /**
      * Comprueba si el email y la contraseña son correctos y devuelve el usuario.
      *
-     * @param email    el correo del usuario
-     * @param password la contraseña en texto plano
-     * @return el usuario si las credenciales son correctas, o vacío si no coincide nada
+             * @param email    correo del usuario
+     * @param password contraseña en texto plano
+     * @return el usuario si las credenciales son correctas, o vacío si no coincide ninguno
      */
+
     public Optional<Usuario> login(String email, String password) {
         return usuarioRepository.findByEmailAndPassword(email, password);
     }
 
+    /**
+     * Devuelve todos los tutores del sistema (padres y profesores juntos).
+     *
+     * @return lista con todos los usuarios de rol PADRE y PROFESOR
+     */
 
-    /** Devuelve todos los tutores del sistema (padres y profesores juntos). */
     public List<Usuario> getTodosLosTutores() {
         List<Usuario> padres = usuarioRepository.findByRol(RolUsuario.PADRE);
         List<Usuario> profes = usuarioRepository.findByRol(RolUsuario.PROFESOR);
@@ -60,26 +63,35 @@ public class UsuarioService {
         return todos;
     }
 
-    /** Devuelve todos los niños registrados en el sistema. */
+    /**
+     * Devuelve todos los niños registrados en el sistema.
+     *
+     * @return lista con todos los usuarios de rol NINO
+     */
+
     public List<Usuario> getTodosLosNinos() {
         return usuarioRepository.findByRol(RolUsuario.NINO);
     }
 
     /**
-     * Devuelve los contactos con los que puede chatear un usuario.
-     * Si es niño, ve a todos los tutores. Si es tutor, ve a todos los niños.
+     * Devuelve los contactos con los que puede chatear un usuario,
+     * respetando los vínculos establecidos en la tabla {@code tutores_ninos}.
      *
-     * @param usuario el usuario cuya lista de contactos queremos obtener
+     * <p>Si el usuario es niño, devuelve sus tutores asignados.
+     * Si es tutor, devuelve sus niños asignados.</p>
+     *
+     * @param usuario el usuario cuya lista de contactos se quiere obtener
      * @return lista de usuarios con los que puede comunicarse
      */
+
+    @Transactional(readOnly = true)
     public List<Usuario> getContactos(Usuario usuario) {
         if (usuario.getRol() == RolUsuario.NINO) {
-            return getTodosLosTutores();
+            return getTutoresDeNino(usuario.getId());
         } else {
-            return getTodosLosNinos();
+            return getNinosDetutor(usuario.getId());
         }
     }
-
 
     /**
      * Devuelve los niños asignados a un tutor dentro de una transacción de solo
@@ -96,12 +108,15 @@ public class UsuarioService {
     }
 
     /**
-     * Busca qué tutores tienen asignado a un niño concreto. La búsqueda se hace
-     * dentro de una transacción para poder cargar bien las colecciones diferidas.
+     * Busca qué tutores tienen asignado a un niño concreto.
      *
-     * @param ninoId el identificador del niño
+     * <p>Itera todos los tutores del sistema y filtra los que tienen al niño
+     * en su lista de asignados. La transacción permite cargar las colecciones LAZY.</p>
+     *
+     * @param ninoId identificador del niño
      * @return lista de tutores que tienen a ese niño asignado
      */
+
     @Transactional(readOnly = true)
     public List<Usuario> getTutoresDeNino(Long ninoId) {
         List<Usuario> todosLosTutores = getTodosLosTutores();
@@ -118,7 +133,12 @@ public class UsuarioService {
     }
 
 
-    /** Devuelve todos los usuarios del sistema sin filtrar. */
+    /**
+     * Devuelve todos los usuarios del sistema sin filtrar por rol.
+     *
+     * @return lista con todos los usuarios registrados
+     */
+
     @Transactional(readOnly = true)
     public List<Usuario> getTodosLosUsuarios() {
         return usuarioRepository.findAll();
@@ -152,9 +172,10 @@ public class UsuarioService {
     /**
      * Vincula un niño a un tutor si todavía no están vinculados.
      *
-     * @param tutorId el identificador del tutor
-     * @param ninoId  el identificador del niño
+     * @param tutorId identificador del tutor
+     * @param ninoId  identificador del niño
      */
+
     @Transactional
     public void vincularNinoATutor(Long tutorId, Long ninoId) {
         Usuario tutor = usuarioRepository.findById(tutorId)
@@ -170,21 +191,24 @@ public class UsuarioService {
     }
 
     /**
-     * Elimina un usuario y todos sus datos asociados, borrando en el orden
-     * correcto para no romper las claves foráneas de MySQL.
+     * Elimina un usuario y todos sus datos asociados, en el orden correcto
+     * para no romper las claves foráneas de MySQL.
      *
-     * Orden de borrado:
-     * 1. Mensajes donde aparece como emisor o receptor
-     * 2. Solicitudes de canje donde es el niño
-     * 3. Solicitudes de canje ligadas a sus recompensas (si es tutor)
-     * 4. Sus recompensas
-     * 5. Tareas donde es creador o niño destinatario
-     * 6. Rutinas donde es creador o niño destinatario
-     * 7. Los vínculos del usuario
-     * 8. El propio usuario
+     * <p>Orden de borrado:</p>
+     * <ol>
+     *   <li>Mensajes donde aparece como emisor o receptor.</li>
+     *   <li>Solicitudes de canje donde es el niño.</li>
+     *   <li>Solicitudes de canje ligadas a sus recompensas (si es tutor).</li>
+     *   <li>Sus recompensas.</li>
+     *   <li>Tareas donde es creador o niño destinatario.</li>
+     *   <li>Rutinas donde es creador o niño destinatario.</li>
+     *   <li>Los vínculos tutor–niño donde aparece.</li>
+     *   <li>El propio usuario.</li>
+     * </ol>
      *
-     * @param id el identificador del usuario a borrar
+     * @param id identificador del usuario a eliminar
      */
+
     @Transactional
     public void eliminarUsuario(Long id) {
         mensajeRepository.deleteByEmisorId(id);

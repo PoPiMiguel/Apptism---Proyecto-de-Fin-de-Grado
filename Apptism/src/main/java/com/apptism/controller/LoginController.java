@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: LoginController.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
@@ -15,7 +12,6 @@ import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -23,12 +19,15 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de inicio de sesión.
  *
- * Gestiona la autenticación por email y contraseña. Si el usuario
- * tiene rol ADMIN lo lleva al panel de administración; si no, al dashboard.
+ * <p>Gestiona la autenticación por email y contraseña. Si el usuario tiene
+ * rol {@code ADMIN}, lo dirige al panel de administración; en cualquier otro
+ * caso, al dashboard correspondiente a su rol.</p>
  *
- * El usuario autenticado se guarda en {@link #usuarioActivo}, que actúa
- * como sesión compartida accesible desde el resto de controladores.
+ * <p>El usuario autenticado se guarda en {@link #usuarioActivo}, campo
+ * estático que actúa como sesión compartida y al que acceden el resto
+ * de controladores para conocer quién está usando la aplicación.</p>
  */
+
 @Component
 public class LoginController implements Initializable {
 
@@ -44,14 +43,17 @@ public class LoginController implements Initializable {
     @Autowired private StageManager stageManager;
 
     /**
-     * El usuario que ha iniciado sesión. Lo leen el resto de controladores
-     * para saber quién está usando la aplicación en cada momento.
+     * Usuario que ha iniciado sesión.
+     * Lo leen el resto de controladores para saber quién está activo en cada momento.
+     * Se pone a {@code null} al cerrar sesión.
      */
+
     public static Usuario usuarioActivo;
 
     /**
      * Prepara la pantalla: oculta el mensaje de error y carga el logotipo.
      */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lblError.setVisible(false);
@@ -60,8 +62,9 @@ public class LoginController implements Initializable {
 
     /**
      * Carga el logotipo desde los recursos y lo muestra en la pantalla.
-     * Si no se encuentra la imagen, oculta el componente sin romper nada.
+     * Si la imagen no se encuentra, oculta el componente sin lanzar ningún error.
      */
+
     private void cargarLogo() {
         try {
             String rutaLogo = getClass()
@@ -75,11 +78,13 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Se ejecuta cuando el usuario pulsa "Entrar".
-     * Valida que los campos no estén vacíos, comprueba las credenciales
+     * Se ejecuta cuando el usuario pulsa el botón de acceso.
+     *
+     * <p>Valida que los campos no estén vacíos, comprueba las credenciales
      * y navega a la pantalla correspondiente según el rol. Si algo falla,
-     * muestra el mensaje de error.
+     * muestra el mensaje de error bajo el formulario.</p>
      */
+
     @FXML
     private void onLogin() {
         String email = txtEmail.getText().trim();
@@ -104,10 +109,11 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Muestra un mensaje de error bajo el formulario.
+     * Muestra un mensaje de error bajo el formulario de acceso.
      *
-     * @param mensaje el texto a mostrar
+     * @param mensaje texto a mostrar
      */
+
     private void mostrarError(String mensaje) {
         lblError.setText(mensaje);
         lblError.setVisible(true);

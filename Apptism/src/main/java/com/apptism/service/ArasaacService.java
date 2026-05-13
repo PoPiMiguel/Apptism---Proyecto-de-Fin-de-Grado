@@ -1,12 +1,8 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: ArasaacService.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -21,46 +17,54 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Servicio que conecta con la API pública de ARASAAC para obtener pictogramas.
  *
- * Se usa en los módulos de chat y emociones. Guarda en caché los resultados
- * para no volver a pedir lo mismo a la API y así ir más rápido.
+ * <p>Se usa en los módulos de chat, emociones, rutinas y tareas. Los resultados
+ * se guardan en caché en memoria para no repetir peticiones HTTP con la misma
+ * palabra clave.</p>
  *
- * Las peticiones HTTP usan {@link HttpClient} (Java 11+) con un tiempo
- * máximo de espera de 8 segundos. Si la API no responde, los métodos
- * devuelven listas vacías o emojis como alternativa.
+ * <p>Las peticiones usan {@link HttpClient} (Java 11+) con un tiempo máximo
+ * de espera de 8 segundos. Si la API no responde, los métodos devuelven
+ * listas vacías o emojis como alternativa para que la interfaz no quede vacía.</p>
  *
  * @see <a href="https://api.arasaac.org">Documentación de la API de ARASAAC</a>
  */
+
 @Service
 public class ArasaacService {
 
-    /** URL base de la API de búsqueda. */
+    /** URL base de la API de búsqueda de ARASAAC. */
+
     private static final String API_URL = "https://api.arasaac.org/v1/pictograms";
 
     /** URL base para construir las URLs de las imágenes PNG. */
+
     private static final String IMG_URL = "https://static.arasaac.org/pictograms/";
 
-    /** Cliente HTTP reutilizable con 8 segundos de timeout. */
+    /** Cliente HTTP reutilizable con 8 segundos de timeout de conexión. */
+
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(8))
             .build();
 
-    /** Para parsear el JSON que devuelve la API. */
+    /** Instancia de Jackson para parsear el JSON que devuelve la API. */
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Caché en memoria con los resultados de búsquedas anteriores.
-     * La clave es la palabra buscada; el valor, la lista de pictogramas.
-     * Usamos {@link ConcurrentHashMap} porque varios hilos pueden acceder a la vez.
+     * La clave es la palabra buscada en minúsculas; el valor, la lista de pictogramas.
+     * Se usa {@link ConcurrentHashMap} porque varios hilos pueden acceder simultáneamente.
      */
+
     private final ConcurrentHashMap<String, List<PictogramaDTO>> cache =
             new ConcurrentHashMap<>();
 
     /**
-     * Devuelve la URL de la imagen PNG de un pictograma a partir de su identificador.
+     * Construye la URL de la imagen PNG de un pictograma a partir de su identificador.
      *
-     * @param id el identificador del pictograma en ARASAAC
-     * @return URL completa de la imagen en 500px
+     * @param id identificador del pictograma en ARASAAC
+     * @return URL completa de la imagen en resolución 500px
      */
+
     public String getImagenUrl(int id) {
         return IMG_URL + id + "/" + id + "_500.png";
     }
@@ -68,12 +72,13 @@ public class ArasaacService {
     /**
      * Busca pictogramas en ARASAAC por palabra clave en español.
      *
-     * Si ya buscamos esa palabra antes, devuelve el resultado de la caché
-     * sin hacer ninguna petición HTTP. Devuelve como máximo 12 resultados.
+     * <p>Si la palabra ya se buscó anteriormente, devuelve el resultado de la
+     * caché sin hacer ninguna petición HTTP. Devuelve como máximo 12 resultados.</p>
      *
-     * @param palabra el término de búsqueda
+     * @param palabra término de búsqueda en español
      * @return lista de hasta 12 pictogramas; lista vacía si la API no responde o no hay resultados
      */
+
     public List<PictogramaDTO> buscar(String palabra) {
         String clave = palabra.toLowerCase().trim();
         if (cache.containsKey(clave)) return cache.get(clave);
@@ -111,14 +116,16 @@ public class ArasaacService {
     /**
      * Devuelve los pictogramas de las ocho emociones básicas.
      *
-     * Busca cada emoción y se queda con el primer resultado, que ARASAAC
-     * considera el más relevante. Si la API no está disponible, devuelve
-     * emojis Unicode como alternativa para que la pantalla no quede vacía.
+     * <p>Busca cada emoción en ARASAAC y se queda con el primer resultado,
+     * que es el más relevante según la API. Si la API no está disponible,
+     * devuelve entradas con URL vacía para que la pantalla no quede en blanco.</p>
      *
-     * Los resultados se cachean con la clave {@code __emociones_basicas__}.
+     * <p>Los resultados se cachean con la clave interna
+     * {@code __emociones_basicas__} para no repetir las búsquedas.</p>
      *
-     * @return lista de 8 pictogramas de emociones básicas
+     * @return lista de 8 pictogramas correspondientes a las emociones básicas
      */
+
     public List<PictogramaDTO> getEmocionesBásicas() {
         String cacheKey = "__emociones_basicas__";
         if (cache.containsKey(cacheKey)) return cache.get(cacheKey);
@@ -155,9 +162,10 @@ public class ArasaacService {
     /**
      * Representa un pictograma devuelto por la API de ARASAAC.
      *
-     * @param id     el identificador del pictograma en ARASAAC
-     * @param nombre el nombre o etiqueta en español
-     * @param url    la URL de la imagen PNG
+     * @param id     identificador único del pictograma en ARASAAC
+     * @param nombre nombre o etiqueta del pictograma en español
+     * @param url    URL de la imagen PNG en resolución 500px
      */
+
     public record PictogramaDTO(int id, String nombre, String url) {}
 }

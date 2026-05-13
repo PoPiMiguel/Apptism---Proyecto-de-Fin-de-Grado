@@ -20,7 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,10 +27,12 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de emociones (exclusivo para niños).
  *
- * Muestra los pictogramas de las emociones básicas de ARASAAC para que el niño
- * pueda indicar cómo se siente y enviárselo a su tutor. El tutor lo verá
- * después en el registro emocional.
+ * <p>Muestra los pictogramas de las emociones básicas de ARASAAC para que el
+ * niño pueda indicar cómo se siente y enviárselo a su tutor. El tutor lo
+ * verá después en el registro emocional. Solo se muestran los tutores
+ * vinculados al niño mediante la tabla {@code tutores_ninos}.</p>
  */
+
 @Component
 public class EmocionesController implements Initializable {
 
@@ -45,7 +46,14 @@ public class EmocionesController implements Initializable {
     @Autowired private UsuarioService usuarioService;
     @Autowired private StageManager stageManager;
 
+    /** Tutores vinculados al niño activo, disponibles como destinatarios. */
+
     private List<Usuario> tutores;
+
+    /**
+     * Inicializa la pantalla: oculta la confirmación, carga los tutores
+     * del niño y los pictogramas de emociones básicas.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -55,13 +63,14 @@ public class EmocionesController implements Initializable {
         cargarEmocionesBasicas();
     }
 
+    /**
+     * Carga los tutores vinculados al niño activo en el combo de destinatarios.
+     * Si no tiene ninguno, muestra un texto informativo en el combo.
+     */
+
     private void cargarTutores() {
         Usuario nino = LoginController.usuarioActivo;
         tutores = usuarioService.getTutoresDeNino(nino.getId());
-
-        if (tutores.isEmpty()) {
-            tutores = usuarioService.getTodosLosTutores();
-        }
 
         tutores.forEach(t -> cmbDestinatario.getItems().add(t.getNombre()));
         if (!cmbDestinatario.getItems().isEmpty()) {
@@ -71,11 +80,22 @@ public class EmocionesController implements Initializable {
         }
     }
 
+    /**
+     * Solicita a ARASAAC los pictogramas de las emociones básicas y los muestra en el panel.
+     */
+
     private void cargarEmocionesBasicas() {
         panelPictogramas.getChildren().clear();
         List<PictogramaDTO> emociones = arasaacService.getEmocionesBásicas();
         emociones.forEach(this::crearTarjetaPictograma);
     }
+
+    /**
+     * Crea la tarjeta visual de un pictograma de emoción y la añade al panel.
+     * La imagen se carga en un hilo secundario. Al hacer clic se envía la emoción.
+     *
+     * @param picto datos del pictograma a mostrar
+     */
 
     private void crearTarjetaPictograma(PictogramaDTO picto) {
         VBox tarjeta = new VBox(8);
@@ -124,6 +144,14 @@ public class EmocionesController implements Initializable {
         panelPictogramas.getChildren().add(tarjeta);
     }
 
+    /**
+     * Envía el pictograma de emoción al tutor seleccionado y muestra una
+     * confirmación visual durante 3 segundos.
+     *
+     * @param picto   datos del pictograma de emoción seleccionado
+     * @param tarjeta tarjeta visual sobre la que se ha hecho clic
+     */
+
     private void enviarEmocion(PictogramaDTO picto, VBox tarjeta) {
         int idxDestinatario = cmbDestinatario.getSelectionModel().getSelectedIndex();
         if (idxDestinatario < 0 || tutores == null || tutores.isEmpty()) {
@@ -147,6 +175,8 @@ public class EmocionesController implements Initializable {
             Platform.runLater(() -> lblConfirmacion.setVisible(false));
         }).start();
     }
+
+    /** Vuelve al dashboard. */
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }
 }

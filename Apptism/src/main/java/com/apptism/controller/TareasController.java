@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════════
-// ARCHIVO: TareasController.java
-// ═══════════════════════════════════════════════════════════════════
 package com.apptism.controller;
 
 import com.apptism.config.FxmlView;
@@ -23,7 +20,6 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,11 +27,16 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla de tareas.
  *
- * Vista tutor: crear tareas para sus niños con un pictograma de ARASAAC,
- * verlas y eliminarlas.
- * Vista niño: ver sus tareas pendientes como tarjetas visuales (con pictograma)
- * y marcarlas como completadas para ganar estrellas.
+ * <p>Muestra una interfaz diferente según el rol del usuario activo:</p>
+ * <ul>
+ *   <li><b>Tutor</b>: puede crear tareas para sus niños con un pictograma
+ *       de ARASAAC, asignar puntos, verlas en lista y eliminarlas.</li>
+ *   <li><b>Niño</b>: ve sus tareas como tarjetas visuales y las marca como
+ *       completadas para ganar estrellas. La animación de puntos se muestra
+ *       al completar cada tarea.</li>
+ * </ul>
  */
+
 @Component
 public class TareasController implements Initializable {
 
@@ -57,12 +58,27 @@ public class TareasController implements Initializable {
     @Autowired private ArasaacService arasaacService;
     @Autowired private StageManager  stageManager;
 
+    /** Tareas cargadas actualmente para la vista del tutor. */
+
     private List<Tarea>   tareasActualesTutor;
+
+    /** Tareas cargadas actualmente para la vista del niño. */
+
     private List<Tarea>   tareasActualesNino;
+
+    /** Niños disponibles para el combo del tutor. */
+
     private List<Usuario> ninosDisponibles;
 
     /** Pictograma seleccionado actualmente en el formulario del tutor. */
+
     private PictogramaDTO pictogramaSeleccionado = null;
+
+    /**
+     * Inicializa la pantalla según el rol del usuario activo.
+     * Si es tutor, configura el formulario y carga sus tareas;
+     * si es niño, carga sus tarjetas de tareas pendientes.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -96,6 +112,12 @@ public class TareasController implements Initializable {
         }
     }
 
+    /**
+     * Busca pictogramas en ARASAAC con la palabra del campo de búsqueda
+     * y los muestra en el panel de selección. La búsqueda se realiza en
+     * un hilo secundario para no bloquear la interfaz.
+     */
+
     @FXML
     private void buscarPictogramas() {
         String palabra = txtBuscarPicto.getText().trim();
@@ -121,7 +143,13 @@ public class TareasController implements Initializable {
         }).start();
     }
 
-    /** Crea una tarjeta de pictograma seleccionable en el formulario del tutor. */
+    /**
+     * Crea una tarjeta de pictograma seleccionable en el panel del formulario del tutor.
+     * La imagen se carga en un hilo secundario. Al hacer clic se selecciona el pictograma.
+     *
+     * @param picto datos del pictograma a mostrar
+     */
+
     private void agregarPictoSeleccionable(PictogramaDTO picto) {
         VBox tarjeta = new VBox(3);
         tarjeta.setAlignment(Pos.CENTER);
@@ -162,33 +190,47 @@ public class TareasController implements Initializable {
         panelPictosTarea.getChildren().add(tarjeta);
     }
 
-    /** Marca el pictograma elegido y desmarca el anterior. */
+    /**
+     * Marca el pictograma elegido visualmente y desmarca el anterior.
+     *
+     * @param picto        datos del pictograma seleccionado
+     * @param tarjetaActual tarjeta sobre la que se ha hecho clic
+     */
+
     private void seleccionarPictograma(PictogramaDTO picto, VBox tarjetaActual) {
-        // Desmarcar anterior
         panelPictosTarea.getChildren().forEach(n ->
                 n.setStyle("-fx-background-color:#F7FFF7; -fx-background-radius:10px; -fx-cursor:hand;"));
-        // Marcar actual
         tarjetaActual.setStyle(
                 "-fx-background-color:#B8EDD9; -fx-background-radius:10px;" +
                         "-fx-border-color:#4A6F5A; -fx-border-radius:10px; -fx-cursor:hand;");
         pictogramaSeleccionado = picto;
     }
 
+    /**
+     * Carga todas las tareas de los niños del tutor y las muestra en la lista.
+     * Actualiza también el contador de tareas asignadas.
+     */
+
     private void cargarTareasTutor() {
         tareasActualesTutor = tareaService.getTareasDeNinosDelTutor(
                 LoginController.usuarioActivo.getId());
         listaTareas.setItems(FXCollections.observableArrayList(
                 tareasActualesTutor.stream().map(t ->
-                        (t.isCompletada() ? "[OK] " : "[ ] ") +
+                        (t.isCompletada() ? "[HECHA] " : "[NOHECHA] ") +
                                 "[" + t.getNino().getNombre() + "] " +
                                 t.getTitulo() +
                                 (t.getPuntosPorCompletar() > 0
                                         ? " [+" + t.getPuntosPorCompletar() + " pts]" : "") +
-                                (t.getPictogramaId() != null ? " 🖼" : "")
+                                (t.getPictogramaId() != null ? " Con picto" : " Sin picto")
                 ).toList()
         ));
         lblPuntosTotales.setText(tareasActualesTutor.size() + " tareas asignadas");
     }
+
+    /**
+     * Crea una tarea nueva con los datos del formulario y la asigna al niño seleccionado.
+     * Limpia el formulario y recarga la lista al terminar.
+     */
 
     @FXML
     private void onCrearTarea() {
@@ -219,6 +261,10 @@ public class TareasController implements Initializable {
         cargarTareasTutor();
     }
 
+    /**
+     * Elimina la tarea seleccionada en la lista y recarga la vista del tutor.
+     */
+
     @FXML
     private void onEliminarTarea() {
         int idx = listaTareas.getSelectionModel().getSelectedIndex();
@@ -227,12 +273,21 @@ public class TareasController implements Initializable {
         cargarTareasTutor();
     }
 
+    /**
+     * Carga las tareas del niño activo y actualiza el contador de puntos.
+     */
+
     private void cargarTareasNino() {
         tareasActualesNino = tareaService.getTareasByNino(
                 LoginController.usuarioActivo.getId());
         actualizarPuntosNino();
         renderizarTarjetasNino();
     }
+
+    /**
+     * Limpia el panel y vuelve a dibujar todas las tarjetas de tareas del niño.
+     * Si no hay tareas, muestra un mensaje informativo.
+     */
 
     private void renderizarTarjetasNino() {
         if (flowTareasNino == null) return;
@@ -249,6 +304,15 @@ public class TareasController implements Initializable {
             flowTareasNino.getChildren().add(crearTarjetaTareaNino(t));
         }
     }
+
+    /**
+     * Construye la tarjeta visual de una tarea para la vista del niño.
+     * Incluye el pictograma (si lo tiene), el título, los puntos que vale
+     * y un botón para marcarla como completada (si aún no lo está).
+     *
+     * @param tarea la tarea a representar
+     * @return nodo VBox listo para añadir al panel
+     */
 
     private VBox crearTarjetaTareaNino(Tarea tarea) {
         VBox tarjeta = new VBox(12);
@@ -290,7 +354,7 @@ public class TareasController implements Initializable {
         }
 
         if (!tarea.isCompletada()) {
-            Button btn = new Button("¡Hecho!");
+            Button btn = new Button("Hecho");
             btn.setStyle(
                     "-fx-background-color:#B8EDD9; -fx-text-fill:#4A6F5A;" +
                             "-fx-font-size:15px; -fx-font-weight:bold;" +
@@ -299,12 +363,20 @@ public class TareasController implements Initializable {
             btn.setOnAction(e -> completarTareaNino(tarea, tarjeta));
             tarjeta.getChildren().add(btn);
         } else {
-            Label lbl = new Label("✅ Completada");
+            Label lbl = new Label("Completada");
             lbl.setStyle("-fx-text-fill:#81D8A3; -fx-font-weight:bold; -fx-font-size:13px;");
             tarjeta.getChildren().add(lbl);
         }
         return tarjeta;
     }
+
+    /**
+     * Marca la tarea como completada, actualiza los puntos del niño en sesión,
+     * lanza la animación de celebración y recarga las tarjetas.
+     *
+     * @param tarea   la tarea que el niño ha completado
+     * @param tarjeta la tarjeta visual asociada (usada para la animación)
+     */
 
     private void completarTareaNino(Tarea tarea, VBox tarjeta) {
         int puntos      = tarea.getPuntosPorCompletar();
@@ -318,6 +390,10 @@ public class TareasController implements Initializable {
         Platform.runLater(this::renderizarTarjetasNino);
     }
 
+    /**
+     * Actualiza la etiqueta de puntos del niño con la representación visual actual.
+     */
+
     private void actualizarPuntosNino() {
         if (lblPuntosNino != null)
             lblPuntosNino.setText(
@@ -325,9 +401,15 @@ public class TareasController implements Initializable {
     }
 
     /**
-     * Convierte una cantidad de puntos en emojis visuales para el niño.
-     * Escala: 1 punto = 1 ⭐ | cada 10 estrellas = 1 👑 | cada 5 coronas = 1 💎
+     * Convierte una cantidad de puntos en emojis visuales escalonados.
+     *
+     * <p>Escala: 1–9 puntos = estrellas, cada 10 estrellas = 1 corona,
+     * cada 5 coronas (50 puntos) = 1 diamante.</p>
+     *
+     * @param puntos cantidad de puntos a convertir
+     * @return cadena de emojis representando los puntos; cadena vacía si es 0 o negativo
      */
+
     static String puntosAEstrellas(int puntos) {
         if (puntos <= 0) return "";
 
@@ -343,9 +425,17 @@ public class TareasController implements Initializable {
         return sb.toString();
     }
 
+    /**
+     * Muestra un diálogo de información con el mensaje indicado.
+     *
+     * @param msg mensaje a mostrar
+     */
+
     private void alerta(String msg) {
         new Alert(Alert.AlertType.INFORMATION, msg).showAndWait();
     }
+
+    /** Vuelve al dashboard. */
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }
 }

@@ -8,24 +8,26 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configuración central de Spring para Apptism.
  *
- * Aquí se registran los componentes que Spring no puede crear solo
- * con sus anotaciones habituales ({@code @Component}, {@code @Service}...).
- * En concreto, el {@link StageManager} necesita que le pasemos el contexto
- * de Spring a mano, así que lo creamos nosotros aquí.
+ * <p>Registra los componentes que Spring no puede crear automáticamente
+ * con sus anotaciones habituales ({@code @Component}, {@code @Service}…).
+ * En concreto, el {@link StageManager} necesita recibir el contexto de Spring
+ * en su constructor, por lo que se instancia aquí manualmente.</p>
  */
+
 @Configuration
 public class ApplicationConfig {
 
     /**
-     * Registra el {@link StageManager} como componente único en el contexto.
+     * Registra el {@link StageManager} como bean único en el contexto de Spring.
      *
-     * El gestor de ventanas necesita el contexto de Spring para poder
+     * <p>El gestor de ventanas necesita el contexto de Spring para poder
      * crear los controladores con sus dependencias inyectadas. Spring
-     * nos pasa ese contexto automáticamente como parámetro.
+     * inyecta ese contexto automáticamente como parámetro del método.</p>
      *
-     * @param context el contexto de Spring, inyectado automáticamente
-     * @return la instancia única del {@link StageManager} para toda la app
+     * @param context el contexto de Spring activo, inyectado automáticamente
+     * @return la instancia única del {@link StageManager} para toda la aplicación
      */
+
     @Bean
     public StageManager stageManager(ApplicationContext context) {
         return new StageManager(context);

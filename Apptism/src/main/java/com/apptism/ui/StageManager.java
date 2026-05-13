@@ -8,54 +8,64 @@ import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
 
 /**
- * El gestor de ventanas: se encarga de cargar las pantallas y navegar entre ellas.
+ * Gestor de ventanas de la aplicación.
  *
- * Todos los controladores que quieran cambiar de pantalla llaman a
- * {@link #switchScene(FxmlView)}. También aplica el CSS global cada vez
- * que se cambia de vista.
+ * <p>Centraliza la carga de pantallas y la navegación entre ellas.
+ * Todos los controladores que necesiten cambiar de vista llaman a
+ * {@link #switchScene(FxmlView)}. El CSS global se aplica (o recarga)
+ * en cada cambio de pantalla.</p>
  *
- * No lleva {@code @Component} porque necesita el escenario de JavaFX para
- * funcionar, y ese escenario no está disponible cuando Spring arranca sus
- * componentes. Por eso se registra a mano en {@link com.apptism.config.ApplicationConfig}.
+ * <p>No lleva {@code @Component} porque necesita el escenario de JavaFX
+ * para funcionar, y ese escenario no está disponible cuando Spring
+ * inicializa sus componentes. Por eso se registra manualmente como bean
+ * en {@link com.apptism.config.ApplicationConfig}.</p>
  */
+
 public class StageManager {
 
-    /** El contexto de Spring, que usamos para crear los controladores con sus dependencias. */
+    /** Contexto de Spring, usado para crear los controladores con sus dependencias inyectadas. */
+
     private final ApplicationContext springContext;
 
-    /** La ventana principal. Se asigna una sola vez desde {@link #setPrimaryStage(Stage)}. */
+    /** Ventana principal. Se asigna una sola vez desde {@link #setPrimaryStage(Stage)}. */
+
     private Stage primaryStage;
 
     /**
-     * Crea el gestor con el contexto de Spring que necesita para inyectar
+     * Crea el gestor con el contexto de Spring necesario para inyectar
      * dependencias en los controladores de los FXML.
      *
      * @param springContext el contexto de Spring activo
      */
+
     public StageManager(ApplicationContext springContext) {
         this.springContext = springContext;
     }
 
     /**
-     * Asigna la ventana principal. Hay que llamar a esto una sola vez
-     * desde {@link com.apptism.ApptismApp#start(Stage)} antes de navegar a ninguna pantalla.
+     * Asigna la ventana principal.
+     *
+     * <p>Debe llamarse una sola vez desde {@link com.apptism.ApptismApp#start(Stage)}
+     * antes de navegar a cualquier pantalla.</p>
      *
      * @param stage la ventana principal de JavaFX
      */
+
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
 
     /**
-     * Cambia la pantalla activa cargando el FXML que corresponde al valor
-     * de {@link FxmlView} que se le pasa.
+     * Cambia la pantalla activa cargando el FXML correspondiente al valor
+     * de {@link FxmlView} indicado.
      *
-     * La primera vez crea la escena completa con tamaño 1280×800 y aplica
-     * el CSS. Las siguientes veces reutiliza la escena y solo cambia el
-     * contenido, para no recrearla entera cada vez.
+     * <p>La primera vez crea la escena con tamaño 1280×800 y aplica el CSS.
+     * Las siguientes veces reutiliza la escena y solo sustituye el nodo raíz,
+     * evitando recrearla entera en cada navegación.</p>
      *
-     * @param view la pantalla a la que queremos navegar
+     * @param view la pantalla a la que se desea navegar
      */
+
     public void switchScene(FxmlView view) {
         Parent root = loadFxml(view.getFxmlPath());
         primaryStage.setTitle(view.getTitle());
@@ -78,13 +88,14 @@ public class StageManager {
     }
 
     /**
-     * Carga el archivo FXML indicado y le pide a Spring que cree el controlador,
-     * de modo que llegue con todas sus dependencias ya inyectadas.
+     * Carga el archivo FXML indicado y delega en Spring la creación del
+     * controlador, para que llegue con todas sus dependencias inyectadas.
      *
      * @param fxmlPath ruta al archivo FXML dentro del classpath
      * @return el nodo raíz de la pantalla cargada
-     * @throws RuntimeException si el archivo no existe o tiene algún error
+     * @throws RuntimeException si el archivo no existe o contiene algún error
      */
+
     private Parent loadFxml(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -96,12 +107,14 @@ public class StageManager {
     }
 
     /**
-     * Limpia y recarga el CSS global en la escena. Se llama cada vez que
-     * se navega entre pantallas para asegurarse de que los estilos se aplican
-     * bien después de cambiar el nodo raíz.
+     * Limpia y recarga el CSS global en la escena.
+     *
+     * <p>Se llama en cada navegación para asegurar que los estilos
+     * se aplican correctamente tras sustituir el nodo raíz.</p>
      *
      * @param scene la escena sobre la que aplicar los estilos
      */
+
     private void cargarEstilos(Scene scene) {
         try {
             String rutaCss = getClass().getResource("/styles/apptism.css").toExternalForm();

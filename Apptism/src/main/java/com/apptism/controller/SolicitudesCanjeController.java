@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,9 +17,12 @@ import java.util.ResourceBundle;
 /**
  * Controlador de la pantalla del historial de canjes (exclusivo para tutores).
  *
- * Muestra todas las recompensas que han canjeado los niños del tutor,
- * con el nombre del niño, la descripción de la recompensa y la fecha.
+ * <p>Muestra todas las recompensas que han canjeado los niños del tutor,
+ * con el nombre del niño, la descripción de la recompensa, los puntos
+ * que costó y la fecha del canje. Al entrar, marca todas las solicitudes
+ * como leídas para limpiar el badge del dashboard.</p>
  */
+
 @Component
 public class SolicitudesCanjeController implements Initializable {
 
@@ -30,13 +32,24 @@ public class SolicitudesCanjeController implements Initializable {
     @Autowired private SolicitudCanjeService solicitudService;
     @Autowired private StageManager          stageManager;
 
+    /** Lista completa de solicitudes cargadas al inicializar la pantalla. */
+
     private List<SolicitudCanje> todasLasSolicitudes;
+
+    /**
+     * Carga el historial de canjes y marca todas las solicitudes como leídas.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarSolicitudes();
         solicitudService.marcarTodasLeidas(LoginController.usuarioActivo.getId());
     }
+
+    /**
+     * Obtiene las solicitudes del tutor y las renderiza en la lista.
+     * Actualiza también el contador total.
+     */
 
     private void cargarSolicitudes() {
         Long tutorId = LoginController.usuarioActivo.getId();
@@ -55,6 +68,8 @@ public class SolicitudesCanjeController implements Initializable {
 
         lblContador.setText("Total de canjes realizados: " + todasLasSolicitudes.size());
     }
+
+    /** Vuelve al dashboard. */
 
     @FXML private void onVolver() { stageManager.switchScene(FxmlView.DASHBOARD); }
 }
