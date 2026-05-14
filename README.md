@@ -1,12 +1,12 @@
 # Apptism
 
-> Aplicación de escritorio para apoyar el desarrollo y la autonomía de niños con Trastorno del Espectro Autista (TEA), facilitando la comunicación entre tutores (padres/profesores) y sus alumnos o hijos.
+> Aplicación de escritorio para apoyar el desarrollo y la autonomía de personas con Trastorno del Espectro Autista (TEA), facilitando la comunicación entre tutores (padres/profesores) y sus alumnos o hijos.
 
 ---
 
 ## Descripción General
 
-**Apptism** es una aplicación de escritorio desarrollada como Trabajo de Fin de Grado (TFG). Su objetivo principal es proporcionar una herramienta accesible e intuitiva que ayude a niños con TEA a:
+**Apptism** es una aplicación de escritorio desarrollada como Trabajo de Fin de Grado (TFG). Su objetivo principal es proporcionar una herramienta accesible e intuitiva que ayude a personas con TEA a:
 
 - Gestionar sus **rutinas diarias** mediante pictogramas de la API de ARASAAC.
 - Completar **tareas** asignadas por sus tutores y ganar puntos.
@@ -26,10 +26,10 @@ Los tutores (padres y profesores) pueden crear, supervisar y gestionar todo el c
 | Interfaz gráfica | JavaFX 21.0.2 + FXML |
 | Framework backend | Spring Boot 3.2.3 |
 | Persistencia | Spring Data JPA + Hibernate |
-| Base de datos | MySQL 8 |
+| Base de datos | MySQL 8 (H2 en tests) |
 | Pictogramas | API REST de ARASAAC |
 | Build | Maven |
-| Utilidades | Lombok, Jackson Databind |
+| Utilidades | Lombok, Jackson Databind, javafx-swing |
 | Control de versiones | Git / GitHub |
 
 La arquitectura sigue el patrón **MVC** en capas adaptado a JavaFX con Spring:
@@ -41,7 +41,6 @@ com.apptism
 ├── service/        # Lógica de negocio
 ├── controller/     # Controladores JavaFX (FXML)
 ├── config/         # Configuración Spring + JavaFX
-├── launcher/       # Lanzador con comprobación de MySQL
 └── ui/             # Utilidades de interfaz (StageManager, AnimacionUtil)
 ```
 
@@ -51,12 +50,13 @@ com.apptism
 
 La aplicación arranca en este orden antes de mostrar ninguna pantalla:
 
-1. `Main` lanza `LauncherFxBridge` (puente JavaFX).
-2. `LauncherApp` comprueba si MySQL está disponible en el puerto 3306.
-   - Si MySQL está corriendo → arranca la aplicación.
-   - Si está instalado pero parado → intenta arrancarlo con `net start`.
-   - Si no está instalado → muestra una guía de instalación paso a paso.
-3. Una vez confirmada la conexión, `ApptismApp` arranca el contexto de Spring Boot y navega al login.
+1. `Main.main()` lanza JavaFX pasándole `Main.AppLauncher` como clase de arranque.
+2. `Main.AppLauncher.start()` crea e inicializa `ApptismApp`.
+3. `ApptismApp.init()` arranca el contexto de Spring Boot (en hilo separado al de UI).
+4. `ApptismApp.start()` obtiene el `StageManager` del contexto de Spring y navega al login.
+5. Al cerrar la aplicación, `ApptismApp.stop()` cierra el contexto de Spring limpiamente, liberando las conexiones a base de datos.
+
+> **Nota:** el doble salto `Main → AppLauncher → ApptismApp` es necesario porque JavaFX requiere que su hilo de interfaz arranque de una forma concreta, incompatible con el arranque directo de Spring Boot.
 
 ---
 
@@ -83,7 +83,7 @@ La aplicación arranca en este orden antes de mostrar ninguna pantalla:
 
 ### Para Tutores (`PADRE` / `PROFESOR`)
 - **Dashboard** con badge de notificación de solicitudes de canje pendientes.
-- **Tareas**: creación y eliminación de tareas para sus niños, con título, categoría y puntos configurables.
+- **Tareas**: creación y eliminación de tareas para sus niños, con título y puntos configurables.
 - **Rutinas**: creación y eliminación de rutinas por zona horaria y niño destinatario.
 - **Recompensas**: gestión del catálogo de recompensas (crear y listar).
 - **Registro Emocional**: historial de pictogramas emocionales enviados por los niños, con gráfico de barras semanal por emoción y día.
@@ -100,12 +100,13 @@ La aplicación arranca en este orden antes de mostrar ninguna pantalla:
 
 ## Integración con ARASAAC
 
-La aplicación se integra con la **API pública de ARASAAC** (`https://api.arasaac.org/v1/pictograms`) para obtener pictogramas en español. El servicio `ArasaacService` implementa:
+La aplicación se integra con la **API pública de ARASAAC** para obtener pictogramas en español. El servicio `ArasaacService` implementa:
 
-- Búsqueda de pictogramas por palabra clave (máximo 12 resultados).
-- Carga automática de las 8 emociones básicas al abrir los módulos de emociones y chat.
+- Búsqueda de pictogramas por palabra clave (`https://api.arasaac.org/v1/pictograms/es/search/{palabra}`), con un máximo de 12 resultados.
+- Carga de las imágenes PNG desde `https://static.arasaac.org/pictograms/{id}/{id}_500.png`.
+- Carga automática de las 8 emociones básicas al abrir los módulos de emociones y chat: Alegre, Triste, Enfadado, Miedo, Tranquilo, Sorprendido, Cansado y Nervioso.
 - **Caché en memoria** (`ConcurrentHashMap`) para evitar peticiones repetidas durante la sesión.
-- **Fallback con emojis Unicode** si la API no está disponible, garantizando que la UI siempre muestre contenido.
+- Timeout de conexión de **8 segundos**. Si la API no responde, los métodos devuelven listas vacías o entradas con URL vacía para que la interfaz no quede en blanco.
 
 ---
 
@@ -116,12 +117,12 @@ La base de datos se llama `apptism_db`. Hibernate genera y actualiza el esquema 
 | Entidad | Tabla | Descripción |
 |---|---|---|
 | `Usuario` | `usuarios` | Todos los perfiles del sistema diferenciados por rol. Almacena los puntos acumulados de cada niño. |
-| `Tarea` | `tareas` | Tareas asignadas a un niño por un creador (tutor). |
-| `Rutina` | `rutinas` | Rutinas organizadas por zona horaria, asociadas a un niño. |
-| `PasoRutina` | `pasos_rutina` | Pasos individuales de una rutina, con pictograma y orden. |
+| `Tarea` | `tareas` | Tareas asignadas a un niño por un tutor, con título, pictograma y puntos por completar. |
+| `Rutina` | `rutinas` | Rutinas organizadas por zona horaria, con pictograma y orden visual, asociadas a un niño. |
+| `PasoRutina` | `pasos_rutina` | Pasos individuales de una rutina (modelo de datos definido; no implementado en la interfaz actual). |
 | `Recompensa` | `recompensas` | Recompensas canjeables creadas por un tutor. |
 | `SolicitudCanje` | `solicitudes_canje` | Registro de cada canje realizado por un niño. |
-| `Mensaje` | `mensajes` | Mensajes de chat y emocionales entre usuarios (diferenciados por tipo: `CHAT` o `EMOCION`). |
+| `Mensaje` | `mensajes` | Mensajes de chat y emocionales entre usuarios, diferenciados por tipo (`CHAT` o `EMOCION`). |
 | — | `tutores_ninos` | Tabla de unión tutor ↔ niño (Many-to-Many). |
 
 ### Enumerados
@@ -129,7 +130,6 @@ La base de datos se llama `apptism_db`. Hibernate genera y actualiza el esquema 
 | Enum | Valores |
 |---|---|
 | `RolUsuario` | `NINO`, `PADRE`, `PROFESOR`, `ADMIN` |
-| `CategoriaTarea` | `MATEMATICAS`, `LENGUA`, `ARTE`, `JUEGO`, `HABITOS` |
 | `ZonaHoraria` | `MANANA`, `MEDIODIA`, `NOCHE` |
 | `TipoMensaje` | `CHAT`, `EMOCION` |
 | `EstadoSolicitud` | `PENDIENTE`, `APROBADA`, `RECHAZADA` |
@@ -138,12 +138,18 @@ La base de datos se llama `apptism_db`. Hibernate genera y actualiza el esquema 
 
 ## Configuración
 
-La aplicación se conecta a MySQL con estos valores por defecto en `application.properties`:
+La aplicación usa perfiles de Spring para gestionar distintos entornos. El perfil activo por defecto es `produccion` (definido en `application.properties`).
 
-```
-URL:      jdbc:mysql://localhost:3306/apptism_db
-Usuario:  admin
-Password: admin
+| Perfil | Fichero | Descripción |
+|---|---|---|
+| `produccion` | `application-produccion.properties` | Base de datos principal de producción (Railway) |
+| `colon` | `application-colon.properties` | Base de datos alternativa (Railway) |
+| `pruebas` | `application-pruebas.properties` | Base de datos de pruebas (Railway) |
+
+Para cambiar el perfil activo, modificar en `application.properties`:
+
+```properties
+spring.profiles.active=produccion
 ```
 
 Al arrancar por primera vez, `data.sql` inserta automáticamente el usuario administrador por defecto si no existe:
@@ -163,11 +169,11 @@ Apptism/
 ├── src/
 │   └── main/
 │       ├── java/com/apptism/
-│       │   ├── ApptismApp.java               # Arranca Spring Boot y abre la ventana principal
-│       │   ├── Main.java                     # Punto de entrada de la JVM
+│       │   ├── Main.java                             # Punto de entrada de la JVM + AppLauncher (clase interna)
+│       │   ├── ApptismApp.java                       # Arranca Spring Boot y abre la ventana principal
 │       │   ├── config/
-│       │   │   ├── ApplicationConfig.java    # Registra el StageManager como bean de Spring
-│       │   │   └── FxmlView.java             # Enum con las rutas y títulos de cada vista
+│       │   │   ├── ApplicationConfig.java            # Registra el StageManager como bean de Spring
+│       │   │   └── FxmlView.java                     # Enum con las rutas y títulos de cada vista
 │       │   ├── controller/
 │       │   │   ├── LoginController.java
 │       │   │   ├── DashboardController.java
@@ -188,7 +194,6 @@ Apptism/
 │       │   │   ├── SolicitudCanje.java
 │       │   │   ├── Mensaje.java
 │       │   │   ├── RolUsuario.java
-│       │   │   ├── CategoriaTarea.java
 │       │   │   ├── ZonaHoraria.java
 │       │   │   ├── TipoMensaje.java
 │       │   │   └── EstadoSolicitud.java
@@ -207,19 +212,19 @@ Apptism/
 │       │   │   ├── MensajeService.java
 │       │   │   ├── SolicitudCanjeService.java
 │       │   │   └── ArasaacService.java
-│       │   ├── launcher/
-│       │   │   ├── LauncherApp.java          # Ventana de comprobación de MySQL
-│       │   │   └── DatabaseChecker.java      # Comprueba si MySQL está disponible
 │       │   └── ui/
-│       │       ├── StageManager.java         # Gestiona la navegación entre pantallas
-│       │       └── AnimacionUtil.java        # Animaciones de refuerzo positivo (ABA)
+│       │       ├── StageManager.java                 # Gestiona la navegación entre pantallas (ventana 1280×800, mínimo 800×600)
+│       │       └── AnimacionUtil.java                # Animaciones de refuerzo positivo (ABA)
 │       └── resources/
-│           ├── fxml/                         # Vistas de la interfaz
+│           ├── fxml/                                 # Vistas de la interfaz
 │           ├── styles/
-│           │   └── apptism.css              # Estilos globales con tokens de paleta
-│           ├── images/                       # Iconos de la aplicación (64, 128, 256, 512px)
-│           ├── data.sql                      # Usuario admin por defecto
-│           └── application.properties
+│           │   └── apptism.css                       # Estilos globales con tokens de paleta
+│           ├── images/                               # Iconos de la aplicación
+│           ├── data.sql                              # Usuario admin por defecto
+│           ├── application.properties
+│           ├── application-produccion.properties
+│           ├── application-colon.properties
+│           └── application-pruebas.properties
 └── pom.xml
 ```
 
@@ -227,7 +232,7 @@ Apptism/
 
 ## Interfaz de Usuario
 
-La interfaz está construida con **JavaFX + FXML** y un CSS personalizado (`apptism.css`) con tokens de paleta definidos en `.root`. Hay dos modos visuales:
+La interfaz está construida con **JavaFX + FXML** y un CSS personalizado (`apptism.css`) con tokens de paleta definidos en `.root`. La ventana arranca con tamaño **1280×800** y tiene un mínimo de **800×600**. Hay dos modos visuales:
 
 - **Perfil niño**: botones de gran tamaño, tipografía clara y paleta de colores suaves para reducir la sobreestimulación sensorial.
 - **Perfil tutor/admin**: interfaz más densa e informativa, adaptada a usuarios sin necesidades especiales.
