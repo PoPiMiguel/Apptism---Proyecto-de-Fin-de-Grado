@@ -142,23 +142,9 @@ La aplicación usa perfiles de Spring para gestionar distintos entornos. El perf
 
 | Perfil | Fichero | Descripción |
 |---|---|---|
-| `produccion` | `application-produccion.properties` | Base de datos principal de producción (Railway) |
-| `colon` | `application-colon.properties` | Base de datos alternativa (Railway) |
-| `pruebas` | `application-pruebas.properties` | Base de datos de pruebas (Railway) |
-
-Para cambiar el perfil activo, modificar en `application.properties`:
-
-```properties
-spring.profiles.active=produccion
-```
-
-Al arrancar por primera vez, `data.sql` inserta automáticamente el usuario administrador por defecto si no existe:
-
-```
-Email:    admin@apptism.com
-Password: admin123
-Rol:      ADMIN
-```
+| `produccion` | `application-produccion.properties` | Base de datos principal de producción |
+| `colon` | `application-colon.properties` | Base de datos alternativa |
+| `pruebas` | `application-pruebas.properties` | Base de datos de pruebas |
 
 ---
 
@@ -169,11 +155,11 @@ Apptism/
 ├── src/
 │   └── main/
 │       ├── java/com/apptism/
-│       │   ├── Main.java                             # Punto de entrada de la JVM + AppLauncher (clase interna)
-│       │   ├── ApptismApp.java                       # Arranca Spring Boot y abre la ventana principal
+│       │   ├── Main.java
+│       │   ├── ApptismApp.java
 │       │   ├── config/
-│       │   │   ├── ApplicationConfig.java            # Registra el StageManager como bean de Spring
-│       │   │   └── FxmlView.java                     # Enum con las rutas y títulos de cada vista
+│       │   │   ├── ApplicationConfig.java
+│       │   │   └── FxmlView.java
 │       │   ├── controller/
 │       │   │   ├── LoginController.java
 │       │   │   ├── DashboardController.java
@@ -213,14 +199,14 @@ Apptism/
 │       │   │   ├── SolicitudCanjeService.java
 │       │   │   └── ArasaacService.java
 │       │   └── ui/
-│       │       ├── StageManager.java                 # Gestiona la navegación entre pantallas (ventana 1280×800, mínimo 800×600)
-│       │       └── AnimacionUtil.java                # Animaciones de refuerzo positivo (ABA)
+│       │       ├── StageManager.java
+│       │       └── AnimacionUtil.java
 │       └── resources/
-│           ├── fxml/                                 # Vistas de la interfaz
+│           ├── fxml/
 │           ├── styles/
-│           │   └── apptism.css                       # Estilos globales con tokens de paleta
-│           ├── images/                               # Iconos de la aplicación
-│           ├── data.sql                              # Usuario admin por defecto
+│           │   └── apptism.css
+│           ├── images/
+│           ├── data.sql
 │           ├── application.properties
 │           ├── application-produccion.properties
 │           ├── application-colon.properties
